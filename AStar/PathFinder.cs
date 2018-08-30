@@ -138,7 +138,7 @@ namespace AStar
                     {
                         var newLocationX = (ushort) (locationX + _direction[i, 0]);
                         var newLocationY = (ushort) (locationY + _direction[i, 1]);
-                        var newLocation = (newLocationY << _gridYLog2) + newLocationX;
+                        var newLocation = (newLocationY << _gridXLog2) + newLocationX;
 
                         if (newLocationX >= _gridX || newLocationY >= _gridY)
                         {
