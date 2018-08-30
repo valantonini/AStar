@@ -15,6 +15,7 @@ namespace AStar
         private readonly ushort _gridY;
         private readonly ushort _gridXMinus1;
         private readonly ushort _gridYLog2;
+        private readonly ushort _gridXLog2;
 
         private readonly bool _diagonals;
         private readonly sbyte[,] _direction;
@@ -49,6 +50,7 @@ namespace AStar
 
             _gridXMinus1 = (ushort)(_gridX - 1);
             _gridYLog2 = (ushort)Math.Log(_gridY, 2);
+            _gridXLog2 = (ushort)Math.Log(_gridX, 2);
 
             if (_mCalcGrid == null || _mCalcGrid.Length != (_gridX * _gridY))
             {
