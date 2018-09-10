@@ -9,4 +9,4 @@ script:
  - dotnet test
  - cd ../AStar.Core
  - dotnet pack -c Release --output nupkgs /p:PackageVersion=$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
- - dotnet nuget push ./nupkgs/AStar.Core.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+ - dotnet nuget push ./nupkgs/AStarLite.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
