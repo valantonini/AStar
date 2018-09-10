@@ -149,17 +149,6 @@ namespace AStar.Tests
             item.Y.ShouldBe(2);
            
         }
-
-        private static void PrintCoordinates(List<PathFinderNode> path)
-        {
-            foreach (var node in path)
-            {
-                Console.WriteLine(node.X);
-                Console.WriteLine(node.Y);
-                Console.WriteLine(Environment.NewLine);
-            }
-        }
-
         [Test]
         public void ShouldPathAroundObstacle()
         {
@@ -211,7 +200,6 @@ namespace AStar.Tests
             path.ShouldBe(null);
         }
 
-
         private static byte[,] CreateMatrix(int size)
         {
             var mMatrix = new byte[size, size];
@@ -227,5 +215,16 @@ namespace AStar.Tests
 
             return mMatrix;
         }
+
+        private static void PrintCoordinates(List<PathFinderNode> path)
+        {
+            foreach (var node in path)
+            {
+                Console.WriteLine(node.X);
+                Console.WriteLine(node.Y);
+                Console.WriteLine(Environment.NewLine);
+            }
+        }
+
     }
 }
