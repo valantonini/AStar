@@ -2,7 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <NuspecFile>AStar.Core.nuspec</NuspecFile>
+    <PackageId>AStarLite</PackageId>
+    <Title>AStar Lite</Title>
+    <Authors>Val Antonini</Authors>
+    <PackageLicenseUrl>https://github.com/valantonini/AStar/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/valantonini/AStar</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/valantonini/AStar</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>An A* pathfinding implementation compatible with the Unity3D Engine</Description>
+    <PackageTags>Pathfinding;A*;AStar</PackageTags>
   </PropertyGroup>
 
 </Project>
