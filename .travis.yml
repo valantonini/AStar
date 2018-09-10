@@ -5,4 +5,5 @@ dist: trusty
 script:
  - dotnet restore
  - dotnet build
+ - cd ./AStar.Tests
  - dotnet test
