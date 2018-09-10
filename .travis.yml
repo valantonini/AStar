@@ -6,4 +6,6 @@ script:
  - dotnet restore
  - dotnet build
  - cd ./AStar.Tests
+ - dotnet restore
+ - dotnet build
  - dotnet test
