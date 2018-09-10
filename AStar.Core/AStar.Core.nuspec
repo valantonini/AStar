@@ -2,6 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>AStarLite</id>
+    <version>$version$</version>
     <authors>Val Antonini</authors>
     <owners>Val Antonini</owners>
     <licenseUrl>https://github.com/valantonini/AStar/blob/master/LICENSE</licenseUrl>
