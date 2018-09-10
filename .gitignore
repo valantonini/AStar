@@ -9,6 +9,7 @@
 
 #OSX
 .DS_Store
+old
 
 # User-specific files
 *.suo
