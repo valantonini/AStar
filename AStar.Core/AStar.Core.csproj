@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://github.com/valantonini/AStar</PackageProjectUrl>
     <RepositoryUrl>https://github.com/valantonini/AStar</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>An A* pathfinding implementation compatible with the Unity3D Engine</Description>
+    <Description>An A* pathfinding implementation compatible with the Unity3D Engine. Grid dimensions must be a power of 2</Description>
     <PackageTags>Pathfinding;A*;AStar</PackageTags>
   </PropertyGroup>
 
