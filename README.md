@@ -7,6 +7,8 @@ An A Star (A*) algorithm for C# based on [Gustavo Franco's implementation](http:
 
 The grid is represented as a 2d byte array (byte[,]). Free locations are marked with a 1. Anything else will be considered an obstruction and avoided.
 
+Grid dimensions must be a power of 2.
+
 Options allow for the use of diagonals and punishing direction changes.
 
     var pathfinderOptions = new PathFinderOptions {PunishChangeDirection = true};
