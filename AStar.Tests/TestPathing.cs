@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -46,7 +45,7 @@ namespace AStar.Tests
                           XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
                           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-            _grid = new byte[32,32];
+            _grid = new byte[32, 32];
             var splitLevel = level.Split('\n')
                                   .Select(x => x.Trim())
                                   .ToList();
@@ -68,7 +67,7 @@ namespace AStar.Tests
         [Test]
         public void TestPathingOptions()
         {
-            var pathfinderOptions = new PathFinderOptions {PunishChangeDirection = true};
+            var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
 
             var pathfinder = new PathFinder(_grid, pathfinderOptions);
             var path = pathfinder.FindPath(new Point(1, 1), new Point(30, 30));

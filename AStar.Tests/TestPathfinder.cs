@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using NUnit.Framework;
 using Shouldly;
 
@@ -24,7 +23,7 @@ namespace AStar.Tests
         {
             var path = _pathFinder.FindPath(new Point(1, 1), new Point(1, 1));
             path.Count.ShouldBe(1);
-            
+
             var node = path[0];
             node.X.ShouldBe(1);
             node.Y.ShouldBe(1);
@@ -34,11 +33,11 @@ namespace AStar.Tests
         public void ShouldPathToAdjacent()
         {
             var path = _pathFinder.FindPath(new Point(1, 1), new Point(2, 1));
-            
+
             path.Count.ShouldBe(2);
 
             var node = path[0];
-            
+
             node.X.ShouldBe(2);
             node.Y.ShouldBe(1);
 
@@ -74,7 +73,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldDoSimplePathWithNoDiagonal()
         {
-            var pathfinderOptions = new PathFinderOptions { Diagonals = false};
+            var pathfinderOptions = new PathFinderOptions { Diagonals = false };
             _pathFinder = new PathFinder(_grid, pathfinderOptions);
 
             var path = _pathFinder.FindPath(new Point(1, 1), new Point(4, 2));
@@ -90,15 +89,15 @@ namespace AStar.Tests
             item = path[3];
             item.X.ShouldBe(2);
             item.Y.ShouldBe(1);
-            
+
             item = path[2];
             item.X.ShouldBe(3);
             item.Y.ShouldBe(1);
-            
+
             item = path[1];
             item.X.ShouldBe(4);
             item.Y.ShouldBe(1);
-            
+
             item = path[0];
             item.X.ShouldBe(4);
             item.Y.ShouldBe(2);
@@ -147,7 +146,7 @@ namespace AStar.Tests
             item = path[0];
             item.X.ShouldBe(4);
             item.Y.ShouldBe(2);
-           
+
         }
         [Test]
         public void ShouldPathAroundObstacle()
@@ -203,7 +202,7 @@ namespace AStar.Tests
         private static byte[,] CreateMatrix(int size)
         {
             var mMatrix = new byte[size, size];
-            
+
             for (var y = 0; y < mMatrix.GetUpperBound(1); y++)
             {
 

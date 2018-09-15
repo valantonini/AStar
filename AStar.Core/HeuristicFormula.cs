@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 
 namespace AStar
 {
@@ -27,7 +26,7 @@ namespace AStar
                     break;
 
                 case HeuristicFormula.EuclideanNoSQR:
-                    h = (int) (heuristicEstimate * (Math.Pow((newLocationX - end.X), 2) + Math.Pow((newLocationY - end.Y), 2)));
+                    h = (int)(heuristicEstimate * (Math.Pow((newLocationX - end.X), 2) + Math.Pow((newLocationY - end.Y), 2)));
                     break;
 
                 case HeuristicFormula.Custom1:

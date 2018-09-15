@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace AStar
 {
@@ -59,8 +58,8 @@ namespace AStar
 
             _open = new PriorityQueueB<int>(new ComparePfNodeMatrix(_mCalcGrid));
 
-            
-            
+
+
             //set options
             if (pathFinderOptions == null)
             {
@@ -100,8 +99,8 @@ namespace AStar
                 var endLocation = (end.Y << _gridYLog2) + end.X;
                 _mCalcGrid[location].G = 0;
                 _mCalcGrid[location].F = _heuristicEstimate;
-                _mCalcGrid[location].PX = (ushort) start.X;
-                _mCalcGrid[location].PY = (ushort) start.Y;
+                _mCalcGrid[location].PX = (ushort)start.X;
+                _mCalcGrid[location].PY = (ushort)start.Y;
                 _mCalcGrid[location].Status = _openNodeValue;
 
                 _open.Push(location);
@@ -115,8 +114,8 @@ namespace AStar
                         continue;
                     }
 
-                    var locationX = (ushort) (location & _gridXMinus1);
-                    var locationY = (ushort) (location >> _gridYLog2);
+                    var locationX = (ushort)(location & _gridXMinus1);
+                    var locationY = (ushort)(location >> _gridYLog2);
 
                     if (location == endLocation)
                     {
@@ -138,8 +137,8 @@ namespace AStar
                     //Lets calculate each successors
                     for (var i = 0; i < (_diagonals ? 8 : 4); i++)
                     {
-                        var newLocationX = (ushort) (locationX + _direction[i, 0]);
-                        var newLocationY = (ushort) (locationY + _direction[i, 1]);
+                        var newLocationX = (ushort)(locationX + _direction[i, 0]);
+                        var newLocationY = (ushort)(locationY + _direction[i, 1]);
                         var newLocation = (newLocationY << _gridXLog2) + newLocationX;
 
                         if (newLocationX >= _gridX || newLocationY >= _gridY)
@@ -156,7 +155,7 @@ namespace AStar
                         int newG;
                         if (_heavyDiagonals && i > 3)
                         {
-                            newG = _mCalcGrid[location].G + (int) (_grid[newLocationX, newLocationY]*2.41);
+                            newG = _mCalcGrid[location].G + (int)(_grid[newLocationX, newLocationY] * 2.41);
                         }
                         else
                         {
@@ -196,15 +195,15 @@ namespace AStar
                         _mCalcGrid[newLocation].G = newG;
 
                         var h = Heuristic.DetermineH(_formula, end, _heuristicEstimate, newLocationY, newLocationX);
-                       
+
                         if (_tieBreaker)
                         {
                             var dx1 = locationX - end.X;
                             var dy1 = locationY - end.Y;
                             var dx2 = start.X - end.X;
                             var dy2 = start.Y - end.Y;
-                            var cross = Math.Abs(dx1*dy2 - dx2*dy1);
-                            h = (int) (h + cross*0.001);
+                            var cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
+                            h = (int)(h + cross * 0.001);
                         }
                         _mCalcGrid[newLocation].F = newG + h;
 
@@ -238,7 +237,7 @@ namespace AStar
             _closed.Clear();
 
             var fNodeTmp = _mCalcGrid[(end.Y << _gridYLog2) + end.X];
-            
+
             var fNode = new PathFinderNode
             {
                 F = fNodeTmp.F,
