@@ -60,5 +60,14 @@ namespace AStar.Tests
                 Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
             }
         }
+
+        public static void PrintAssertions(List<PathFinderNode> path)
+        {
+            for (var i = 0; i < path.Count; i++)
+            {
+                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
+                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
+            }
+        }
     }
 }

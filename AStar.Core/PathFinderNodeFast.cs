@@ -36,12 +36,4 @@ namespace AStar
             return 0;
         }
     }
-
-    public static class MatrixExtension
-    {
-        public static T GetByPoint<T>(this T[,] matrix, Point point)
-        {
-            return matrix[point.X, point.Y];
-        }
-    }
 }

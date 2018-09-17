@@ -14,8 +14,30 @@ namespace AStar.Tests
         [SetUp]
         public void SetUp()
         {
-            _grid = CreateMatrix(8);
+            _grid = CreateMatrix(8, 8);
             _pathFinder = new PathFinder(_grid);
+        }
+
+        [Test]
+        public void ShouldPathRectangleGrid()
+        {
+            var grid = CreateMatrix(3, 5);
+            var pathfinder = new PathFinder(grid);
+
+            var path = pathfinder.FindPath(new Point(0, 0), new Point(2, 4));
+            Console.WriteLine(Helper.PrintGrid(grid));
+            Console.WriteLine(Helper.PrintPath(grid, path));
+
+            path[0].X.ShouldBe(2);
+            path[0].Y.ShouldBe(4);
+            path[1].X.ShouldBe(2);
+            path[1].Y.ShouldBe(3);
+            path[2].X.ShouldBe(2);
+            path[2].Y.ShouldBe(2);
+            path[3].X.ShouldBe(1);
+            path[3].Y.ShouldBe(1);
+            path[4].X.ShouldBe(0);
+            path[4].Y.ShouldBe(0);
         }
 
         [Test]
@@ -41,9 +63,14 @@ namespace AStar.Tests
             node.X.ShouldBe(2);
             node.Y.ShouldBe(1);
 
+
             node = path[1];
             node.X.ShouldBe(1);
             node.Y.ShouldBe(1);
+
+
+            Console.WriteLine(Helper.PrintGrid(_grid));
+            Console.WriteLine(Helper.PrintPath(_grid, path));
         }
 
         [Test]
@@ -199,16 +226,16 @@ namespace AStar.Tests
             path.ShouldBe(null);
         }
 
-        private static byte[,] CreateMatrix(int size)
+        private static byte[,] CreateMatrix(int height, int width)
         {
-            var mMatrix = new byte[size, size];
+            var mMatrix = new byte[height, width];
 
-            for (var y = 0; y < mMatrix.GetUpperBound(1); y++)
+            for (var row = 0; row < mMatrix.GetLength(0); row++)
             {
 
-                for (var x = 0; x < mMatrix.GetUpperBound(0); x++)
+                for (var column = 0; column < mMatrix.GetLength(1); column++)
                 {
-                    mMatrix[x, y] = 1;
+                    mMatrix[row, column] = 1;
                 }
             }
 
