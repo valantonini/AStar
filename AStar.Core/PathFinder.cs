@@ -210,7 +210,7 @@ namespace AStar
                 fNode.Column = posY;
             }
 
-            path.Add(new Point(fNode.Column, fNode.Row));
+            path.Add(new Point(fNode.Row, fNode.Column));
 
             return path;
         }

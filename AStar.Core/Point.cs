@@ -7,11 +7,6 @@ namespace AStar
         public int Row { get; set; }
         public int Column { get; set; }
 
-        public Point()
-        {
-
-        }
-
         public Point(int row, int column)
         {
             Row = row;
