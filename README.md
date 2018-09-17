@@ -5,9 +5,7 @@ AStar
 
 An A Star (A*) algorithm for C# based on [Gustavo Franco's implementation](http://www.codeguru.com/csharp/csharp/cs_misc/designtechniques/article.php/c12527/AStar-A-Implementation-in-C-Path-Finding-PathFinder.htm).
 
-The grid is represented as a 2d byte array (byte[,]). Free locations are marked with a 1. Anything else will be considered an obstruction and avoided.
-
-Grid dimensions must be a power of 2.
+The grid is represented as a 2d byte array (byte[,]). Blocked locations are marked as a 0, anything else is considered traversable.
 
 Options allow for the use of diagonals and punishing direction changes.
 
