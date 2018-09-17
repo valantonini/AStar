@@ -4,6 +4,6 @@ namespace AStar
 {
     public interface IPathFinder
     {
-        List<PathFinderNode> FindPath(Point start, Point end);
+        List<Point> FindPath(Point start, Point end);
     }
 }

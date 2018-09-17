@@ -40,7 +40,7 @@ namespace AStar
                     : new sbyte[,] { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
         }
 
-        public List<PathFinderNode> FindPath(Point start, Point end)
+        public List<Point> FindPath(Point start, Point end)
         {
             lock (this)
             {
@@ -176,9 +176,9 @@ namespace AStar
             }
         }
 
-        private List<PathFinderNode> OrderClosedListAsPath(Point end)
+        private List<Point> OrderClosedListAsPath(Point end)
         {
-            _closed.Clear();
+            var path = new List<Point>();
 
             var fNodeTmp = _mCalcGrid[end.X, end.Y];
 
@@ -195,7 +195,7 @@ namespace AStar
 
             while (fNode.X != fNode.Px || fNode.Y != fNode.Py)
             {
-                _closed.Add(fNode);
+                path.Add(new Point(fNode.Y, fNode.X));
 
                 var posX = fNode.Px;
                 var posY = fNode.Py;
@@ -210,9 +210,9 @@ namespace AStar
                 fNode.Y = posY;
             }
 
-            _closed.Add(fNode);
+            path.Add(new Point(fNode.Y, fNode.X));
 
-            return _closed;
+            return path;
         }
     }
 }

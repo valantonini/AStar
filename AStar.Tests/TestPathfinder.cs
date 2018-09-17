@@ -28,16 +28,16 @@ namespace AStar.Tests
             Console.WriteLine(Helper.PrintGrid(grid));
             Console.WriteLine(Helper.PrintPath(grid, path));
 
-            path[0].X.ShouldBe(2);
-            path[0].Y.ShouldBe(4);
-            path[1].X.ShouldBe(2);
-            path[1].Y.ShouldBe(3);
-            path[2].X.ShouldBe(2);
+            path[0].Y.ShouldBe(2);
+            path[0].X.ShouldBe(4);
+            path[1].Y.ShouldBe(2);
+            path[1].X.ShouldBe(3);
             path[2].Y.ShouldBe(2);
-            path[3].X.ShouldBe(1);
+            path[2].X.ShouldBe(2);
             path[3].Y.ShouldBe(1);
-            path[4].X.ShouldBe(0);
+            path[3].X.ShouldBe(1);
             path[4].Y.ShouldBe(0);
+            path[4].X.ShouldBe(0);
         }
 
         [Test]
@@ -47,8 +47,8 @@ namespace AStar.Tests
             path.Count.ShouldBe(1);
 
             var node = path[0];
-            node.X.ShouldBe(1);
             node.Y.ShouldBe(1);
+            node.X.ShouldBe(1);
         }
 
         [Test]
@@ -60,13 +60,13 @@ namespace AStar.Tests
 
             var node = path[0];
 
-            node.X.ShouldBe(2);
-            node.Y.ShouldBe(1);
+            node.Y.ShouldBe(2);
+            node.X.ShouldBe(1);
 
 
             node = path[1];
-            node.X.ShouldBe(1);
             node.Y.ShouldBe(1);
+            node.X.ShouldBe(1);
 
 
             Console.WriteLine(Helper.PrintGrid(_grid));
@@ -81,20 +81,20 @@ namespace AStar.Tests
             path.Count.ShouldBe(4);
 
             var item = path[3];
-            item.X.ShouldBe(1);
             item.Y.ShouldBe(1);
+            item.X.ShouldBe(1);
 
             item = path[2];
-            item.X.ShouldBe(2);
             item.Y.ShouldBe(2);
+            item.X.ShouldBe(2);
 
             item = path[1];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(3);
+            item.X.ShouldBe(2);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(4);
+            item.X.ShouldBe(2);
         }
 
         [Test]
@@ -110,24 +110,24 @@ namespace AStar.Tests
             path.Count.ShouldBe(5);
 
             var item = path[4];
-            item.X.ShouldBe(1);
             item.Y.ShouldBe(1);
+            item.X.ShouldBe(1);
 
             item = path[3];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(1);
+            item.Y.ShouldBe(2);
+            item.X.ShouldBe(1);
 
             item = path[2];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(1);
+            item.Y.ShouldBe(3);
+            item.X.ShouldBe(1);
 
             item = path[1];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(1);
+            item.Y.ShouldBe(4);
+            item.X.ShouldBe(1);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(4);
+            item.X.ShouldBe(2);
         }
 
         [Test]
@@ -147,32 +147,32 @@ namespace AStar.Tests
             path.Count.ShouldBe(7);
 
             var item = path[6];
-            item.X.ShouldBe(1);
             item.Y.ShouldBe(1);
+            item.X.ShouldBe(1);
 
             item = path[5];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(1);
+            item.X.ShouldBe(2);
 
             item = path[4];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(3);
+            item.Y.ShouldBe(1);
+            item.X.ShouldBe(3);
 
             item = path[3];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(3);
+            item.Y.ShouldBe(2);
+            item.X.ShouldBe(3);
 
             item = path[2];
-            item.X.ShouldBe(3);
             item.Y.ShouldBe(3);
+            item.X.ShouldBe(3);
 
             item = path[1];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(3);
+            item.X.ShouldBe(2);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(4);
+            item.X.ShouldBe(2);
 
         }
         [Test]
@@ -187,28 +187,28 @@ namespace AStar.Tests
             path.Count.ShouldBe(6);
 
             var item = path[5];
-            item.X.ShouldBe(1);
             item.Y.ShouldBe(1);
+            item.X.ShouldBe(1);
 
             item = path[4];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(1);
+            item.X.ShouldBe(2);
 
             item = path[3];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(3);
+            item.Y.ShouldBe(1);
+            item.X.ShouldBe(3);
 
             item = path[2];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(4);
+            item.Y.ShouldBe(2);
+            item.X.ShouldBe(4);
 
             item = path[1];
-            item.X.ShouldBe(3);
             item.Y.ShouldBe(3);
+            item.X.ShouldBe(3);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Y.ShouldBe(4);
+            item.X.ShouldBe(2);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace AStar.Tests
             return mMatrix;
         }
 
-        private static void PrintCoordinates(List<PathFinderNode> path)
+        private static void PrintCoordinates(List<Point> path)
         {
             foreach (var node in path)
             {
