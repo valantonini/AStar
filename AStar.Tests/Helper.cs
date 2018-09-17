@@ -24,7 +24,7 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static string PrintPath(byte[,] grid, List<Point> path, bool appendSpace = true)
+        public static string PrintPath(byte[,] grid, List<PathFinderNode> path, bool appendSpace = true)
         {
             var s = new StringBuilder();
 
@@ -32,7 +32,7 @@ namespace AStar.Tests
             {
                 for (var column = 0; column < grid.GetLength(1); column++)
                 {
-                    if (path.Any(n => n.Column == row && n.Row == column))
+                    if (path.Any(n => n.X == row && n.Y == column))
                     {
                         s.Append("X");
                     }
@@ -47,7 +47,7 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static void Print(byte[,] grid, List<Point> path)
+        public static void Print(byte[,] grid, List<PathFinderNode> path)
         {
             Console.WriteLine(PrintGrid(grid));
             Console.WriteLine(Environment.NewLine);
@@ -56,17 +56,17 @@ namespace AStar.Tests
 
             for (var i = 0; i < path.Count; i++)
             {
-                Console.WriteLine("path[{0}].Row.ShouldBe({1});", i, path[i].Row);
-                Console.WriteLine("path[{0}].Column.ShouldBe({1});", i, path[i].Column);
+                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
+                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
             }
         }
 
-        public static void PrintAssertions(List<Point> path)
+        public static void PrintAssertions(List<PathFinderNode> path)
         {
             for (var i = 0; i < path.Count; i++)
             {
-                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].Row);
-                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Column);
+                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
+                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
             }
         }
     }
