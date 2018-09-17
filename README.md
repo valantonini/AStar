@@ -7,6 +7,8 @@ An A Star (A*) algorithm for C# based on [Gustavo Franco's implementation](http:
 
 The grid is represented as a 2d byte array (byte[,]). Blocked locations are marked as a 0, anything else is considered traversable.
 
+Unlike a cartesian coordinate system that uses X for horizontal and Y for vertical on a 2D plane, the point used in this library represents a matrix index where X is the row and Y is the column (P<sub>xy</sub>)
+
 Options allow for the use of diagonals and punishing direction changes.
 
     var pathfinderOptions = new PathFinderOptions {PunishChangeDirection = true};
