@@ -8,32 +8,40 @@ namespace AStar
     {
         public int F; // f = gone + heuristic
         public int G;
-        public ushort PX; // Parent
-        public ushort PY;
+        public int PX; // Parent
+        public int PY;
         public byte Status;
     }
 
-    internal class ComparePfNodeMatrix : IComparer<int>
+    internal class ComparePfNodeMatrix : IComparer<Point>
     {
-        readonly PathFinderNodeFast[] _matrix;
+        readonly PathFinderNodeFast[,] _matrix;
 
-        public ComparePfNodeMatrix(PathFinderNodeFast[] matrix)
+        public ComparePfNodeMatrix(PathFinderNodeFast[,] matrix)
         {
             _matrix = matrix;
         }
 
-        public int Compare(int a, int b)
+        public int Compare(Point a, Point b)
         {
-            if (_matrix[a].F > _matrix[b].F)
+            if (_matrix[a.X, a.Y].F > _matrix[b.X, b.Y].F)
             {
                 return 1;
             }
 
-            if (_matrix[a].F < _matrix[b].F)
+            if (_matrix[a.X, a.Y].F < _matrix[b.X, b.Y].F)
             {
                 return -1;
             }
             return 0;
+        }
+    }
+
+    public static class MatrixExtension
+    {
+        public static T GetByPoint<T>(this T[,] matrix, Point point)
+        {
+            return matrix[point.X, point.Y];
         }
     }
 }

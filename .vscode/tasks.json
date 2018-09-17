@@ -7,9 +7,23 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/AStar.Tests/AStar.Tests.csproj"
+                "${workspaceFolder}/AStar.sln"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "test",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "test",
+                "${workspaceFolder}/AStar.Tests/AStar.Tests.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            }
         }
     ]
 }

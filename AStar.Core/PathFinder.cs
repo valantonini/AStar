@@ -6,25 +6,13 @@ namespace AStar
     public class PathFinder : IPathFinder
     {
         private readonly byte[,] _grid;
-        private readonly IPriorityQueue<int> _open;
+        private ushort _gridX => (ushort)(_grid.GetLength(0));
+        private ushort _gridY => (ushort)(_grid.GetLength(1));
+        private readonly IPriorityQueue<Point> _open;
         private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
-        private readonly PathFinderNodeFast[] _mCalcGrid;
-
-        private readonly ushort _gridX;
-        private readonly ushort _gridY;
-        private readonly ushort _gridXMinus1;
-        private readonly ushort _gridYLog2;
-        private readonly ushort _gridXLog2;
-
-        private readonly bool _diagonals;
+        private readonly PathFinderNodeFast[,] _mCalcGrid;
         private readonly sbyte[,] _direction;
-        private readonly bool _heavyDiagonals;
-        private readonly int _heuristicEstimate;
-        private readonly bool _punishChangeDirection;
-        private readonly bool _tieBreaker;
-        private readonly int _searchLimit;
-        private readonly HeuristicFormula _formula;
-
+        private PathFinderOptions _options;
         private int _horiz;
         private byte _openNodeValue = 1;
         private byte _closeNodeValue = 2;
@@ -37,43 +25,17 @@ namespace AStar
             }
 
             _grid = grid;
-            _gridX = (ushort)(_grid.GetUpperBound(0) + 1);
-            _gridY = (ushort)(_grid.GetUpperBound(1) + 1);
 
-            // ReSharper disable CompareOfFloatsByEqualityOperator
-            if (Math.Log(_gridX, 2) != (int)Math.Log(_gridX, 2) || Math.Log(_gridY, 2) != (int)Math.Log(_gridY, 2))
+            if (_mCalcGrid == null || _mCalcGrid.GetLength(0) != _grid.GetLength(0) || _mCalcGrid.GetLength(1) != _grid.GetLength(1))
             {
-                throw new Exception("Invalid Grid, size in X and Y must be power of 2");
-            }
-            // ReSharper restore CompareOfFloatsByEqualityOperator
-
-            _gridXMinus1 = (ushort)(_gridX - 1);
-            _gridYLog2 = (ushort)Math.Log(_gridY, 2);
-            _gridXLog2 = (ushort)Math.Log(_gridX, 2);
-
-            if (_mCalcGrid == null || _mCalcGrid.Length != (_gridX * _gridY))
-            {
-                _mCalcGrid = new PathFinderNodeFast[_gridX * _gridY];
+                _mCalcGrid = new PathFinderNodeFast[_gridX, _gridY];
             }
 
-            _open = new PriorityQueueB<int>(new ComparePfNodeMatrix(_mCalcGrid));
+            _open = new PriorityQueueB<Point>(new ComparePfNodeMatrix(_mCalcGrid));
 
+            _options = pathFinderOptions ?? new PathFinderOptions();
 
-
-            //set options
-            if (pathFinderOptions == null)
-            {
-                pathFinderOptions = new PathFinderOptions();
-            }
-
-            _formula = pathFinderOptions.Formula;
-            _heavyDiagonals = pathFinderOptions.HeavyDiagonals;
-            _heuristicEstimate = pathFinderOptions.HeuristicEstimate;
-            _punishChangeDirection = pathFinderOptions.PunishChangeDirection;
-            _tieBreaker = pathFinderOptions.TieBreaker;
-            _searchLimit = pathFinderOptions.SearchLimit;
-            _diagonals = pathFinderOptions.Diagonals;
-            _direction = pathFinderOptions.Diagonals
+            _direction = _options.Diagonals
                     ? new sbyte[,] { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 }, { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } }
                     : new sbyte[,] { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
         }
@@ -82,64 +44,57 @@ namespace AStar
         {
             lock (this)
             {
-
-                // Is faster if we don't clear the matrix, just assign different values for open and close and ignore the rest
-                // I could have user Array.Clear() but using unsafe code is faster, no much but it is.
-                //fixed (PathFinderNodeFast* pGrid = tmpGrid) 
-                //    ZeroMemory((byte*) pGrid, sizeof(PathFinderNodeFast) * 1000000);
-
                 var found = false;
                 var closedNodeCounter = 0;
-                _openNodeValue += 2;
+                _openNodeValue += 2;//increment for subsequent runs
                 _closeNodeValue += 2;
                 _open.Clear();
                 _closed.Clear();
 
-                var location = (start.Y << _gridYLog2) + start.X;
-                var endLocation = (end.Y << _gridYLog2) + end.X;
-                _mCalcGrid[location].G = 0;
-                _mCalcGrid[location].F = _heuristicEstimate;
-                _mCalcGrid[location].PX = (ushort)start.X;
-                _mCalcGrid[location].PY = (ushort)start.Y;
-                _mCalcGrid[location].Status = _openNodeValue;
+                _mCalcGrid[start.X, start.Y].G = 0;
+                _mCalcGrid[start.X, start.Y].F = _options.HeuristicEstimate;
+                _mCalcGrid[start.X, start.Y].PX = (ushort)start.X;
+                _mCalcGrid[start.X, start.Y].PY = (ushort)start.Y;
+                _mCalcGrid[start.X, start.Y].Status = _openNodeValue;
 
-                _open.Push(location);
+                _open.Push(start);
+
                 while (_open.Count > 0)
                 {
-                    location = _open.Pop();
+                    var location = _open.Pop();
 
                     //Is it in closed list? means this node was already processed
-                    if (_mCalcGrid[location].Status == _closeNodeValue)
+                    if (_mCalcGrid[location.X, location.Y].Status == _closeNodeValue)
                     {
                         continue;
                     }
 
-                    var locationX = (ushort)(location & _gridXMinus1);
-                    var locationY = (ushort)(location >> _gridYLog2);
+                    var locationX = location.X;
+                    var locationY = location.Y;
 
-                    if (location == endLocation)
+                    if (location == end)
                     {
-                        _mCalcGrid[location].Status = _closeNodeValue;
+                        _mCalcGrid[location.X, location.Y].Status = _closeNodeValue;
                         found = true;
                         break;
                     }
 
-                    if (closedNodeCounter > _searchLimit)
+                    if (closedNodeCounter > _options.SearchLimit)
                     {
                         return null;
                     }
 
-                    if (_punishChangeDirection)
+                    if (_options.PunishChangeDirection)
                     {
-                        _horiz = (locationX - _mCalcGrid[location].PX);
+                        _horiz = (locationX - _mCalcGrid[location.X, location.Y].PX);
                     }
 
                     //Lets calculate each successors
-                    for (var i = 0; i < (_diagonals ? 8 : 4); i++)
+                    for (var i = 0; i < _direction.GetLength(0); i++)
                     {
+                        //unsign incase we went out of bounds
                         var newLocationX = (ushort)(locationX + _direction[i, 0]);
                         var newLocationY = (ushort)(locationY + _direction[i, 1]);
-                        var newLocation = (newLocationY << _gridXLog2) + newLocationX;
 
                         if (newLocationX >= _gridX || newLocationY >= _gridY)
                         {
@@ -153,16 +108,16 @@ namespace AStar
                         }
 
                         int newG;
-                        if (_heavyDiagonals && i > 3)
+                        if (_options.HeavyDiagonals && i > 3)
                         {
-                            newG = _mCalcGrid[location].G + (int)(_grid[newLocationX, newLocationY] * 2.41);
+                            newG = _mCalcGrid[location.X, location.Y].G + (int)(_grid[newLocationX, newLocationY] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location].G + _grid[newLocationX, newLocationY];
+                            newG = _mCalcGrid[location.X, location.Y].G + _grid[newLocationX, newLocationY];
                         }
 
-                        if (_punishChangeDirection)
+                        if (_options.PunishChangeDirection)
                         {
                             if ((newLocationX - locationX) != 0)
                             {
@@ -181,22 +136,22 @@ namespace AStar
                         }
 
                         //Is it open or closed?
-                        if (_mCalcGrid[newLocation].Status == _openNodeValue || _mCalcGrid[newLocation].Status == _closeNodeValue)
+                        if (_mCalcGrid[newLocationX, newLocationY].Status == _openNodeValue || _mCalcGrid[newLocationX, newLocationY].Status == _closeNodeValue)
                         {
                             // The current node has less code than the previous? then skip this node
-                            if (_mCalcGrid[newLocation].G <= newG)
+                            if (_mCalcGrid[newLocationX, newLocationY].G <= newG)
                             {
                                 continue;
                             }
                         }
 
-                        _mCalcGrid[newLocation].PX = locationX;
-                        _mCalcGrid[newLocation].PY = locationY;
-                        _mCalcGrid[newLocation].G = newG;
+                        _mCalcGrid[newLocationX, newLocationY].PX = locationX;
+                        _mCalcGrid[newLocationX, newLocationY].PY = locationY;
+                        _mCalcGrid[newLocationX, newLocationY].G = newG;
 
-                        var h = Heuristic.DetermineH(_formula, end, _heuristicEstimate, newLocationY, newLocationX);
+                        var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, newLocationY, newLocationX);
 
-                        if (_tieBreaker)
+                        if (_options.TieBreaker)
                         {
                             var dx1 = locationX - end.X;
                             var dy1 = locationY - end.Y;
@@ -205,26 +160,15 @@ namespace AStar
                             var cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
                             h = (int)(h + cross * 0.001);
                         }
-                        _mCalcGrid[newLocation].F = newG + h;
+                        _mCalcGrid[newLocationX, newLocationY].F = newG + h;
 
-                        //It is faster if we leave the open node in the priority queue
-                        //When it is removed, it will be already closed, it will be ignored automatically
-                        //if (tmpGrid[newLocation].Status == 1)
-                        //{
-                        //    //int removeX   = newLocation & gridXMinus1;
-                        //    //int removeY   = newLocation >> gridYLog2;
-                        //    mOpen.RemoveLocation(newLocation);
-                        //}
+                        _open.Push(new Point(newLocationX, newLocationY));
 
-                        //if (tmpGrid[newLocation].Status != 1)
-                        //{
-                        _open.Push(newLocation);
-                        //}
-                        _mCalcGrid[newLocation].Status = _openNodeValue;
+                        _mCalcGrid[newLocationX, newLocationY].Status = _openNodeValue;
                     }
 
                     closedNodeCounter++;
-                    _mCalcGrid[location].Status = _closeNodeValue;
+                    _mCalcGrid[location.X, location.Y].Status = _closeNodeValue;
 
                 }
 
@@ -236,7 +180,7 @@ namespace AStar
         {
             _closed.Clear();
 
-            var fNodeTmp = _mCalcGrid[(end.Y << _gridYLog2) + end.X];
+            var fNodeTmp = _mCalcGrid[end.X, end.Y];
 
             var fNode = new PathFinderNode
             {
@@ -256,7 +200,7 @@ namespace AStar
                 var posX = fNode.Px;
                 var posY = fNode.Py;
 
-                fNodeTmp = _mCalcGrid[(posY << _gridYLog2) + posX];
+                fNodeTmp = _mCalcGrid[posX, posY];
                 fNode.F = fNodeTmp.F;
                 fNode.G = fNodeTmp.G;
                 fNode.H = 0;
