@@ -11,11 +11,11 @@ namespace AStar.Tests
         {
             var s = new StringBuilder();
 
-            for (var x = 0; x < grid.GetUpperBound(0); x++)
+            for (var row = 0; row < grid.GetLength(0); row++)
             {
-                for (var y = 0; y < grid.GetUpperBound(1); y++)
+                for (var column = 0; column < grid.GetLength(1); column++)
                 {
-                    s.Append(grid[x, y]);
+                    s.Append(grid[row, column]);
                     if (appendSpace) s.Append(' ');
                 }
                 s.Append(Environment.NewLine);
@@ -28,17 +28,17 @@ namespace AStar.Tests
         {
             var s = new StringBuilder();
 
-            for (var x = 0; x < grid.GetUpperBound(0); x++)
+            for (var row = 0; row < grid.GetLength(0); row++)
             {
-                for (var y = 0; y < grid.GetUpperBound(1); y++)
+                for (var column = 0; column < grid.GetLength(1); column++)
                 {
-                    if (path.Any(n => n.X == x && n.Y == y))
+                    if (path.Any(n => n.X == row && n.Y == column))
                     {
                         s.Append("X");
                     }
                     else
                     {
-                        s.Append(grid[x, y]);
+                        s.Append(grid[row, column]);
                     }
                     s.Append(' ');
                 }
