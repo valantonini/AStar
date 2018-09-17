@@ -4,23 +4,23 @@ namespace AStar
 {
     public class Point : IEquatable<Point>
     {
-        public int X { get; set; }
-        public int Y { get; set; }
+        public int Row { get; set; }
+        public int Column { get; set; }
 
         public Point()
         {
 
         }
 
-        public Point(int x, int y)
+        public Point(int row, int column)
         {
-            X = x;
-            Y = y;
+            Row = row;
+            Column = column;
         }
 
         public static bool operator ==(Point a, Point b)
         {
-            return a?.X == b?.X && a?.Y == b?.Y;
+            return a?.Row == b?.Row && a?.Column == b?.Column;
         }
 
         public static bool operator !=(Point a, Point b)
@@ -30,7 +30,7 @@ namespace AStar
 
         public bool Equals(Point other)
         {
-            return X == other?.X && Y == other?.Y;
+            return Row == other?.Row && Column == other?.Column;
         }
 
         public override bool Equals(Object other)
@@ -47,7 +47,7 @@ namespace AStar
 
         public override int GetHashCode()
         {
-            return $"[{X},{Y}]".GetHashCode();
+            return $"[{Row},{Column}]".GetHashCode();
         }
     }
 }
