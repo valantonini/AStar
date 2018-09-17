@@ -51,10 +51,10 @@ namespace AStar
                 _open.Clear();
                 _closed.Clear();
 
-                _mCalcGrid[start.X, start.Y].G = 0;
-                _mCalcGrid[start.X, start.Y].F = _options.HeuristicEstimate;
-                _mCalcGrid[start.X, start.Y].PX = (ushort)start.X;
-                _mCalcGrid[start.X, start.Y].PY = (ushort)start.Y;
+                _mCalcGrid[start.X, start.Y].Gone = 0;
+                _mCalcGrid[start.X, start.Y].F_Gone_Plus_Heuristic = _options.HeuristicEstimate;
+                _mCalcGrid[start.X, start.Y].ParentX = (ushort)start.X;
+                _mCalcGrid[start.X, start.Y].ParentY = (ushort)start.Y;
                 _mCalcGrid[start.X, start.Y].Status = _openNodeValue;
 
                 _open.Push(start);
@@ -86,7 +86,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        _horiz = (locationX - _mCalcGrid[location.X, location.Y].PX);
+                        _horiz = (locationX - _mCalcGrid[location.X, location.Y].ParentX);
                     }
 
                     //Lets calculate each successors
@@ -110,11 +110,11 @@ namespace AStar
                         int newG;
                         if (_options.HeavyDiagonals && i > 3)
                         {
-                            newG = _mCalcGrid[location.X, location.Y].G + (int)(_grid[newLocationX, newLocationY] * 2.41);
+                            newG = _mCalcGrid[location.X, location.Y].Gone + (int)(_grid[newLocationX, newLocationY] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location.X, location.Y].G + _grid[newLocationX, newLocationY];
+                            newG = _mCalcGrid[location.X, location.Y].Gone + _grid[newLocationX, newLocationY];
                         }
 
                         if (_options.PunishChangeDirection)
@@ -139,15 +139,15 @@ namespace AStar
                         if (_mCalcGrid[newLocationX, newLocationY].Status == _openNodeValue || _mCalcGrid[newLocationX, newLocationY].Status == _closeNodeValue)
                         {
                             // The current node has less code than the previous? then skip this node
-                            if (_mCalcGrid[newLocationX, newLocationY].G <= newG)
+                            if (_mCalcGrid[newLocationX, newLocationY].Gone <= newG)
                             {
                                 continue;
                             }
                         }
 
-                        _mCalcGrid[newLocationX, newLocationY].PX = locationX;
-                        _mCalcGrid[newLocationX, newLocationY].PY = locationY;
-                        _mCalcGrid[newLocationX, newLocationY].G = newG;
+                        _mCalcGrid[newLocationX, newLocationY].ParentX = locationX;
+                        _mCalcGrid[newLocationX, newLocationY].ParentY = locationY;
+                        _mCalcGrid[newLocationX, newLocationY].Gone = newG;
 
                         var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, newLocationY, newLocationX);
 
@@ -160,7 +160,7 @@ namespace AStar
                             var cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
                             h = (int)(h + cross * 0.001);
                         }
-                        _mCalcGrid[newLocationX, newLocationY].F = newG + h;
+                        _mCalcGrid[newLocationX, newLocationY].F_Gone_Plus_Heuristic = newG + h;
 
                         _open.Push(new Point(newLocationX, newLocationY));
 
@@ -184,28 +184,28 @@ namespace AStar
 
             var fNode = new PathFinderNode
             {
-                F = fNodeTmp.F,
-                G = fNodeTmp.G,
-                H = 0,
-                Px = fNodeTmp.PX,
-                Py = fNodeTmp.PY,
+                F_Gone_Plus_Heuristic = fNodeTmp.F_Gone_Plus_Heuristic,
+                Gone = fNodeTmp.Gone,
+                Heuristic = 0,
+                ParentX = fNodeTmp.ParentX,
+                ParentY = fNodeTmp.ParentY,
                 X = end.X,
                 Y = end.Y
             };
 
-            while (fNode.X != fNode.Px || fNode.Y != fNode.Py)
+            while (fNode.X != fNode.ParentX || fNode.Y != fNode.ParentY)
             {
                 _closed.Add(fNode);
 
-                var posX = fNode.Px;
-                var posY = fNode.Py;
+                var posX = fNode.ParentX;
+                var posY = fNode.ParentY;
 
                 fNodeTmp = _mCalcGrid[posX, posY];
-                fNode.F = fNodeTmp.F;
-                fNode.G = fNodeTmp.G;
-                fNode.H = 0;
-                fNode.Px = fNodeTmp.PX;
-                fNode.Py = fNodeTmp.PY;
+                fNode.F_Gone_Plus_Heuristic = fNodeTmp.F_Gone_Plus_Heuristic;
+                fNode.Gone = fNodeTmp.Gone;
+                fNode.Heuristic = 0;
+                fNode.ParentX = fNodeTmp.ParentX;
+                fNode.ParentY = fNodeTmp.ParentY;
                 fNode.X = posX;
                 fNode.Y = posY;
             }
