@@ -6,10 +6,10 @@ namespace AStar
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct PathFinderNodeFast
     {
-        public int F; // f = gone + heuristic
-        public int G;
-        public int PX; // Parent
-        public int PY;
+        public int F_Gone_Plus_Heuristic; // f = gone + heuristic
+        public int Gone;
+        public int ParentX; // Parent
+        public int ParentY;
         public byte Status;
     }
 
@@ -24,12 +24,12 @@ namespace AStar
 
         public int Compare(Point a, Point b)
         {
-            if (_matrix[a.X, a.Y].F > _matrix[b.X, b.Y].F)
+            if (_matrix[a.X, a.Y].F_Gone_Plus_Heuristic > _matrix[b.X, b.Y].F_Gone_Plus_Heuristic)
             {
                 return 1;
             }
 
-            if (_matrix[a.X, a.Y].F < _matrix[b.X, b.Y].F)
+            if (_matrix[a.X, a.Y].F_Gone_Plus_Heuristic < _matrix[b.X, b.Y].F_Gone_Plus_Heuristic)
             {
                 return -1;
             }
