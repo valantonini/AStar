@@ -10,3 +10,7 @@ script:
  - cd ../AStar.Core
  - dotnet pack -c Release /p:PackageVersion=$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER
  - dotnet nuget push ./bin/Release/AStarLite.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+
+branches:
+  only:
+  - master
