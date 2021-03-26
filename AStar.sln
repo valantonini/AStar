@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Core", "AStar.Core\AS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar.Tests", "AStar.Tests\AStar.Tests.csproj", "{907F3E85-08B9-4609-9209-2D5FC5695BA6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{240B9410-9B7D-49A2-9431-B45FA3003686}"
+ProjectSection(SolutionItems) = preProject
+	README.md = README.md
+	LICENSE = LICENSE
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
