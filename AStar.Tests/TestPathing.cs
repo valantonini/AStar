@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -7,56 +8,57 @@ namespace AStar.Tests
     [TestFixture]
     public class TestPathing
     {
+        private const char _closedCharacter = 'X';
         private byte[,] _grid;
 
         [SetUp]
         public void SetUp()
         {
             var level = @"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOXXXXOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
-                          XXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOX
-                          XXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOX
-                          XXXXXXXXXXXXXXXXXXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOXXXXXOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
-                          XOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXX
-                          XOOOOOOXXXXXXXXXXXXXXXXXXXXXXXXX
-                          XOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOX
+                          X111XXXX11111111111111111111111X
+                          X111XXXX11111111111111111111111X
+                          X111XXXX11111111111111111111111X
+                          X111XXXX11111111111111111111111X
+                          X111XXXX11111111111111111111111X
+                          X111XXXX11111111111111111111111X
+                          X111XXXX11111111111111111111111X
+                          X111111111111111111111111111111X
+                          X111111111111111111111111111111X
+                          X111111111111111111111111111111X
+                          XXXXXXXXXXXXXXXXXXXXXX111111111X
+                          XXXXXXXXXXXXXXXXXXXXXX111111111X
+                          XXXXXXXXXXXXXXXXXXXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X1111111111111111XXXXX111111111X
+                          X111111111111111111111111111111X
+                          X111111111111111111111111111111X
+                          X111111XXXXXXXXXXXXXXXXXXXXXXXXX
+                          X111111XXXXXXXXXXXXXXXXXXXXXXXXX
+                          X111111111111111111111111111111X
                           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
             _grid = new byte[32, 32];
             var splitLevel = level.Split('\n')
-                                  .Select(x => x.Trim())
+                                  .Select(row => row.Trim())
                                   .ToList();
 
             for (var x = 0; x < splitLevel.Count; x++)
             {
                 for (var y = 0; y < splitLevel[x].Length; y++)
                 {
-                    if (splitLevel[x][y] != 'X')
+                    if (splitLevel[x][y] != _closedCharacter)
                     {
-                        _grid[x, y] = 1;
+                        _grid[x, y] = Convert.ToByte(splitLevel[x][y]);
                     }
 
                 }
