@@ -5,9 +5,8 @@ namespace AStar
 {
     public class PathFinder : IPathFinder
     {
-        private readonly byte[,] _grid;
-        private ushort _gridX => (ushort)(_grid.GetLength(0));
-        private ushort _gridY => (ushort)(_grid.GetLength(1));
+        private readonly Grid _grid;
+        
         private readonly IPriorityQueue<Point> _open;
         private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
         private readonly PathFinderNodeFast[,] _mCalcGrid;
@@ -17,19 +16,11 @@ namespace AStar
         private byte _openNodeValue = 1;
         private byte _closeNodeValue = 2;
 
-        public PathFinder(byte[,] grid, PathFinderOptions pathFinderOptions = null)
+        public PathFinder(Grid grid, PathFinderOptions pathFinderOptions = null)
         {
-            if (grid == null)
-            {
-                throw new Exception("Grid cannot be null");
-            }
+            _grid = grid ?? throw new ArgumentNullException(nameof(grid));
 
-            _grid = grid;
-
-            if (_mCalcGrid == null || _mCalcGrid.GetLength(0) != _grid.GetLength(0) || _mCalcGrid.GetLength(1) != _grid.GetLength(1))
-            {
-                _mCalcGrid = new PathFinderNodeFast[_gridX, _gridY];
-            }
+            _mCalcGrid = new PathFinderNodeFast[grid.Height, grid.Width];
 
             _open = new PriorityQueueB<Point>(new ComparePfNodeMatrix(_mCalcGrid));
 
@@ -96,7 +87,7 @@ namespace AStar
                         var newLocationX = (ushort)(locationX + _direction[i, 0]);
                         var newLocationY = (ushort)(locationY + _direction[i, 1]);
 
-                        if (newLocationX >= _gridX || newLocationY >= _gridY)
+                        if (newLocationX >= _grid.Height || newLocationY >= +_grid.Width)
                         {
                             continue;
                         }

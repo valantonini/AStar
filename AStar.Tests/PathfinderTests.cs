@@ -8,20 +8,20 @@ namespace AStar.Tests
     [TestFixture]
     public class PathfinderTests
     {
-        private byte[,] _grid;
+        private Grid _grid;
         private PathFinder _pathFinder;
 
         [SetUp]
         public void SetUp()
         {
-            _grid = CreateMatrix(8, 8);
+            _grid = CreateGridInitializedToOpen(8, 8);
             _pathFinder = new PathFinder(_grid);
         }
 
         [Test]
         public void ShouldPathRectangleGrid()
         {
-            var grid = CreateMatrix(3, 5);
+            var grid = CreateGridInitializedToOpen(3, 5);
             var pathfinder = new PathFinder(grid);
 
             var path = pathfinder.FindPath(new Point(0, 0), new Point(2, 4));
@@ -226,20 +226,19 @@ namespace AStar.Tests
             path.ShouldBe(null);
         }
 
-        private static byte[,] CreateMatrix(int height, int width)
+        private static Grid CreateGridInitializedToOpen(int height, int width)
         {
-            var mMatrix = new byte[height, width];
+            var grid = new Grid(height, width);
 
-            for (var row = 0; row < mMatrix.GetLength(0); row++)
+            for (var row = 0; row < grid.Height; row++)
             {
-
-                for (var column = 0; column < mMatrix.GetLength(1); column++)
+                for (var column = 0; column < grid.Width; column++)
                 {
-                    mMatrix[row, column] = 1;
+                    grid[row, column] = 1;
                 }
             }
 
-            return mMatrix;
+            return grid;
         }
 
         private static void PrintCoordinates(List<PathFinderNode> path)

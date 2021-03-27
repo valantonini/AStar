@@ -7,16 +7,19 @@ namespace AStar.Tests
 {
     public class Helper
     {
-        public static string PrintGrid(byte[,] grid, bool appendSpace = true)
+        public static string PrintGrid(Grid grid, bool appendSpace = true)
         {
             var s = new StringBuilder();
 
-            for (var row = 0; row < grid.GetLength(0); row++)
+            for (var row = 0; row < grid.Height; row++)
             {
-                for (var column = 0; column < grid.GetLength(1); column++)
+                for (var column = 0; column < grid.Width; column++)
                 {
                     s.Append(grid[row, column]);
-                    if (appendSpace) s.Append(' ');
+                    if (appendSpace)
+                    {
+                        s.Append(' ');
+                    }
                 }
                 s.Append(Environment.NewLine);
             }
@@ -24,13 +27,13 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static string PrintPath(byte[,] grid, List<PathFinderNode> path, bool appendSpace = true)
+        public static string PrintPath(Grid grid, List<PathFinderNode> path, bool appendSpace = true)
         {
             var s = new StringBuilder();
 
-            for (var row = 0; row < grid.GetLength(0); row++)
+            for (var row = 0; row < grid.Height; row++)
             {
-                for (var column = 0; column < grid.GetLength(1); column++)
+                for (var column = 0; column < grid.Width; column++)
                 {
                     if (path.Any(n => n.X == row && n.Y == column))
                     {
@@ -47,7 +50,7 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static void Print(byte[,] grid, List<PathFinderNode> path)
+        public static void Print(Grid grid, List<PathFinderNode> path)
         {
             Console.WriteLine(PrintGrid(grid));
             Console.WriteLine(Environment.NewLine);

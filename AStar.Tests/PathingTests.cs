@@ -9,7 +9,7 @@ namespace AStar.Tests
     public class PathingTests
     {
         private const char _closedCharacter = 'X';
-        private byte[,] _grid;
+        private Grid _grid;
 
         [SetUp]
         public void SetUp()
@@ -47,7 +47,7 @@ namespace AStar.Tests
                           X111111111111111111111111111111X
                           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-            _grid = new byte[32, 32];
+            _grid = new Grid(32, 32);
             var splitLevel = level.Split('\n')
                                   .Select(row => row.Trim())
                                   .ToList();
