@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AStar
 {
-    public class PathFinder : IPathFinder
+    public class PathFinder : IFindAPath
     {
         private readonly PathfinderGrid _pathfinderGrid;
         private readonly IPriorityQueue<Position> _open;
@@ -23,6 +23,7 @@ namespace AStar
             _options = pathFinderOptions ?? new PathFinderOptions();
         }
 
+        ///<inheritdoc/>
         public List<PathFinderNode> FindPath(Position start, Position end)
         {
             lock (this)
