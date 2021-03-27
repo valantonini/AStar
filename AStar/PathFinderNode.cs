@@ -17,8 +17,14 @@
         /// </summary>
         public int H;
 
+        /// <summary>
+        /// The position of this node
+        /// </summary>
         public Position Position;
         
-        public Position Parent;
+        /// <summary>
+        /// This nodes parent
+        /// </summary>
+        public Position ParentPosition;
     }
 }

@@ -171,22 +171,22 @@ namespace AStar
                 F = fNodeTmp.F_Gone_Plus_Heuristic,
                 G = fNodeTmp.Gone,
                 H = 0,
-                Parent = fNodeTmp.Parent,
+                ParentPosition = fNodeTmp.Parent,
                 Position = new Position(end.Row, end.Column),
             };
  
-            while (fNode.Position.Row != fNode.Parent.Row || fNode.Position.Column != fNode.Parent.Column)
+            while (fNode.Position.Row != fNode.ParentPosition.Row || fNode.Position.Column != fNode.ParentPosition.Column)
             {
                 _closed.Add(fNode);
 
-                var posX = fNode.Parent.Row;
-                var posY = fNode.Parent.Column;
+                var posX = fNode.ParentPosition.Row;
+                var posY = fNode.ParentPosition.Column;
 
                 fNodeTmp = _mCalcGrid[posX, posY];
                 fNode.F = fNodeTmp.F_Gone_Plus_Heuristic;
                 fNode.G = fNodeTmp.Gone;
                 fNode.H = 0;
-                fNode.Parent = fNodeTmp.Parent;
+                fNode.ParentPosition = fNodeTmp.Parent;
                 fNode.Position = new Position(posX, posY);
             }
 
