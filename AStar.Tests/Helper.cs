@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AStar.Tests
 {
-    public class Helper
+    public static class Helper
     {
         public static string PrintGrid(PathfinderGrid pathfinderGrid, bool appendSpace = true)
         {
@@ -71,6 +71,30 @@ namespace AStar.Tests
                 Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].Position.Row);
                 Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Position.Column);
             }
+        }
+
+        public static PathfinderGrid ConvertStringToPathfinderGrid(string level)
+        {
+            var closedCharacter = 'X';
+            
+            var splitLevel = level.Split('\n')
+                .Select(row => row.Trim())
+                .ToList();
+            
+            var pathfinderGrid = new PathfinderGrid(splitLevel.Count, splitLevel[0].Length);
+
+            for (var row = 0; row < splitLevel.Count; row++)
+            {
+                for (var column = 0; column < splitLevel[row].Length; column++)
+                {
+                    if (splitLevel[row][column] != closedCharacter)
+                    {
+                        pathfinderGrid[row, column] = int.Parse(splitLevel[row][column].ToString());
+                    }
+                }
+            }
+
+            return pathfinderGrid;
         }
     }
 }
