@@ -27,7 +27,7 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static string PrintPath(PathfinderGrid pathfinderGrid, List<PathFinderNode> path, bool appendSpace = true)
+        public static string PrintPath(PathfinderGrid pathfinderGrid, PathFinderNode[] path, bool appendSpace = true)
         {
             var s = new StringBuilder();
             
@@ -50,14 +50,14 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static void Print(PathfinderGrid pathfinderGrid, List<PathFinderNode> path)
+        public static void Print(PathfinderGrid pathfinderGrid, PathFinderNode[] path)
         {
             Console.WriteLine(PrintGrid(pathfinderGrid));
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(PrintPath(pathfinderGrid, path));
 
-            for (var i = 0; i < path.Count; i++)
+            for (var i = 0; i < path.Length; i++)
             {
                 Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
                 Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);

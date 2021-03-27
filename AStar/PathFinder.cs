@@ -24,7 +24,7 @@ namespace AStar
         }
 
         ///<inheritdoc/>
-        public List<PathFinderNode> FindPath(Position start, Position end)
+        public PathFinderNode[] FindPath(Position start, Position end)
         {
             lock (this)
             {
@@ -151,7 +151,7 @@ namespace AStar
 
                 }
 
-                return !found ? null : OrderClosedListAsPath(end);
+                return !found ? null : OrderClosedListAsArray(end);
             }
         }
 
@@ -160,7 +160,7 @@ namespace AStar
             return offset.row != 0 && offset.column != 0;
         }
 
-        private List<PathFinderNode> OrderClosedListAsPath(Position end)
+        private PathFinderNode[] OrderClosedListAsArray(Position end)
         {
             _closed.Clear();
 
@@ -194,7 +194,7 @@ namespace AStar
 
             _closed.Add(fNode);
 
-            return _closed;
+            return _closed.ToArray();
         }
     }
 }

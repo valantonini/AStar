@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AStar
+﻿namespace AStar
 {
     public interface IFindAPath
     {
@@ -10,6 +8,6 @@ namespace AStar
         /// <param name="start">start/current position</param>
         /// <param name="end">target position</param>
         /// <returns>An </returns>
-        List<PathFinderNode> FindPath(Position start, Position end);
+        PathFinderNode[] FindPath(Position start, Position end);
     }
 }

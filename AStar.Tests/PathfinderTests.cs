@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 using Shouldly;
 
@@ -44,7 +43,7 @@ namespace AStar.Tests
         public void ShouldPathToSelf()
         {
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(1, 1));
-            path.Count.ShouldBe(1);
+            path.Length.ShouldBe(1);
 
             var node = path[0];
             node.X.ShouldBe(1);
@@ -56,7 +55,7 @@ namespace AStar.Tests
         {
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(2, 1));
 
-            path.Count.ShouldBe(2);
+            path.Length.ShouldBe(2);
 
             var node = path[0];
 
@@ -78,7 +77,7 @@ namespace AStar.Tests
         {
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             Helper.Print(_pathfinderGrid, path);
-            path.Count.ShouldBe(4);
+            path.Length.ShouldBe(4);
 
             var item = path[3];
             item.X.ShouldBe(1);
@@ -107,7 +106,7 @@ namespace AStar.Tests
             Helper.Print(_pathfinderGrid, path);
             PrintCoordinates(path);
 
-            path.Count.ShouldBe(5);
+            path.Length.ShouldBe(5);
 
             var item = path[4];
             item.X.ShouldBe(1);
@@ -144,7 +143,7 @@ namespace AStar.Tests
             Helper.Print(_pathfinderGrid, path);
             PrintCoordinates(path);
 
-            path.Count.ShouldBe(7);
+            path.Length.ShouldBe(7);
 
             var item = path[6];
             item.X.ShouldBe(1);
@@ -184,7 +183,7 @@ namespace AStar.Tests
             _pathfinderGrid[2, 3] = 0;
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             Helper.Print(_pathfinderGrid, path);
-            path.Count.ShouldBe(6);
+            path.Length.ShouldBe(6);
 
             var item = path[5];
             item.X.ShouldBe(1);
@@ -241,7 +240,7 @@ namespace AStar.Tests
             return grid;
         }
 
-        private static void PrintCoordinates(List<PathFinderNode> path)
+        private static void PrintCoordinates(PathFinderNode[] path)
         {
             foreach (var node in path)
             {
