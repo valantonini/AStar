@@ -168,15 +168,14 @@ namespace AStar
 
             var fNode = new PathFinderNode
             {
-                F_Gone_Plus_Heuristic = fNodeTmp.F_Gone_Plus_Heuristic,
-                Gone = fNodeTmp.Gone,
-                Heuristic = 0,
+                F = fNodeTmp.F_Gone_Plus_Heuristic,
+                G = fNodeTmp.Gone,
+                H = 0,
                 Parent = fNodeTmp.Parent,
-                X = end.Row,
-                Y = end.Column,
+                Position = new Position(end.Row, end.Column),
             };
  
-            while (fNode.X != fNode.Parent.Row || fNode.Y != fNode.Parent.Column)
+            while (fNode.Position.Row != fNode.Parent.Row || fNode.Position.Column != fNode.Parent.Column)
             {
                 _closed.Add(fNode);
 
@@ -184,12 +183,11 @@ namespace AStar
                 var posY = fNode.Parent.Column;
 
                 fNodeTmp = _mCalcGrid[posX, posY];
-                fNode.F_Gone_Plus_Heuristic = fNodeTmp.F_Gone_Plus_Heuristic;
-                fNode.Gone = fNodeTmp.Gone;
-                fNode.Heuristic = 0;
+                fNode.F = fNodeTmp.F_Gone_Plus_Heuristic;
+                fNode.G = fNodeTmp.Gone;
+                fNode.H = 0;
                 fNode.Parent = fNodeTmp.Parent;
-                fNode.X = posX;
-                fNode.Y = posY;
+                fNode.Position = new Position(posX, posY);
             }
 
             _closed.Add(fNode);

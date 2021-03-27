@@ -35,7 +35,7 @@ namespace AStar.Tests
             {
                 for (var column = 0; column < pathfinderGrid.Width; column++)
                 {
-                    if (path.Any(n => n.X == row && n.Y == column))
+                    if (path.Any(n => n.Position.Row == row && n.Position.Column == column))
                     {
                         s.Append("_");
                     }
@@ -59,8 +59,8 @@ namespace AStar.Tests
 
             for (var i = 0; i < path.Length; i++)
             {
-                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
-                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
+                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].Position.Row);
+                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Position.Column);
             }
         }
 
@@ -68,8 +68,8 @@ namespace AStar.Tests
         {
             for (var i = 0; i < path.Count; i++)
             {
-                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
-                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
+                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].Position.Row);
+                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Position.Column);
             }
         }
     }

@@ -27,16 +27,16 @@ namespace AStar.Tests
             Console.WriteLine(Helper.PrintGrid(grid));
             Console.WriteLine(Helper.PrintPath(grid, path));
 
-            path[0].X.ShouldBe(2);
-            path[0].Y.ShouldBe(4);
-            path[1].X.ShouldBe(2);
-            path[1].Y.ShouldBe(3);
-            path[2].X.ShouldBe(2);
-            path[2].Y.ShouldBe(2);
-            path[3].X.ShouldBe(1);
-            path[3].Y.ShouldBe(1);
-            path[4].X.ShouldBe(0);
-            path[4].Y.ShouldBe(0);
+            path[0].Position.Row.ShouldBe(2);
+            path[0].Position.Column.ShouldBe(4);
+            path[1].Position.Row.ShouldBe(2);
+            path[1].Position.Column.ShouldBe(3);
+            path[2].Position.Row.ShouldBe(2);
+            path[2].Position.Column.ShouldBe(2);
+            path[3].Position.Row.ShouldBe(1);
+            path[3].Position.Column.ShouldBe(1);
+            path[4].Position.Row.ShouldBe(0);
+            path[4].Position.Column.ShouldBe(0);
         }
 
         [Test]
@@ -46,8 +46,8 @@ namespace AStar.Tests
             path.Length.ShouldBe(1);
 
             var node = path[0];
-            node.X.ShouldBe(1);
-            node.Y.ShouldBe(1);
+            node.Position.Row.ShouldBe(1);
+            node.Position.Column.ShouldBe(1);
         }
 
         [Test]
@@ -59,13 +59,13 @@ namespace AStar.Tests
 
             var node = path[0];
 
-            node.X.ShouldBe(2);
-            node.Y.ShouldBe(1);
+            node.Position.Row.ShouldBe(2);
+            node.Position.Column.ShouldBe(1);
 
 
             node = path[1];
-            node.X.ShouldBe(1);
-            node.Y.ShouldBe(1);
+            node.Position.Row.ShouldBe(1);
+            node.Position.Column.ShouldBe(1);
 
 
             Console.WriteLine(Helper.PrintGrid(_pathfinderGrid));
@@ -80,20 +80,20 @@ namespace AStar.Tests
             path.Length.ShouldBe(4);
 
             var item = path[3];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(1);
 
             item = path[2];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(2);
+            item.Position.Column.ShouldBe(2);
 
             item = path[1];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(3);
+            item.Position.Column.ShouldBe(2);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(4);
+            item.Position.Column.ShouldBe(2);
         }
 
         [Test]
@@ -109,24 +109,24 @@ namespace AStar.Tests
             path.Length.ShouldBe(5);
 
             var item = path[4];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(1);
 
             item = path[3];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(2);
+            item.Position.Column.ShouldBe(1);
 
             item = path[2];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(3);
+            item.Position.Column.ShouldBe(1);
 
             item = path[1];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(4);
+            item.Position.Column.ShouldBe(1);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(4);
+            item.Position.Column.ShouldBe(2);
         }
 
         [Test]
@@ -146,32 +146,32 @@ namespace AStar.Tests
             path.Length.ShouldBe(7);
 
             var item = path[6];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(1);
 
             item = path[5];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(2);
 
             item = path[4];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(3);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(3);
 
             item = path[3];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(3);
+            item.Position.Row.ShouldBe(2);
+            item.Position.Column.ShouldBe(3);
 
             item = path[2];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(3);
+            item.Position.Row.ShouldBe(3);
+            item.Position.Column.ShouldBe(3);
 
             item = path[1];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(3);
+            item.Position.Column.ShouldBe(2);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(4);
+            item.Position.Column.ShouldBe(2);
 
         }
         [Test]
@@ -186,28 +186,28 @@ namespace AStar.Tests
             path.Length.ShouldBe(6);
 
             var item = path[5];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(1);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(1);
 
             item = path[4];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(2);
 
             item = path[3];
-            item.X.ShouldBe(1);
-            item.Y.ShouldBe(3);
+            item.Position.Row.ShouldBe(1);
+            item.Position.Column.ShouldBe(3);
 
             item = path[2];
-            item.X.ShouldBe(2);
-            item.Y.ShouldBe(4);
+            item.Position.Row.ShouldBe(2);
+            item.Position.Column.ShouldBe(4);
 
             item = path[1];
-            item.X.ShouldBe(3);
-            item.Y.ShouldBe(3);
+            item.Position.Row.ShouldBe(3);
+            item.Position.Column.ShouldBe(3);
 
             item = path[0];
-            item.X.ShouldBe(4);
-            item.Y.ShouldBe(2);
+            item.Position.Row.ShouldBe(4);
+            item.Position.Column.ShouldBe(2);
         }
 
         [Test]
@@ -244,11 +244,10 @@ namespace AStar.Tests
         {
             foreach (var node in path)
             {
-                Console.WriteLine(node.X);
-                Console.WriteLine(node.Y);
+                Console.WriteLine(node.Position.Row);
+                Console.WriteLine(node.Position.Column);
                 Console.WriteLine(Environment.NewLine);
             }
         }
-
     }
 }
