@@ -11,6 +11,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>An A* pathfinding implementation compatible with the Unity3D Engine.</Description>
     <PackageTags>Pathfinding;A*;AStar</PackageTags>
+    <RootNamespace>AStar</RootNamespace>
   </PropertyGroup>
 
 </Project>

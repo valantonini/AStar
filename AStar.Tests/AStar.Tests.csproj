@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AStar.Core\AStar.Core.csproj" />
+    <ProjectReference Include="..\AStar\AStar.csproj" />
   </ItemGroup>
 
 </Project>
