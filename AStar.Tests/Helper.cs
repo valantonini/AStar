@@ -56,20 +56,14 @@ namespace AStar.Tests
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(PrintPath(pathfinderGrid, path));
-
-            for (var i = 0; i < path.Length; i++)
-            {
-                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].Position.Row);
-                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Position.Column);
-            }
         }
 
-        public static void PrintAssertions(List<PathFinderNode> path)
+        public static void PrintAssertions(PathFinderNode[] path)
         {
-            for (var i = 0; i < path.Count; i++)
+            for (var i = 0; i < path.Length; i++)
             {
-                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].Position.Row);
-                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Position.Column);
+                Console.WriteLine("path[{0}].Position.Row.ShouldBe({1});", i, path[i].Position.Row);
+                Console.WriteLine("path[{0}].Position.Column.ShouldBe({1});", i, path[i].Position.Column);
             }
         }
 
