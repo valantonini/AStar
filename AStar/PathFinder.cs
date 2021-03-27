@@ -8,7 +8,7 @@ namespace AStar
         private readonly PathfinderGrid _pathfinderGrid;
         private readonly IPriorityQueue<Position> _open;
         private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
-        private readonly PathFinderNodeFast[,] _mCalcGrid;
+        private readonly PathFinderNode[,] _mCalcGrid;
         private readonly PathFinderOptions _options;
         private int _horiz;
 
@@ -16,7 +16,7 @@ namespace AStar
         {
             _pathfinderGrid = pathfinderGrid ?? throw new ArgumentNullException(nameof(pathfinderGrid));
 
-            _mCalcGrid = new PathFinderNodeFast[pathfinderGrid.Height, pathfinderGrid.Width];
+            _mCalcGrid = new PathFinderNode[pathfinderGrid.Height, pathfinderGrid.Width];
 
             _open = new PriorityQueueB<Position>(new ComparePfNodeMatrix(_mCalcGrid));
 
@@ -33,9 +33,9 @@ namespace AStar
                 _open.Clear();
                 _closed.Clear();
 
-                _mCalcGrid[start.Row, start.Column].Gone = 0;
-                _mCalcGrid[start.Row, start.Column].F_Gone_Plus_Heuristic = _options.HeuristicEstimate;
-                _mCalcGrid[start.Row, start.Column].Parent = new Position(start.Row, start.Column);
+                _mCalcGrid[start.Row, start.Column].G = 0;
+                _mCalcGrid[start.Row, start.Column].F = _options.HeuristicEstimate;
+                _mCalcGrid[start.Row, start.Column].ParentPosition = new Position(start.Row, start.Column);
                 _mCalcGrid[start.Row, start.Column].Open = true;
 
                 _open.Push(start);
@@ -67,7 +67,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        _horiz = (locationX - _mCalcGrid[location.Row, location.Column].Parent.Row);
+                        _horiz = (locationX - _mCalcGrid[location.Row, location.Column].ParentPosition.Row);
                     }
 
                     //Lets calculate each successors
@@ -91,11 +91,11 @@ namespace AStar
                         int newG;
                         if (_options.HeavyDiagonals && !IsCardinalOffset(offsets))
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].Gone + (int)(_pathfinderGrid[newLocationX, newLocationY] * 2.41);
+                            newG = _mCalcGrid[location.Row, location.Column].G + (int)(_pathfinderGrid[newLocationX, newLocationY] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].Gone + _pathfinderGrid[newLocationX, newLocationY];
+                            newG = _mCalcGrid[location.Row, location.Column].G + _pathfinderGrid[newLocationX, newLocationY];
                         }
 
                         if (_options.PunishChangeDirection)
@@ -119,14 +119,14 @@ namespace AStar
                         if (_mCalcGrid[newLocationX, newLocationY].HasBeenVisited)
                         {
                             // The current node has less code than the previous? then skip this node
-                            if (_mCalcGrid[newLocationX, newLocationY].Gone <= newG)
+                            if (_mCalcGrid[newLocationX, newLocationY].G <= newG)
                             {
                                 continue;
                             }
                         }
 
-                        _mCalcGrid[newLocationX, newLocationY].Parent = new Position(locationX, locationY);
-                        _mCalcGrid[newLocationX, newLocationY].Gone = newG;
+                        _mCalcGrid[newLocationX, newLocationY].ParentPosition = new Position(locationX, locationY);
+                        _mCalcGrid[newLocationX, newLocationY].G = newG;
 
                         var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, newLocationY, newLocationX);
 
@@ -139,7 +139,7 @@ namespace AStar
                             var cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
                             h = (int)(h + cross * 0.001);
                         }
-                        _mCalcGrid[newLocationX, newLocationY].F_Gone_Plus_Heuristic = newG + h;
+                        _mCalcGrid[newLocationX, newLocationY].F = newG + h;
 
                         _open.Push(new Position(newLocationX, newLocationY));
 
@@ -168,10 +168,10 @@ namespace AStar
 
             var fNode = new PathFinderNode
             {
-                F = fNodeTmp.F_Gone_Plus_Heuristic,
-                G = fNodeTmp.Gone,
+                F = fNodeTmp.F,
+                G = fNodeTmp.G,
                 H = 0,
-                ParentPosition = fNodeTmp.Parent,
+                ParentPosition = fNodeTmp.ParentPosition,
                 Position = new Position(end.Row, end.Column),
             };
  
@@ -183,10 +183,10 @@ namespace AStar
                 var posY = fNode.ParentPosition.Column;
 
                 fNodeTmp = _mCalcGrid[posX, posY];
-                fNode.F = fNodeTmp.F_Gone_Plus_Heuristic;
-                fNode.G = fNodeTmp.Gone;
+                fNode.F = fNodeTmp.F;
+                fNode.G = fNodeTmp.G;
                 fNode.H = 0;
-                fNode.ParentPosition = fNodeTmp.Parent;
+                fNode.ParentPosition = fNodeTmp.ParentPosition;
                 fNode.Position = new Position(posX, posY);
             }
 

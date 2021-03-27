@@ -1,5 +1,8 @@
-﻿namespace AStar
+﻿using System.Runtime.InteropServices;
+
+namespace AStar
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct PathFinderNode
     {
         /// <summary>
@@ -26,5 +29,15 @@
         /// This nodes parent
         /// </summary>
         public Position ParentPosition;
+        
+        /// <summary>
+        /// If the node is open or closed
+        /// </summary>
+        public bool? Open;
+        
+        /// <summary>
+        /// If the node has been considered yet
+        /// </summary>
+        public bool HasBeenVisited => Open.HasValue;
     }
 }
