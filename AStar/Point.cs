@@ -3,9 +3,9 @@ using System;
 namespace AStar
 {
     /// <summary>
-    /// A point in a matrix. Pxy where X is the row and Y is the column.
+    /// A point in a matrix. P(row, column)
     /// </summary>
-    public struct Point
+    public readonly struct Point
     {
         /// <summary>
         /// The row in the matrix
@@ -22,6 +22,7 @@ namespace AStar
             Row = row;
             Column = column;
         }
+        
         public static bool operator ==(Point a, Point b)
         {
             return a.Equals(b);
