@@ -10,8 +10,7 @@ namespace AStar
         private readonly IPriorityQueue<Point> _open;
         private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
         private readonly PathFinderNodeFast[,] _mCalcGrid;
-        private readonly sbyte[,] _direction;
-        private PathFinderOptions _options;
+        private readonly PathFinderOptions _options;
         private int _horiz;
         private byte _openNodeValue = 1;
         private byte _closeNodeValue = 2;
@@ -25,10 +24,6 @@ namespace AStar
             _open = new PriorityQueueB<Point>(new ComparePfNodeMatrix(_mCalcGrid));
 
             _options = pathFinderOptions ?? new PathFinderOptions();
-
-            _direction = _options.Diagonals
-                    ? new sbyte[,] { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 }, { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } }
-                    : new sbyte[,] { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
         }
 
         public List<PathFinderNode> FindPath(Point start, Point end)
@@ -81,11 +76,11 @@ namespace AStar
                     }
 
                     //Lets calculate each successors
-                    for (var i = 0; i < _direction.GetLength(0); i++)
+                    foreach (var offsets in GridOffsets.GetOffsets(_options.Diagonals))
                     {
                         //unsign incase we went out of bounds
-                        var newLocationX = (ushort)(locationX + _direction[i, 0]);
-                        var newLocationY = (ushort)(locationY + _direction[i, 1]);
+                        var newLocationX = (ushort)(locationX + offsets.row);
+                        var newLocationY = (ushort)(locationY + offsets.column);
 
                         if (newLocationX >= _grid.Height || newLocationY >= +_grid.Width)
                         {
@@ -99,7 +94,7 @@ namespace AStar
                         }
 
                         int newG;
-                        if (_options.HeavyDiagonals && i > 3)
+                        if (_options.HeavyDiagonals && !IsCardinalOffset(offsets))
                         {
                             newG = _mCalcGrid[location.Row, location.Column].Gone + (int)(_grid[newLocationX, newLocationY] * 2.41);
                         }
@@ -165,6 +160,11 @@ namespace AStar
 
                 return !found ? null : OrderClosedListAsPath(end);
             }
+        }
+
+        private static bool IsCardinalOffset((sbyte row, sbyte column) offset)
+        {
+            return offset.row != 0 && offset.column != 0;
         }
 
         private List<PathFinderNode> OrderClosedListAsPath(Point end)
