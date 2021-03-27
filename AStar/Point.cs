@@ -10,17 +10,17 @@ namespace AStar
         /// <summary>
         /// The row in the matrix
         /// </summary>
-        public int X { get; private set; }
+        public int Row { get; }
 
         /// <summary>
         /// The column in the matrix
         /// </summary>
-        public int Y { get; private set; }
+        public int Column { get; }
 
-        public Point(int x = 0, int y = 0)
+        public Point(int row = 0, int column = 0)
         {
-            X = x;
-            Y = y;
+            Row = row;
+            Column = column;
         }
         public static bool operator ==(Point a, Point b)
         {
@@ -32,30 +32,30 @@ namespace AStar
             return !a.Equals(b);
         }
 
-        public bool Equals(Point other)
-        {
-            return X == other.X && Y == other.Y;
-        }
-
         public override bool Equals(Object other)
         {
-            return Equals((Point)other);
+            if (other is Point otherPoint)
+            {
+                return Row == otherPoint.Row && Column == otherPoint.Column;
+            }
+
+            return false;
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                int hash = 17;
-                hash = hash * 23 + X.GetHashCode();
-                hash = hash * 23 + Y.GetHashCode();
+                var hash = 17;
+                hash = hash * 23 + Row.GetHashCode();
+                hash = hash * 23 + Column.GetHashCode();
                 return hash;
             }
         }
 
         public override string ToString()
         {
-            return $"[{X}.{Y}]";
+            return $"[{Row}.{Column}]";
         }
     }
 }

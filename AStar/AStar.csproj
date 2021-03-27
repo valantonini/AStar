@@ -12,6 +12,7 @@
     <Description>An A* pathfinding implementation compatible with the Unity3D Engine.</Description>
     <PackageTags>Pathfinding;A*;AStar</PackageTags>
     <RootNamespace>AStar</RootNamespace>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
 </Project>

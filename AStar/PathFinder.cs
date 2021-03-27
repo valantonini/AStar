@@ -51,11 +51,11 @@ namespace AStar
                 _open.Clear();
                 _closed.Clear();
 
-                _mCalcGrid[start.X, start.Y].Gone = 0;
-                _mCalcGrid[start.X, start.Y].F_Gone_Plus_Heuristic = _options.HeuristicEstimate;
-                _mCalcGrid[start.X, start.Y].ParentX = (ushort)start.X;
-                _mCalcGrid[start.X, start.Y].ParentY = (ushort)start.Y;
-                _mCalcGrid[start.X, start.Y].Status = _openNodeValue;
+                _mCalcGrid[start.Row, start.Column].Gone = 0;
+                _mCalcGrid[start.Row, start.Column].F_Gone_Plus_Heuristic = _options.HeuristicEstimate;
+                _mCalcGrid[start.Row, start.Column].ParentX = (ushort)start.Row;
+                _mCalcGrid[start.Row, start.Column].ParentY = (ushort)start.Column;
+                _mCalcGrid[start.Row, start.Column].Status = _openNodeValue;
 
                 _open.Push(start);
 
@@ -64,17 +64,17 @@ namespace AStar
                     var location = _open.Pop();
 
                     //Is it in closed list? means this node was already processed
-                    if (_mCalcGrid[location.X, location.Y].Status == _closeNodeValue)
+                    if (_mCalcGrid[location.Row, location.Column].Status == _closeNodeValue)
                     {
                         continue;
                     }
 
-                    var locationX = location.X;
-                    var locationY = location.Y;
+                    var locationX = location.Row;
+                    var locationY = location.Column;
 
                     if (location == end)
                     {
-                        _mCalcGrid[location.X, location.Y].Status = _closeNodeValue;
+                        _mCalcGrid[location.Row, location.Column].Status = _closeNodeValue;
                         found = true;
                         break;
                     }
@@ -86,7 +86,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        _horiz = (locationX - _mCalcGrid[location.X, location.Y].ParentX);
+                        _horiz = (locationX - _mCalcGrid[location.Row, location.Column].ParentX);
                     }
 
                     //Lets calculate each successors
@@ -110,11 +110,11 @@ namespace AStar
                         int newG;
                         if (_options.HeavyDiagonals && i > 3)
                         {
-                            newG = _mCalcGrid[location.X, location.Y].Gone + (int)(_grid[newLocationX, newLocationY] * 2.41);
+                            newG = _mCalcGrid[location.Row, location.Column].Gone + (int)(_grid[newLocationX, newLocationY] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location.X, location.Y].Gone + _grid[newLocationX, newLocationY];
+                            newG = _mCalcGrid[location.Row, location.Column].Gone + _grid[newLocationX, newLocationY];
                         }
 
                         if (_options.PunishChangeDirection)
@@ -123,14 +123,14 @@ namespace AStar
                             {
                                 if (_horiz == 0)
                                 {
-                                    newG += Math.Abs(newLocationX - end.X) + Math.Abs(newLocationY - end.Y);
+                                    newG += Math.Abs(newLocationX - end.Row) + Math.Abs(newLocationY - end.Column);
                                 }
                             }
                             if ((newLocationY - locationY) != 0)
                             {
                                 if (_horiz != 0)
                                 {
-                                    newG += Math.Abs(newLocationX - end.X) + Math.Abs(newLocationY - end.Y);
+                                    newG += Math.Abs(newLocationX - end.Row) + Math.Abs(newLocationY - end.Column);
                                 }
                             }
                         }
@@ -153,10 +153,10 @@ namespace AStar
 
                         if (_options.TieBreaker)
                         {
-                            var dx1 = locationX - end.X;
-                            var dy1 = locationY - end.Y;
-                            var dx2 = start.X - end.X;
-                            var dy2 = start.Y - end.Y;
+                            var dx1 = locationX - end.Row;
+                            var dy1 = locationY - end.Column;
+                            var dx2 = start.Row - end.Row;
+                            var dy2 = start.Column - end.Column;
                             var cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
                             h = (int)(h + cross * 0.001);
                         }
@@ -168,7 +168,7 @@ namespace AStar
                     }
 
                     closedNodeCounter++;
-                    _mCalcGrid[location.X, location.Y].Status = _closeNodeValue;
+                    _mCalcGrid[location.Row, location.Column].Status = _closeNodeValue;
 
                 }
 
@@ -180,7 +180,7 @@ namespace AStar
         {
             _closed.Clear();
 
-            var fNodeTmp = _mCalcGrid[end.X, end.Y];
+            var fNodeTmp = _mCalcGrid[end.Row, end.Column];
 
             var fNode = new PathFinderNode
             {
@@ -189,8 +189,8 @@ namespace AStar
                 Heuristic = 0,
                 ParentX = fNodeTmp.ParentX,
                 ParentY = fNodeTmp.ParentY,
-                X = end.X,
-                Y = end.Y
+                X = end.Row,
+                Y = end.Column
             };
 
             while (fNode.X != fNode.ParentX || fNode.Y != fNode.ParentY)

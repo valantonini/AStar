@@ -13,12 +13,12 @@ namespace AStar
 
         public int Compare(Point a, Point b)
         {
-            if (_matrix[a.X, a.Y].F_Gone_Plus_Heuristic > _matrix[b.X, b.Y].F_Gone_Plus_Heuristic)
+            if (_matrix[a.Row, a.Column].F_Gone_Plus_Heuristic > _matrix[b.Row, b.Column].F_Gone_Plus_Heuristic)
             {
                 return 1;
             }
 
-            if (_matrix[a.X, a.Y].F_Gone_Plus_Heuristic < _matrix[b.X, b.Y].F_Gone_Plus_Heuristic)
+            if (_matrix[a.Row, a.Column].F_Gone_Plus_Heuristic < _matrix[b.Row, b.Column].F_Gone_Plus_Heuristic)
             {
                 return -1;
             }
