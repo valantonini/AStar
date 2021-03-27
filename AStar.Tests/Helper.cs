@@ -7,15 +7,15 @@ namespace AStar.Tests
 {
     public class Helper
     {
-        public static string PrintGrid(Grid grid, bool appendSpace = true)
+        public static string PrintGrid(PathfinderGrid pathfinderGrid, bool appendSpace = true)
         {
             var s = new StringBuilder();
 
-            for (var row = 0; row < grid.Height; row++)
+            for (var row = 0; row < pathfinderGrid.Height; row++)
             {
-                for (var column = 0; column < grid.Width; column++)
+                for (var column = 0; column < pathfinderGrid.Width; column++)
                 {
-                    s.Append(grid[row, column]);
+                    s.Append(pathfinderGrid[row, column]);
                     if (appendSpace)
                     {
                         s.Append(' ');
@@ -27,13 +27,13 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static string PrintPath(Grid grid, List<PathFinderNode> path, bool appendSpace = true)
+        public static string PrintPath(PathfinderGrid pathfinderGrid, List<PathFinderNode> path, bool appendSpace = true)
         {
             var s = new StringBuilder();
 
-            for (var row = 0; row < grid.Height; row++)
+            for (var row = 0; row < pathfinderGrid.Height; row++)
             {
-                for (var column = 0; column < grid.Width; column++)
+                for (var column = 0; column < pathfinderGrid.Width; column++)
                 {
                     if (path.Any(n => n.X == row && n.Y == column))
                     {
@@ -41,7 +41,7 @@ namespace AStar.Tests
                     }
                     else
                     {
-                        s.Append(grid[row, column]);
+                        s.Append(pathfinderGrid[row, column]);
                     }
                     s.Append(' ');
                 }
@@ -50,12 +50,12 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static void Print(Grid grid, List<PathFinderNode> path)
+        public static void Print(PathfinderGrid pathfinderGrid, List<PathFinderNode> path)
         {
-            Console.WriteLine(PrintGrid(grid));
+            Console.WriteLine(PrintGrid(pathfinderGrid));
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(Environment.NewLine);
-            Console.WriteLine(PrintPath(grid, path));
+            Console.WriteLine(PrintPath(pathfinderGrid, path));
 
             for (var i = 0; i < path.Count; i++)
             {

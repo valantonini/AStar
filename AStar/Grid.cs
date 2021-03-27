@@ -1,22 +1,22 @@
 namespace AStar
 {
-    public class Grid
+    public class Grid<T>
     {
-        private readonly int[] _grid;
+        private readonly T[] _grid;
 
         public Grid(int height, int width)
         {
             Height = height;
             Width = width;
 
-            _grid = new int[height * width];
+            _grid = new T[height * width];
         }
 
         public int Height { get; }
 
         public int Width { get; }
 
-        public int this[int row, int column]
+        public T this[int row, int column]
         {
             get
             {

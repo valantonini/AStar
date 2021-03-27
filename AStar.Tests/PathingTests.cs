@@ -9,7 +9,7 @@ namespace AStar.Tests
     public class PathingTests
     {
         private const char _closedCharacter = 'X';
-        private Grid _grid;
+        private PathfinderGrid _pathfinderGrid;
 
         [SetUp]
         public void SetUp()
@@ -47,7 +47,7 @@ namespace AStar.Tests
                           X111111111111111111111111111111X
                           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-            _grid = new Grid(32, 32);
+            _pathfinderGrid = new PathfinderGrid(32, 32);
             var splitLevel = level.Split('\n')
                                   .Select(row => row.Trim())
                                   .ToList();
@@ -58,7 +58,7 @@ namespace AStar.Tests
                 {
                     if (splitLevel[x][y] != _closedCharacter)
                     {
-                        _grid[x, y] = Convert.ToByte(splitLevel[x][y]);
+                        _pathfinderGrid[x, y] = Convert.ToByte(splitLevel[x][y]);
                     }
 
                 }
@@ -71,17 +71,17 @@ namespace AStar.Tests
         {
             var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
 
-            var pathfinder = new PathFinder(_grid, pathfinderOptions);
+            var pathfinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
             var path = pathfinder.FindPath(new Point(1, 1), new Point(30, 30));
-            Helper.Print(_grid, path);
+            Helper.Print(_pathfinderGrid, path);
         }
 
         [Test]
         public void ShouldPathEnvironment()
         {
-            var pathfinder = new PathFinder(_grid);
+            var pathfinder = new PathFinder(_pathfinderGrid);
             var path = pathfinder.FindPath(new Point(1, 1), new Point(30, 30));
-            Helper.Print(_grid, path);
+            Helper.Print(_pathfinderGrid, path);
 
             path[0].X.ShouldBe(30);
             path[0].Y.ShouldBe(30);

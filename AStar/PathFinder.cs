@@ -5,7 +5,7 @@ namespace AStar
 {
     public class PathFinder : IPathFinder
     {
-        private readonly Grid _grid;
+        private readonly PathfinderGrid _pathfinderGrid;
         
         private readonly IPriorityQueue<Point> _open;
         private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
@@ -15,11 +15,11 @@ namespace AStar
         private byte _openNodeValue = 1;
         private byte _closeNodeValue = 2;
 
-        public PathFinder(Grid grid, PathFinderOptions pathFinderOptions = null)
+        public PathFinder(PathfinderGrid pathfinderGrid, PathFinderOptions pathFinderOptions = null)
         {
-            _grid = grid ?? throw new ArgumentNullException(nameof(grid));
+            _pathfinderGrid = pathfinderGrid ?? throw new ArgumentNullException(nameof(pathfinderGrid));
 
-            _mCalcGrid = new PathFinderNodeFast[grid.Height, grid.Width];
+            _mCalcGrid = new PathFinderNodeFast[pathfinderGrid.Height, pathfinderGrid.Width];
 
             _open = new PriorityQueueB<Point>(new ComparePfNodeMatrix(_mCalcGrid));
 
@@ -82,13 +82,13 @@ namespace AStar
                         var newLocationX = (ushort)(locationX + offsets.row);
                         var newLocationY = (ushort)(locationY + offsets.column);
 
-                        if (newLocationX >= _grid.Height || newLocationY >= +_grid.Width)
+                        if (newLocationX >= _pathfinderGrid.Height || newLocationY >= +_pathfinderGrid.Width)
                         {
                             continue;
                         }
 
                         // Unbreakeable?
-                        if (_grid[newLocationX, newLocationY] == 0)
+                        if (_pathfinderGrid[newLocationX, newLocationY] == 0)
                         {
                             continue;
                         }
@@ -96,11 +96,11 @@ namespace AStar
                         int newG;
                         if (_options.HeavyDiagonals && !IsCardinalOffset(offsets))
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].Gone + (int)(_grid[newLocationX, newLocationY] * 2.41);
+                            newG = _mCalcGrid[location.Row, location.Column].Gone + (int)(_pathfinderGrid[newLocationX, newLocationY] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].Gone + _grid[newLocationX, newLocationY];
+                            newG = _mCalcGrid[location.Row, location.Column].Gone + _pathfinderGrid[newLocationX, newLocationY];
                         }
 
                         if (_options.PunishChangeDirection)
