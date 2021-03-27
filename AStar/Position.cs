@@ -5,7 +5,7 @@ namespace AStar
     /// <summary>
     /// A point in a matrix. P(row, column)
     /// </summary>
-    public readonly struct Point
+    public readonly struct Position
     {
         /// <summary>
         /// The row in the matrix
@@ -17,25 +17,25 @@ namespace AStar
         /// </summary>
         public int Column { get; }
 
-        public Point(int row = 0, int column = 0)
+        public Position(int row = 0, int column = 0)
         {
             Row = row;
             Column = column;
         }
         
-        public static bool operator ==(Point a, Point b)
+        public static bool operator ==(Position a, Position b)
         {
             return a.Equals(b);
         }
 
-        public static bool operator !=(Point a, Point b)
+        public static bool operator !=(Position a, Position b)
         {
             return !a.Equals(b);
         }
 
         public override bool Equals(Object other)
         {
-            if (other is Point otherPoint)
+            if (other is Position otherPoint)
             {
                 return Row == otherPoint.Row && Column == otherPoint.Column;
             }

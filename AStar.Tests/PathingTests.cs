@@ -72,7 +72,7 @@ namespace AStar.Tests
             var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
 
             var pathfinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
-            var path = pathfinder.FindPath(new Point(1, 1), new Point(30, 30));
+            var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
             Helper.Print(_pathfinderGrid, path);
         }
 
@@ -80,7 +80,7 @@ namespace AStar.Tests
         public void ShouldPathEnvironment()
         {
             var pathfinder = new PathFinder(_pathfinderGrid);
-            var path = pathfinder.FindPath(new Point(1, 1), new Point(30, 30));
+            var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
             Helper.Print(_pathfinderGrid, path);
 
             path[0].X.ShouldBe(30);

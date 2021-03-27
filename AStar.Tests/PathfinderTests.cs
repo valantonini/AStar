@@ -24,7 +24,7 @@ namespace AStar.Tests
             var grid = CreateGridInitializedToOpen(3, 5);
             var pathfinder = new PathFinder(grid);
 
-            var path = pathfinder.FindPath(new Point(0, 0), new Point(2, 4));
+            var path = pathfinder.FindPath(new Position(0, 0), new Position(2, 4));
             Console.WriteLine(Helper.PrintGrid(grid));
             Console.WriteLine(Helper.PrintPath(grid, path));
 
@@ -43,7 +43,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldPathToSelf()
         {
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(1, 1));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(1, 1));
             path.Count.ShouldBe(1);
 
             var node = path[0];
@@ -54,7 +54,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldPathToAdjacent()
         {
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(2, 1));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(2, 1));
 
             path.Count.ShouldBe(2);
 
@@ -76,7 +76,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldDoSimplePath()
         {
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(4, 2));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             Helper.Print(_pathfinderGrid, path);
             path.Count.ShouldBe(4);
 
@@ -103,7 +103,7 @@ namespace AStar.Tests
             var pathfinderOptions = new PathFinderOptions { Diagonals = false };
             _pathFinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
 
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(4, 2));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             Helper.Print(_pathfinderGrid, path);
             PrintCoordinates(path);
 
@@ -140,7 +140,7 @@ namespace AStar.Tests
             _pathfinderGrid[2, 1] = 0;
             _pathfinderGrid[2, 2] = 0;
 
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(4, 2));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             Helper.Print(_pathfinderGrid, path);
             PrintCoordinates(path);
 
@@ -182,7 +182,7 @@ namespace AStar.Tests
             _pathfinderGrid[2, 1] = 0;
             _pathfinderGrid[2, 2] = 0;
             _pathfinderGrid[2, 3] = 0;
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(4, 2));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             Helper.Print(_pathfinderGrid, path);
             path.Count.ShouldBe(6);
 
@@ -222,7 +222,7 @@ namespace AStar.Tests
             _pathfinderGrid[2, 5] = 0;
             _pathfinderGrid[2, 6] = 0;
             _pathfinderGrid[2, 7] = 0;
-            var path = _pathFinder.FindPath(new Point(1, 1), new Point(4, 2));
+            var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             path.ShouldBe(null);
         }
 

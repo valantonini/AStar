@@ -7,7 +7,6 @@
         public int Heuristic;  // f = gone + heuristic
         public int X;
         public int Y;
-        public int ParentX; // Parent
-        public int ParentY;
+        public Position Parent;
     }
 }

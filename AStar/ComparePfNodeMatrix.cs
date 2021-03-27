@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace AStar
 {
-    internal class ComparePfNodeMatrix : IComparer<Point>
+    internal class ComparePfNodeMatrix : IComparer<Position>
     {
         readonly PathFinderNodeFast[,] _matrix;
 
@@ -11,7 +11,7 @@ namespace AStar
             _matrix = matrix;
         }
 
-        public int Compare(Point a, Point b)
+        public int Compare(Position a, Position b)
         {
             if (_matrix[a.Row, a.Column].F_Gone_Plus_Heuristic > _matrix[b.Row, b.Column].F_Gone_Plus_Heuristic)
             {

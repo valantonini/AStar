@@ -7,8 +7,7 @@ namespace AStar
     {
         public int F_Gone_Plus_Heuristic; // f = gone + heuristic
         public int Gone;
-        public int ParentX; // Parent
-        public int ParentY;
+        public Position Parent;
         public byte Status;
     }
 }

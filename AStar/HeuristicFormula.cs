@@ -4,7 +4,7 @@ namespace AStar
 {
     public class Heuristic
     {
-        public static int DetermineH(HeuristicFormula heuristicFormula, Point end, int heuristicEstimate, int newLocationY, int newLocationX)
+        public static int DetermineH(HeuristicFormula heuristicFormula, Position end, int heuristicEstimate, int newLocationY, int newLocationX)
         {
             int h;
 
@@ -30,7 +30,7 @@ namespace AStar
                     break;
 
                 case HeuristicFormula.Custom1:
-                    var dxy = new Point(Math.Abs(end.Row - newLocationX), Math.Abs(end.Column - newLocationY));
+                    var dxy = new Position(Math.Abs(end.Row - newLocationX), Math.Abs(end.Column - newLocationY));
                     var Orthogonal = Math.Abs(dxy.Row - dxy.Column);
                     var Diagonal = Math.Abs(((dxy.Row + dxy.Column) - Orthogonal) / 2);
                     h = heuristicEstimate * (Diagonal + Orthogonal + dxy.Row + dxy.Column);
