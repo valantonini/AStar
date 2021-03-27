@@ -67,23 +67,23 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        _horiz = (locationX - _mCalcGrid[location.Row, location.Column].ParentPosition.Row);
+                        _horiz = locationX - _mCalcGrid[location.Row, location.Column].ParentPosition.Row;
                     }
 
                     //Lets calculate each successors
                     foreach (var offsets in GridOffsets.GetOffsets(_options.Diagonals))
                     {
                         //unsign incase we went out of bounds
-                        var newLocationX = (ushort)(locationX + offsets.row);
-                        var newLocationY = (ushort)(locationY + offsets.column);
 
-                        if (newLocationX >= _pathfinderGrid.Height || newLocationY >= +_pathfinderGrid.Width)
+                        var newLocation = new Position( (ushort)(locationX + offsets.row),  (ushort)(locationY + offsets.column));
+
+                        if (newLocation.Row >= _pathfinderGrid.Height || newLocation.Column >= +_pathfinderGrid.Width)
                         {
                             continue;
                         }
 
                         // Unbreakeable?
-                        if (_pathfinderGrid[newLocationX, newLocationY] == 0)
+                        if (_pathfinderGrid[newLocation.Row, newLocation.Column] == 0)
                         {
                             continue;
                         }
@@ -91,44 +91,44 @@ namespace AStar
                         int newG;
                         if (_options.HeavyDiagonals && !IsCardinalOffset(offsets))
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].G + (int)(_pathfinderGrid[newLocationX, newLocationY] * 2.41);
+                            newG = _mCalcGrid[location.Row, location.Column].G + (int)(_pathfinderGrid[newLocation.Row, newLocation.Column] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].G + _pathfinderGrid[newLocationX, newLocationY];
+                            newG = _mCalcGrid[location.Row, location.Column].G + _pathfinderGrid[newLocation.Row, newLocation.Column];
                         }
 
                         if (_options.PunishChangeDirection)
                         {
-                            if ((newLocationX - locationX) != 0)
+                            if (newLocation.Row - locationX != 0)
                             {
                                 if (_horiz == 0)
                                 {
-                                    newG += Math.Abs(newLocationX - end.Row) + Math.Abs(newLocationY - end.Column);
+                                    newG += Math.Abs(newLocation.Row - end.Row) + Math.Abs(newLocation.Column - end.Column);
                                 }
                             }
-                            if ((newLocationY - locationY) != 0)
+                            if (newLocation.Column - locationY != 0)
                             {
                                 if (_horiz != 0)
                                 {
-                                    newG += Math.Abs(newLocationX - end.Row) + Math.Abs(newLocationY - end.Column);
+                                    newG += Math.Abs(newLocation.Row - end.Row) + Math.Abs(newLocation.Column - end.Column);
                                 }
                             }
                         }
                         
-                        if (_mCalcGrid[newLocationX, newLocationY].HasBeenVisited)
+                        if (_mCalcGrid[newLocation.Row, newLocation.Column].HasBeenVisited)
                         {
                             // The current node has less code than the previous? then skip this node
-                            if (_mCalcGrid[newLocationX, newLocationY].G <= newG)
+                            if (_mCalcGrid[newLocation.Row, newLocation.Column].G <= newG)
                             {
                                 continue;
                             }
                         }
 
-                        _mCalcGrid[newLocationX, newLocationY].ParentPosition = new Position(locationX, locationY);
-                        _mCalcGrid[newLocationX, newLocationY].G = newG;
+                        _mCalcGrid[newLocation.Row, newLocation.Column].ParentPosition = new Position(locationX, locationY);
+                        _mCalcGrid[newLocation.Row, newLocation.Column].G = newG;
 
-                        var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, newLocationY, newLocationX);
+                        var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, newLocation.Column, newLocation.Row);
 
                         if (_options.TieBreaker)
                         {
@@ -139,11 +139,11 @@ namespace AStar
                             var cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
                             h = (int)(h + cross * 0.001);
                         }
-                        _mCalcGrid[newLocationX, newLocationY].F = newG + h;
+                        _mCalcGrid[newLocation.Row, newLocation.Column].F = newG + h;
 
-                        _open.Push(new Position(newLocationX, newLocationY));
+                        _open.Push(new Position(newLocation.Row, newLocation.Column));
 
-                        _mCalcGrid[newLocationX, newLocationY].Open = true;
+                        _mCalcGrid[newLocation.Row, newLocation.Column].Open = true;
                     }
 
                     closedNodeCounter++;
