@@ -8,6 +8,7 @@ namespace AStar
         public int F_Gone_Plus_Heuristic; // f = gone + heuristic
         public int Gone;
         public Position Parent;
-        public byte Status;
+        public bool? Open;
+        public bool HasBeenVisited => Open.HasValue;
     }
 }

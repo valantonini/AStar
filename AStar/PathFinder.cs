@@ -6,14 +6,11 @@ namespace AStar
     public class PathFinder : IPathFinder
     {
         private readonly PathfinderGrid _pathfinderGrid;
-        
         private readonly IPriorityQueue<Position> _open;
         private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
         private readonly PathFinderNodeFast[,] _mCalcGrid;
         private readonly PathFinderOptions _options;
         private int _horiz;
-        private byte _openNodeValue = 1;
-        private byte _closeNodeValue = 2;
 
         public PathFinder(PathfinderGrid pathfinderGrid, PathFinderOptions pathFinderOptions = null)
         {
@@ -32,15 +29,13 @@ namespace AStar
             {
                 var found = false;
                 var closedNodeCounter = 0;
-                _openNodeValue += 2;//increment for subsequent runs
-                _closeNodeValue += 2;
                 _open.Clear();
                 _closed.Clear();
 
                 _mCalcGrid[start.Row, start.Column].Gone = 0;
                 _mCalcGrid[start.Row, start.Column].F_Gone_Plus_Heuristic = _options.HeuristicEstimate;
                 _mCalcGrid[start.Row, start.Column].Parent = new Position(start.Row, start.Column);
-                _mCalcGrid[start.Row, start.Column].Status = _openNodeValue;
+                _mCalcGrid[start.Row, start.Column].Open = true;
 
                 _open.Push(start);
 
@@ -49,7 +44,7 @@ namespace AStar
                     var location = _open.Pop();
 
                     //Is it in closed list? means this node was already processed
-                    if (_mCalcGrid[location.Row, location.Column].Status == _closeNodeValue)
+                    if (!_mCalcGrid[location.Row, location.Column].Open.HasValue)
                     {
                         continue;
                     }
@@ -59,7 +54,7 @@ namespace AStar
 
                     if (location == end)
                     {
-                        _mCalcGrid[location.Row, location.Column].Status = _closeNodeValue;
+                        _mCalcGrid[location.Row, location.Column].Open = false;
                         found = true;
                         break;
                     }
@@ -119,9 +114,8 @@ namespace AStar
                                 }
                             }
                         }
-
-                        //Is it open or closed?
-                        if (_mCalcGrid[newLocationX, newLocationY].Status == _openNodeValue || _mCalcGrid[newLocationX, newLocationY].Status == _closeNodeValue)
+                        
+                        if (_mCalcGrid[newLocationX, newLocationY].HasBeenVisited)
                         {
                             // The current node has less code than the previous? then skip this node
                             if (_mCalcGrid[newLocationX, newLocationY].Gone <= newG)
@@ -148,11 +142,11 @@ namespace AStar
 
                         _open.Push(new Position(newLocationX, newLocationY));
 
-                        _mCalcGrid[newLocationX, newLocationY].Status = _openNodeValue;
+                        _mCalcGrid[newLocationX, newLocationY].Open = true;
                     }
 
                     closedNodeCounter++;
-                    _mCalcGrid[location.Row, location.Column].Status = _closeNodeValue;
+                    _mCalcGrid[location.Row, location.Column].Open = false;
 
                 }
 

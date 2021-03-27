@@ -30,14 +30,14 @@ namespace AStar.Tests
         public static string PrintPath(PathfinderGrid pathfinderGrid, List<PathFinderNode> path, bool appendSpace = true)
         {
             var s = new StringBuilder();
-
+            
             for (var row = 0; row < pathfinderGrid.Height; row++)
             {
                 for (var column = 0; column < pathfinderGrid.Width; column++)
                 {
                     if (path.Any(n => n.X == row && n.Y == column))
                     {
-                        s.Append("X");
+                        s.Append("_");
                     }
                     else
                     {

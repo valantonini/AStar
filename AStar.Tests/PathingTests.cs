@@ -58,7 +58,7 @@ namespace AStar.Tests
                 {
                     if (splitLevel[x][y] != _closedCharacter)
                     {
-                        _pathfinderGrid[x, y] = Convert.ToByte(splitLevel[x][y]);
+                        _pathfinderGrid[x, y] = int.Parse(splitLevel[x][y].ToString());
                     }
 
                 }
