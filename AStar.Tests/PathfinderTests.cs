@@ -6,7 +6,7 @@ using Shouldly;
 namespace AStar.Tests
 {
     [TestFixture]
-    public class TestPathfinder
+    public class PathfinderTests
     {
         private byte[,] _grid;
         private PathFinder _pathFinder;

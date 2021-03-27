@@ -6,7 +6,7 @@ using Shouldly;
 namespace AStar.Tests
 {
     [TestFixture]
-    public class TestPathing
+    public class PathingTests
     {
         private const char _closedCharacter = 'X';
         private byte[,] _grid;
@@ -77,7 +77,7 @@ namespace AStar.Tests
         }
 
         [Test]
-        public void TestPathingEnvironment()
+        public void ShouldPathEnvironment()
         {
             var pathfinder = new PathFinder(_grid);
             var path = pathfinder.FindPath(new Point(1, 1), new Point(30, 30));
