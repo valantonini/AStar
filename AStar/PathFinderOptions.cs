@@ -1,14 +1,14 @@
-﻿namespace AStar
+﻿using AStar.Heuristics;
+
+namespace AStar
 {
     public class PathFinderOptions
     {
-        public HeuristicFormula Formula { get; set; }
+        public HeuristicFormula HeuristicFormula { get; set; }
 
         public bool Diagonals { get; set; }
 
         public bool HeavyDiagonals { get; set; }
-
-        public int HeuristicEstimate { get; set; }
 
         public bool PunishChangeDirection { get; set; }
 
@@ -18,8 +18,7 @@
 
         public PathFinderOptions()
         {
-            Formula = HeuristicFormula.Manhattan;
-            HeuristicEstimate = 2;
+            HeuristicFormula = HeuristicFormula.Manhattan;
             SearchLimit = 2000;
             Diagonals = true;
         }

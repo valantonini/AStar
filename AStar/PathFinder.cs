@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AStar.Heuristics;
 
 namespace AStar
 {
@@ -33,11 +34,12 @@ namespace AStar
             {
                 var found = false;
                 var closedNodeCounter = 0;
+                var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
                 
                 ResetCalcGrid();
 
                 _mCalcGrid[start.Row, start.Column].G = 0;
-                _mCalcGrid[start.Row, start.Column].F = _options.HeuristicEstimate;
+                _mCalcGrid[start.Row, start.Column].F = 2;
                 _mCalcGrid[start.Row, start.Column].ParentNode = new Position(start.Row, start.Column);
                 _mCalcGrid[start.Row, start.Column].Open = true;
 
@@ -74,7 +76,6 @@ namespace AStar
                     foreach (var offsets in GridOffsets.GetOffsets(_options.Diagonals))
                     {
                         //unsign incase we went out of bounds
-
                         var nextCandidate = new Position((ushort) (location.Row + offsets.row), (ushort) (location.Column + offsets.column));
 
                         if (nextCandidate.Row >= _pathfinderGrid.Height || nextCandidate.Column >= +_pathfinderGrid.Width)
@@ -129,7 +130,7 @@ namespace AStar
                         _mCalcGrid[nextCandidate.Row, nextCandidate.Column].ParentNode = new Position(location.Row, location.Column);
                         _mCalcGrid[nextCandidate.Row, nextCandidate.Column].G = newG;
 
-                        var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, nextCandidate.Column, nextCandidate.Row);
+                        var h = heuristicCalculator.CalculateHeuristic(nextCandidate, end);
 
                         if (_options.TieBreaker)
                         {
