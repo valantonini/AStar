@@ -63,8 +63,8 @@ namespace AStar.Tests
         {
             for (var i = 0; i < path.Length; i++)
             {
-                Console.WriteLine("path[{0}].Position.Row.ShouldBe({1});", i, path[i].Row);
-                Console.WriteLine("path[{0}].Position.Column.ShouldBe({1});", i, path[i].Column);
+                Console.WriteLine("path[{0}].Row.ShouldBe({1});", i, path[i].Row);
+                Console.WriteLine("path[{0}].Column.ShouldBe({1});", i, path[i].Column);
             }
         }
 
