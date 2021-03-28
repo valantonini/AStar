@@ -24,10 +24,15 @@ namespace AStar
             var calcGrid = new PathFinderNode[_pathfinderGrid.Height, _pathfinderGrid.Width];
             var open = new PriorityQueueB<Position>(new ComparePfNodeMatrix(calcGrid));
 
-            calcGrid[start.Row, start.Column].G = 0;
-            calcGrid[start.Row, start.Column].H = 2;
-            calcGrid[start.Row, start.Column].ParentNode = new Position(start.Row, start.Column);
-            calcGrid[start.Row, start.Column].Open = true;
+            var startNode = new PathFinderNode
+            {
+                G = 0,
+                H = 2,
+                ParentNode = start,
+                Open = true,
+            };
+            
+            calcGrid[start.Row, start.Column] = startNode;
 
             open.Push(start);
 
