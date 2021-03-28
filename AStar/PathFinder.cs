@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using AStar.Collections;
 using AStar.Heuristics;
 
@@ -113,6 +115,13 @@ namespace AStar
             }
 
             return new Position[0];
+        }
+
+        public Point[] FindPath(Point start, Point end)
+        {
+            return FindPath(new Position(start.Y, start.X), new Position(end.Y, end.X))
+                .Select(position => new Point(position.Column, position.Row))
+                .ToArray();
         }
 
         private bool IsUnvisitedOrHasHigherGValue(PathFinderNode pathFinderNode, int newG)

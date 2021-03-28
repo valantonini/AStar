@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using AStar.Collections;
@@ -50,8 +50,39 @@ namespace AStar.Tests
             }
             return s.ToString();
         }
+        
+        public static string PrintPath(WorldGrid world, Point[] path, bool appendSpace = true)
+        {
+            var s = new StringBuilder();
+            
+            for (var y = 0; y < world.Height; y++)
+            {
+                for (var x = 0; x < world.Width; x++)
+                {
+                    if (path.Any(n => n.Y == y && n.X == x))
+                    {
+                        s.Append("_");
+                    }
+                    else
+                    {
+                        s.Append(world[y, x]);
+                    }
+                    s.Append(' ');
+                }
+                s.Append(Environment.NewLine);
+            }
+            return s.ToString();
+        }
 
         public static void Print(WorldGrid world, Position[] path)
+        {
+            Console.WriteLine(PrintGrid(world));
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine(Environment.NewLine);
+            Console.WriteLine(PrintPath(world, path));
+        }
+        
+        public static void Print(WorldGrid world, Point[] path)
         {
             Console.WriteLine(PrintGrid(world));
             Console.WriteLine(Environment.NewLine);
@@ -65,6 +96,15 @@ namespace AStar.Tests
             {
                 Console.WriteLine("path[{0}].Row.ShouldBe({1});", i, path[i].Row);
                 Console.WriteLine("path[{0}].Column.ShouldBe({1});", i, path[i].Column);
+            }
+        }
+        
+        public static void PrintAssertions(Point[] path)
+        {
+            for (var i = 0; i < path.Length; i++)
+            {
+                Console.WriteLine("path[{0}].X.ShouldBe({1});", i, path[i].X);
+                Console.WriteLine("path[{0}].Y.ShouldBe({1});", i, path[i].Y);
             }
         }
 
