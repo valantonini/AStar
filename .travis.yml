@@ -1,9 +1,10 @@
 language: csharp
 mono: none
-dotnet: 3.1.13
+dist: xenial
+dotnet: 3.1
 stages:
-  - name: build
-  - name: test
+  build
+  test
   - name: package
     if: branch = master
   - name: packageAlpha
