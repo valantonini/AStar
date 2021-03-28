@@ -12,7 +12,7 @@ namespace AStar
         
         private PathFinderNode[,] _mCalcGrid;
         private IPriorityQueue<Position> _open;
-        private int _horiz;
+        private bool isLaterallyAdjacent;
 
         public PathFinder(PathfinderGrid pathfinderGrid, PathFinderOptions pathFinderOptions = null)
         {
@@ -69,7 +69,8 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        _horiz = location.Row - _mCalcGrid[location.Row, location.Column].ParentNode.Row;
+                        var isLaterallyAdjacent = location.Row - _mCalcGrid[location.Row, location.Column].ParentNode.Row == 0;
+                        //isVerticallyAdjacent = location.Column - _mCalcGrid[location.Row, location.Column].ParentNode.Column == 0;
                     }
 
                     //Lets calculate each successors
@@ -103,7 +104,7 @@ namespace AStar
                         {
                             if (nextCandidate.Row - location.Row != 0)
                             {
-                                if (_horiz == 0)
+                                if (isLaterallyAdjacent)
                                 {
                                     newG += Math.Abs(nextCandidate.Row - end.Row) + Math.Abs(nextCandidate.Column - end.Column);
                                 }
@@ -111,7 +112,7 @@ namespace AStar
 
                             if (nextCandidate.Column - location.Column != 0)
                             {
-                                if (_horiz != 0)
+                                if (!isLaterallyAdjacent)
                                 {
                                     newG += Math.Abs(nextCandidate.Row - end.Row) + Math.Abs(nextCandidate.Column - end.Column);
                                 }
