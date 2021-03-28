@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 
 namespace AStar.Collections.Grid
 {
@@ -34,6 +35,19 @@ namespace AStar.Collections.Grid
                 position.Column >= Width;
         }
 
+        public bool IsOutOfBounds(Point point) => IsOutOfBounds(point.ToPosition());
+
+        public T this[Point point]
+        {
+            get
+            {
+                return this[point.ToPosition()];
+            }
+            set
+            {
+                this[point.ToPosition()] = value;
+            }
+        }
         public T this[Position position]
         {
             get

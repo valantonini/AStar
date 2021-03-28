@@ -5,7 +5,7 @@ namespace AStar
     /// <summary>
     /// A world grid consisting of integers where a closed cell is represented by 0
     /// </summary>
-    public class WorldGrid : Grid<int>
+    public class WorldGrid : Grid<short>
     {
         /// <summary>
         /// Creates a new world with the given dimensions initialised to closed
