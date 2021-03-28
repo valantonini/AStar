@@ -5,8 +5,6 @@ dotnet: 3.1
 stages:
   build
   test
-  - name: package
-    if: branch = master
   - name: packageAlpha
     if: branch = development
 
