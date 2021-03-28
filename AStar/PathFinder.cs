@@ -37,12 +37,6 @@ namespace AStar
             {
                 var currentPosition = open.Pop();
 
-                //Is it in closed list? means this node was already processed
-                if (!calculationGrid[currentPosition].Open.HasValue)
-                {
-                    continue;
-                }
-
                 if (currentPosition == end)
                 {
                     calculationGrid.CloseNode(currentPosition);
@@ -52,7 +46,7 @@ namespace AStar
 
                 if (nodesVisited > _options.SearchLimit)
                 {
-                    return null;
+                    return new Position[0];
                 }
 
                 //Lets calculate each successors
