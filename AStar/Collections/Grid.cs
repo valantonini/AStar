@@ -39,6 +39,14 @@ namespace AStar.Collections
             }
         }
 
+        public bool IsOutOfBound(Position position)
+        {
+            return position.Row < 0 ||
+                position.Row >= Height ||
+                position.Column < 0 ||
+                position.Column >= Width;
+        }
+
         private int ConvertRowColumnToIndex(int row, int column)
         {
             return Width * row + column;
