@@ -31,16 +31,5 @@ namespace AStar.Collections
                 Open = openStatus,
             };
         }
-        
-        public void UpdateG(Position position, int g)
-        {
-            this[position] = new PathFinderNode
-            {
-                G = g,
-                H = this[position].H,
-                ParentNode = this[position].ParentNode,
-                Open = this[position].Open,
-            };
-        }
     }
 }
