@@ -8,6 +8,7 @@ namespace AStar
     public class PathFinder : IFindAPath
     {
         private const int ClosedValue = 0;
+        private const int DistanceBetweenNodes = 1;
         private readonly PathFinderOptions _options;
         private readonly WorldGrid _world;
 
@@ -66,7 +67,7 @@ namespace AStar
                         continue;
                     }
 
-                    var newG = calculationGrid[currentPosition].G + Math.Min(_world[neighbourPosition], 1);
+                    var newG = calculationGrid[currentPosition].G + DistanceBetweenNodes;
                     if (_options.DiagonalOptions == DiagonalOptions.HeavyDiagonals && GridOffsets.IsDiagonal(offsets))
                     {
                         newG *= 2;
