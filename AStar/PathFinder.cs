@@ -7,6 +7,7 @@ namespace AStar
 {
     public class PathFinder : IFindAPath
     {
+        private const int ClosedValue = 0;
         private readonly PathFinderOptions _options;
         private readonly WorldGrid _world;
 
@@ -19,7 +20,6 @@ namespace AStar
         ///<inheritdoc/>
         public Position[] FindPath(Position start, Position end)
         {
-            var found = false;
             var nodesVisited = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
             var calculationGrid = new CalculationGrid(_world.Height, _world.Width);
@@ -31,6 +31,7 @@ namespace AStar
                 open: true);
 
             calculationGrid[start] = startNode;
+            
             open.Push(start);
 
             while (open.Count > 0)
@@ -40,8 +41,7 @@ namespace AStar
                 if (currentPosition == end)
                 {
                     calculationGrid.CloseNode(currentPosition);
-                    found = true;
-                    break;
+                    return OrderClosedListAsArray(calculationGrid, currentPosition);
                 }
 
                 if (nodesVisited > _options.SearchLimit)
@@ -61,7 +61,7 @@ namespace AStar
                     }
 
                     // Blocked
-                    if (_world[neighbourPosition] == 0)
+                    if (_world[neighbourPosition] == ClosedValue)
                     {
                         continue;
                     }
@@ -107,15 +107,13 @@ namespace AStar
                         open.Push(new Position(neighbourPosition.Row, neighbourPosition.Column));
                     }
                 }
-
-                nodesVisited++;
-
+                
                 calculationGrid.CloseNode(currentPosition);
+                
+                nodesVisited++;
             }
 
-            return found 
-                ? OrderClosedListAsArray(calculationGrid, end)
-                : new Position[0];
+            return new Position[0];
         }
 
         private bool IsUnvisitedOrHasHigherGValue(PathFinderNode pathFinderNode, int newG)
