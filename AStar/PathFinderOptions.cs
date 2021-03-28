@@ -12,8 +12,6 @@ namespace AStar
 
         public bool PunishChangeDirection { get; set; }
 
-        public bool TieBreaker { get; set; }
-
         public int SearchLimit { get; set; }
 
         public PathFinderOptions()

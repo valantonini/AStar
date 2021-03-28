@@ -8,7 +8,7 @@ namespace AStar
         /// <summary>
         /// Gone + Heuristic (H)
         /// </summary>
-        public int F;
+        public int F => G + H;
         
         /// <summary>
         /// Distance from home
