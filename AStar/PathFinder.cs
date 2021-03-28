@@ -6,25 +6,15 @@ namespace AStar
 {
     public class PathFinder : IFindAPath
     {
-        private readonly List<PathFinderNode> _closed = new List<PathFinderNode>();
         private readonly PathFinderOptions _options;
         private readonly PathfinderGrid _pathfinderGrid;
         
-        private PathFinderNode[,] _mCalcGrid;
-        private IPriorityQueue<Position> _open;
         private bool isLaterallyAdjacent;
 
         public PathFinder(PathfinderGrid pathfinderGrid, PathFinderOptions pathFinderOptions = null)
         {
             _pathfinderGrid = pathfinderGrid ?? throw new ArgumentNullException(nameof(pathfinderGrid));
             _options = pathFinderOptions ?? new PathFinderOptions();
-        }
-
-        private void ResetCalcGrid()
-        {
-            _mCalcGrid = new PathFinderNode[_pathfinderGrid.Height, _pathfinderGrid.Width];
-            _open = new PriorityQueueB<Position>(new ComparePfNodeMatrix(_mCalcGrid));
-            _closed.Clear();
         }
 
         ///<inheritdoc/>
@@ -35,29 +25,29 @@ namespace AStar
                 var found = false;
                 var closedNodeCounter = 0;
                 var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
-                
-                ResetCalcGrid();
+                var calcGrid = new PathFinderNode[_pathfinderGrid.Height, _pathfinderGrid.Width];
+                var open = new PriorityQueueB<Position>(new ComparePfNodeMatrix(calcGrid));
 
-                _mCalcGrid[start.Row, start.Column].G = 0;
-                _mCalcGrid[start.Row, start.Column].F = 2;
-                _mCalcGrid[start.Row, start.Column].ParentNode = new Position(start.Row, start.Column);
-                _mCalcGrid[start.Row, start.Column].Open = true;
+                calcGrid[start.Row, start.Column].G = 0;
+                calcGrid[start.Row, start.Column].F = 2;
+                calcGrid[start.Row, start.Column].ParentNode = new Position(start.Row, start.Column);
+                calcGrid[start.Row, start.Column].Open = true;
 
-                _open.Push(start);
+                open.Push(start);
 
-                while (_open.Count > 0)
+                while (open.Count > 0)
                 {
-                    var location = _open.Pop();
+                    var location = open.Pop();
 
                     //Is it in closed list? means this node was already processed
-                    if (!_mCalcGrid[location.Row, location.Column].Open.HasValue)
+                    if (!calcGrid[location.Row, location.Column].Open.HasValue)
                     {
                         continue;
                     }
 
                     if (location == end)
                     {
-                        _mCalcGrid[location.Row, location.Column].Open = false;
+                        calcGrid[location.Row, location.Column].Open = false;
                         found = true;
                         break;
                     }
@@ -69,7 +59,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        var isLaterallyAdjacent = location.Row - _mCalcGrid[location.Row, location.Column].ParentNode.Row == 0;
+                        isLaterallyAdjacent = location.Row - calcGrid[location.Row, location.Column].ParentNode.Row == 0;
                         //isVerticallyAdjacent = location.Column - _mCalcGrid[location.Row, location.Column].ParentNode.Column == 0;
                     }
 
@@ -93,11 +83,11 @@ namespace AStar
                         int newG;
                         if (_options.HeavyDiagonals && !GridOffsets.IsCardinalOffset(offsets))
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].G + (int) (_pathfinderGrid[nextCandidate.Row, nextCandidate.Column] * 2.41);
+                            newG = calcGrid[location.Row, location.Column].G + (int) (_pathfinderGrid[nextCandidate.Row, nextCandidate.Column] * 2.41);
                         }
                         else
                         {
-                            newG = _mCalcGrid[location.Row, location.Column].G + _pathfinderGrid[nextCandidate.Row, nextCandidate.Column];
+                            newG = calcGrid[location.Row, location.Column].G + _pathfinderGrid[nextCandidate.Row, nextCandidate.Column];
                         }
 
                         if (_options.PunishChangeDirection)
@@ -119,17 +109,17 @@ namespace AStar
                             }
                         }
 
-                        if (_mCalcGrid[nextCandidate.Row, nextCandidate.Column].HasBeenVisited)
+                        if (calcGrid[nextCandidate.Row, nextCandidate.Column].HasBeenVisited)
                         {
                             // The current node has less code than the previous? then skip this node
-                            if (_mCalcGrid[nextCandidate.Row, nextCandidate.Column].G <= newG)
+                            if (calcGrid[nextCandidate.Row, nextCandidate.Column].G <= newG)
                             {
                                 continue;
                             }
                         }
 
-                        _mCalcGrid[nextCandidate.Row, nextCandidate.Column].ParentNode = new Position(location.Row, location.Column);
-                        _mCalcGrid[nextCandidate.Row, nextCandidate.Column].G = newG;
+                        calcGrid[nextCandidate.Row, nextCandidate.Column].ParentNode = new Position(location.Row, location.Column);
+                        calcGrid[nextCandidate.Row, nextCandidate.Column].G = newG;
 
                         var h = heuristicCalculator.CalculateHeuristic(nextCandidate, end);
 
@@ -143,26 +133,26 @@ namespace AStar
                             h = (int) (h + cross * 0.001);
                         }
 
-                        _mCalcGrid[nextCandidate.Row, nextCandidate.Column].F = newG + h;
+                        calcGrid[nextCandidate.Row, nextCandidate.Column].F = newG + h;
 
-                        _open.Push(new Position(nextCandidate.Row, nextCandidate.Column));
+                        open.Push(new Position(nextCandidate.Row, nextCandidate.Column));
 
-                        _mCalcGrid[nextCandidate.Row, nextCandidate.Column].Open = true;
+                        calcGrid[nextCandidate.Row, nextCandidate.Column].Open = true;
                     }
 
                     closedNodeCounter++;
-                    _mCalcGrid[location.Row, location.Column].Open = false;
+                    calcGrid[location.Row, location.Column].Open = false;
                 }
 
-                return !found ? null : OrderClosedListAsArray(end);
+                return !found ? null : OrderClosedListAsArray(calcGrid, end);
             }
         }
 
-        private Position[] OrderClosedListAsArray(Position end)
+        private static Position[] OrderClosedListAsArray(PathFinderNode[,] calcGrid, Position end)
         {
             var path = new List<Position>();
 
-            var endNode = _mCalcGrid[end.Row, end.Column];
+            var endNode = calcGrid[end.Row, end.Column];
 
             var currentNode = new
             {
@@ -174,7 +164,7 @@ namespace AStar
             {
                 path.Add(new Position(currentNode.Position.Row, currentNode.Position.Column));
 
-                var parentNode = _mCalcGrid[currentNode.ParentPosition.Row, currentNode.ParentPosition.Column];
+                var parentNode = calcGrid[currentNode.ParentPosition.Row, currentNode.ParentPosition.Column];
 
                 currentNode = new
                 {
