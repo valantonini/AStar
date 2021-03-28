@@ -88,7 +88,7 @@ namespace AStar
                         }
 
                         int newG;
-                        if (_options.HeavyDiagonals && !IsCardinalOffset(offsets))
+                        if (_options.HeavyDiagonals && !GridOffsets.IsCardinalOffset(offsets))
                         {
                             newG = _mCalcGrid[location.Row, location.Column].G + (int) (_pathfinderGrid[nextCandidate.Row, nextCandidate.Column] * 2.41);
                         }
@@ -155,40 +155,32 @@ namespace AStar
             }
         }
 
-        private static bool IsCardinalOffset((sbyte row, sbyte column) offset)
-        {
-            return offset.row != 0 && offset.column != 0;
-        }
-
         private Position[] OrderClosedListAsArray(Position end)
         {
             var path = new List<Position>();
 
-            var current = _mCalcGrid[end.Row, end.Column];
+            var endNode = _mCalcGrid[end.Row, end.Column];
 
-            var fNode = new
+            var currentNode = new
             {
-                current.ParentPosition,
                 Position = end,
+                endNode.ParentPosition,
             };
             
-
-            while (fNode.Position != fNode.ParentPosition)
+            while (currentNode.Position != currentNode.ParentPosition)
             {
-                path.Add(new Position(fNode.Position.Row, fNode.Position.Column));
+                path.Add(new Position(currentNode.Position.Row, currentNode.Position.Column));
 
-                var parentPosition = fNode.ParentPosition;
+                var parentNode = _mCalcGrid[currentNode.ParentPosition.Row, currentNode.ParentPosition.Column];
 
-                current = _mCalcGrid[parentPosition.Row, parentPosition.Column];
-
-                fNode = new
+                currentNode = new
                 {
-                    current.ParentPosition,
-                    Position = parentPosition,
+                    Position = currentNode.ParentPosition,
+                    parentNode.ParentPosition,
                 };
             }
 
-            path.Add(new Position(fNode.Position.Row, fNode.Position.Column));
+            path.Add(new Position(currentNode.Position.Row, currentNode.Position.Column));
 
             return path.ToArray();
         }

@@ -34,5 +34,10 @@ namespace AStar
         {
             return withDiagonals ? CardinalDirectionsWithDiagonalsOffsets : CardinalDirectionOffsets;
         }
+
+        public static bool IsCardinalOffset((sbyte row, sbyte column) offset)
+        {
+            return offset.row != 0 && offset.column != 0;
+        }
     }
 }
