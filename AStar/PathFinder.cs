@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AStar.Collections;
 using AStar.Heuristics;
 
 namespace AStar
@@ -22,7 +23,7 @@ namespace AStar
             var closedNodeCounter = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
             var calcGrid = new PathFinderNode[_pathfinderGrid.Height, _pathfinderGrid.Width];
-            var open = new PriorityQueueB<Position>(new ComparePfNodeMatrix(calcGrid));
+            var open = new PriorityQueue<Position>(new ComparePfNodeMatrix(calcGrid));
 
             var startNode = new PathFinderNode
             {
