@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AStar
+namespace AStar.Collections
 {
     public static class GridOffsets
     {

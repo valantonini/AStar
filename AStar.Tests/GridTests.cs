@@ -1,3 +1,4 @@
+using AStar.Collections;
 using NUnit.Framework;
 using Shouldly;
 

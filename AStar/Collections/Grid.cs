@@ -1,6 +1,6 @@
-namespace AStar
+namespace AStar.Collections
 {
-    public class Grid<T>
+    public class Grid<T> : IModelAGrid<T>
     {
         private readonly T[] _grid;
 

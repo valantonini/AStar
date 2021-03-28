@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using AStar.Collections;
+using NUnit.Framework;
 using Shouldly;
 
 namespace AStar.Tests

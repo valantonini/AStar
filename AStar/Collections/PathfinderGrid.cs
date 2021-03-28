@@ -1,4 +1,4 @@
-namespace AStar
+namespace AStar.Collections
 {
     public class PathfinderGrid : Grid<int>
     {
