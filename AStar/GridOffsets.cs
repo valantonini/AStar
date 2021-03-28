@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AStar
 {
     public static class GridOffsets
     {
-        public static IEnumerable<(sbyte row, sbyte column)> CardinalDirectionOffsets
+        private static IEnumerable<(sbyte row, sbyte column)> CardinalDirectionOffsets
         {
             get
             {
@@ -15,14 +16,10 @@ namespace AStar
             }
         }
 
-        public static IEnumerable<(sbyte row, sbyte column)> CardinalDirectionsWithDiagonalsOffsets
+        private static IEnumerable<(sbyte row, sbyte column)> DiagonalsOffsets
         {
             get
             {
-                yield return (0, -1);
-                yield return (1, 0);
-                yield return (0, 1);
-                yield return (-1, 0);
                 yield return (1, -1);
                 yield return (1, 1);
                 yield return (-1, 1);
@@ -32,7 +29,9 @@ namespace AStar
 
         public static IEnumerable<(sbyte row, sbyte column)> GetOffsets(bool withDiagonals = false)
         {
-            return withDiagonals ? CardinalDirectionsWithDiagonalsOffsets : CardinalDirectionOffsets;
+            return withDiagonals 
+                ? CardinalDirectionOffsets.Concat(DiagonalsOffsets) 
+                : CardinalDirectionOffsets;
         }
 
         public static bool IsCardinalOffset((sbyte row, sbyte column) offset)
