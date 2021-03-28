@@ -16,6 +16,17 @@ namespace AStar.Collections
 
         public int Width { get; }
 
+        public T this[Position position]
+        {
+            get
+            {
+                return _grid[ConvertRowColumnToIndex(position.Row, position.Column)];
+            }
+            set
+            {
+                _grid[ConvertRowColumnToIndex(position.Row, position.Column)] = value;
+            }
+        }
         public T this[int row, int column]
         {
             get

@@ -20,19 +20,16 @@ namespace AStar
         public Position[] FindPath(Position start, Position end)
         {
             var found = false;
-            var closedNodeCounter = 0;
+            var nodesVisited = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
             var calculationGrid = new CalculationGrid(_pathfinderGrid.Height, _pathfinderGrid.Width);
             var open = new PriorityQueue<Position>(new ComparePfNodeMatrix(calculationGrid));
 
-            var startNode = new PathFinderNode
-            (
-                g: 0,
+            var startNode = new PathFinderNode(g: 0,
                 h: 2,
                 parentNode: start,
-                open: true
-            );
-            
+                open: true);
+
             calculationGrid[start] = startNode;
 
             open.Push(start);
@@ -54,11 +51,11 @@ namespace AStar
                     break;
                 }
 
-                if (closedNodeCounter > _options.SearchLimit)
+                if (nodesVisited > _options.SearchLimit)
                 {
                     return null;
                 }
-                
+
                 //Lets calculate each successors
                 foreach (var offsets in GridOffsets.GetOffsets(_options.UseDiagonals))
                 {
@@ -71,24 +68,21 @@ namespace AStar
                     }
 
                     // Blocked
-                    if (_pathfinderGrid[neighbour.Row, neighbour.Column] == 0)
+                    if (_pathfinderGrid[neighbour] == 0)
                     {
                         continue;
                     }
 
-                    int newG;
+                    var newG = calculationGrid[currentPosition].G + Math.Min(_pathfinderGrid[neighbour], 1);
                     if (_options.DiagonalOptions == DiagonalOptions.HeavyDiagonals && GridOffsets.IsDiagonal(offsets))
                     {
-                        newG = calculationGrid[currentPosition].G + (int) (_pathfinderGrid[neighbour.Row, neighbour.Column] * 2.41);
-                    }
-                    else
-                    {
-                        newG = calculationGrid[currentPosition].G + _pathfinderGrid[neighbour.Row, neighbour.Column];
+                        newG *= 2;
                     }
 
                     if (_options.PunishChangeDirection)
                     {
                         var isLaterallyAdjacent = currentPosition.Row - calculationGrid[currentPosition].ParentNode.Row == 0;
+
                         // var isVerticallyAdjacent = location.Column - _mCalcGrid[location.Row, location.Column].ParentNode.Column == 0;
 
                         if (neighbour.Row - currentPosition.Row != 0)
@@ -108,28 +102,31 @@ namespace AStar
                         }
                     }
 
-                    if (calculationGrid[neighbour].HasBeenVisited && calculationGrid[neighbour].G <= newG)
+                    if (IsUnvisitedOrHasHigherGValue(calculationGrid[neighbour], newG))
                     {
-                        continue;
+                        var newNeighbour = new PathFinderNode(newG,
+                            heuristicCalculator.CalculateHeuristic(neighbour, end),
+                            parentNode: currentPosition,
+                            open: true);
+
+                        calculationGrid[neighbour] = newNeighbour;
+
+                        open.Push(new Position(neighbour.Row, neighbour.Column));
                     }
-
-                    var newNeighbour = new PathFinderNode(
-                        newG,
-                        heuristicCalculator.CalculateHeuristic(neighbour, end),
-                        parentNode: currentPosition,
-                        open: true
-                    );
-
-                    calculationGrid[neighbour] = newNeighbour;
-
-                    open.Push(new Position(neighbour.Row, neighbour.Column));
                 }
 
-                closedNodeCounter++;
+                nodesVisited++;
+
                 calculationGrid.CloseNode(currentPosition);
             }
 
             return !found ? null : OrderClosedListAsArray(calculationGrid, end);
+        }
+
+        private bool IsUnvisitedOrHasHigherGValue(PathFinderNode pathFinderNode, int newG)
+        {
+            return !pathFinderNode.HasBeenVisited ||
+                (pathFinderNode.HasBeenVisited && newG < pathFinderNode.G);
         }
 
         private static Position[] OrderClosedListAsArray(CalculationGrid calcGrid, Position end)
