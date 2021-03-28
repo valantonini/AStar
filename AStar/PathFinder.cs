@@ -33,11 +33,12 @@ namespace AStar
             {
                 var found = false;
                 var closedNodeCounter = 0;
+                
                 ResetCalcGrid();
 
                 _mCalcGrid[start.Row, start.Column].G = 0;
                 _mCalcGrid[start.Row, start.Column].F = _options.HeuristicEstimate;
-                _mCalcGrid[start.Row, start.Column].ParentPosition = new Position(start.Row, start.Column);
+                _mCalcGrid[start.Row, start.Column].ParentNode = new Position(start.Row, start.Column);
                 _mCalcGrid[start.Row, start.Column].Open = true;
 
                 _open.Push(start);
@@ -66,7 +67,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        _horiz = location.Row - _mCalcGrid[location.Row, location.Column].ParentPosition.Row;
+                        _horiz = location.Row - _mCalcGrid[location.Row, location.Column].ParentNode.Row;
                     }
 
                     //Lets calculate each successors
@@ -125,7 +126,7 @@ namespace AStar
                             }
                         }
 
-                        _mCalcGrid[nextCandidate.Row, nextCandidate.Column].ParentPosition = new Position(location.Row, location.Column);
+                        _mCalcGrid[nextCandidate.Row, nextCandidate.Column].ParentNode = new Position(location.Row, location.Column);
                         _mCalcGrid[nextCandidate.Row, nextCandidate.Column].G = newG;
 
                         var h = Heuristic.DetermineH(_options.Formula, end, _options.HeuristicEstimate, nextCandidate.Column, nextCandidate.Row);
@@ -164,7 +165,7 @@ namespace AStar
             var currentNode = new
             {
                 Position = end,
-                endNode.ParentPosition,
+                ParentPosition = endNode.ParentNode,
             };
             
             while (currentNode.Position != currentNode.ParentPosition)
@@ -176,7 +177,7 @@ namespace AStar
                 currentNode = new
                 {
                     Position = currentNode.ParentPosition,
-                    parentNode.ParentPosition,
+                    ParentPosition = parentNode.ParentNode,
                 };
             }
 

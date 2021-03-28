@@ -21,14 +21,9 @@ namespace AStar
         public int H;
 
         /// <summary>
-        /// The position of this node
-        /// </summary>
-        public Position Position;
-        
-        /// <summary>
         /// This nodes parent
         /// </summary>
-        public Position ParentPosition;
+        public Position ParentNode;
         
         /// <summary>
         /// If the node is open or closed
@@ -39,6 +34,5 @@ namespace AStar
         /// If the node has been considered yet
         /// </summary>
         public bool HasBeenVisited => Open.HasValue;
-        
     }
 }
