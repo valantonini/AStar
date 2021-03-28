@@ -5,10 +5,6 @@ namespace AStar
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct PathFinderNode
     {
-        /// <summary>
-        /// Gone + Heuristic (H)
-        /// </summary>
-        public int F => G + H;
         
         /// <summary>
         /// Distance from home
@@ -31,8 +27,21 @@ namespace AStar
         public bool? Open;
         
         /// <summary>
+        /// Gone + Heuristic (H)
+        /// </summary>
+        public int F => G + H;
+        
+        /// <summary>
         /// If the node has been considered yet
         /// </summary>
         public bool HasBeenVisited => Open.HasValue;
+
+        public PathFinderNode(int g, int h, Position parentNode, bool? open)
+        {
+            G = g;
+            H = h;
+            ParentNode = parentNode;
+            Open = open;
+        }
     }
 }

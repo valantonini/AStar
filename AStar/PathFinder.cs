@@ -22,7 +22,7 @@ namespace AStar
             var found = false;
             var closedNodeCounter = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
-            var calcGrid = new PathFinderNode[_pathfinderGrid.Height, _pathfinderGrid.Width];
+            var calcGrid = new CalculationGrid(_pathfinderGrid.Height, _pathfinderGrid.Width);
             var open = new PriorityQueue<Position>(new ComparePfNodeMatrix(calcGrid));
 
             var startNode = new PathFinderNode
@@ -33,7 +33,7 @@ namespace AStar
                 Open = true,
             };
             
-            calcGrid[start.Row, start.Column] = startNode;
+            calcGrid[start] = startNode;
 
             open.Push(start);
 
@@ -42,14 +42,14 @@ namespace AStar
                 var currentPosition = open.Pop();
 
                 //Is it in closed list? means this node was already processed
-                if (!calcGrid[currentPosition.Row, currentPosition.Column].Open.HasValue)
+                if (!calcGrid[currentPosition].Open.HasValue)
                 {
                     continue;
                 }
 
                 if (currentPosition == end)
                 {
-                    calcGrid[currentPosition.Row, currentPosition.Column].Open = false;
+                    calcGrid.SetNodeOpenStatus(currentPosition, false);
                     found = true;
                     break;
                 }
@@ -79,16 +79,16 @@ namespace AStar
                     int newG;
                     if (_options.HeavyDiagonals && !GridOffsets.IsCardinalOffset(offsets))
                     {
-                        newG = calcGrid[currentPosition.Row, currentPosition.Column].G + (int) (_pathfinderGrid[neighbour.Row, neighbour.Column] * 2.41);
+                        newG = calcGrid[currentPosition].G + (int) (_pathfinderGrid[neighbour.Row, neighbour.Column] * 2.41);
                     }
                     else
                     {
-                        newG = calcGrid[currentPosition.Row, currentPosition.Column].G + _pathfinderGrid[neighbour.Row, neighbour.Column];
+                        newG = calcGrid[currentPosition].G + _pathfinderGrid[neighbour.Row, neighbour.Column];
                     }
 
                     if (_options.PunishChangeDirection)
                     {
-                        var isLaterallyAdjacent = currentPosition.Row - calcGrid[currentPosition.Row, currentPosition.Column].ParentNode.Row == 0;
+                        var isLaterallyAdjacent = currentPosition.Row - calcGrid[currentPosition].ParentNode.Row == 0;
 
                         // var isVerticallyAdjacent = location.Column - _mCalcGrid[location.Row, location.Column].ParentNode.Column == 0;
 
@@ -109,7 +109,7 @@ namespace AStar
                         }
                     }
 
-                    if (calcGrid[neighbour.Row, neighbour.Column].HasBeenVisited && calcGrid[neighbour.Row, neighbour.Column].G <= newG)
+                    if (calcGrid[neighbour].HasBeenVisited && calcGrid[neighbour].G <= newG)
                     {
                         continue;
                     }
@@ -122,23 +122,23 @@ namespace AStar
                         Open = true,
                     };
 
-                    calcGrid[neighbour.Row, neighbour.Column] = newNeighbour;
+                    calcGrid[neighbour] = newNeighbour;
 
                     open.Push(new Position(neighbour.Row, neighbour.Column));
                 }
 
                 closedNodeCounter++;
-                calcGrid[currentPosition.Row, currentPosition.Column].Open = false;
+                calcGrid.SetNodeOpenStatus(currentPosition, false);
             }
 
             return !found ? null : OrderClosedListAsArray(calcGrid, end);
         }
 
-        private static Position[] OrderClosedListAsArray(PathFinderNode[,] calcGrid, Position end)
+        private static Position[] OrderClosedListAsArray(CalculationGrid calcGrid, Position end)
         {
             var path = new List<Position>();
 
-            var endNode = calcGrid[end.Row, end.Column];
+            var endNode = calcGrid[end];
 
             var currentNode = new
             {
@@ -150,7 +150,7 @@ namespace AStar
             {
                 path.Add(new Position(currentNode.Position.Row, currentNode.Position.Column));
 
-                var parentNode = calcGrid[currentNode.ParentPosition.Row, currentNode.ParentPosition.Column];
+                var parentNode = calcGrid[currentNode.ParentPosition];
 
                 currentNode = new
                 {
