@@ -38,5 +38,10 @@ namespace AStar.Collections
         {
             return offset.row != 0 && offset.column != 0;
         }
+
+        public static bool IsDiagonal((sbyte row, sbyte column) offset)
+        {
+            return offset.row != 0 || offset.column != 0;
+        }
     }
 }

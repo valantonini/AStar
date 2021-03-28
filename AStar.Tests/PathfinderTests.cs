@@ -100,7 +100,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldDoSimplePathWithNoDiagonal()
         {
-            var pathfinderOptions = new PathFinderOptions { Diagonals = false };
+            var pathfinderOptions = new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals };
             _pathFinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
 
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
@@ -133,7 +133,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldDoSimplePathWithNoDiagonalAroundObstacle()
         {
-            var pathfinderOptions = new PathFinderOptions { Diagonals = false };
+            var pathfinderOptions = new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals };
             _pathFinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
 
             _pathfinderGrid[2, 0] = 0;
