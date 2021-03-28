@@ -113,7 +113,9 @@ namespace AStar
                 calculationGrid.CloseNode(currentPosition);
             }
 
-            return !found ? null : OrderClosedListAsArray(calculationGrid, end);
+            return found 
+                ? OrderClosedListAsArray(calculationGrid, end)
+                : new Position[0];
         }
 
         private bool IsUnvisitedOrHasHigherGValue(PathFinderNode pathFinderNode, int newG)

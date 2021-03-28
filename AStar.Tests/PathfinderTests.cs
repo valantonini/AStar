@@ -212,7 +212,7 @@ namespace AStar.Tests
         }
 
         [Test]
-        public void ShouldFindNoPath()
+        public void ShouldReturnEmptyPathIfUnreachable()
         {
             _world[2, 0] = 0;
             _world[2, 1] = 0;
@@ -223,7 +223,7 @@ namespace AStar.Tests
             _world[2, 6] = 0;
             _world[2, 7] = 0;
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            path.ShouldBe(null);
+            path.ShouldBeEmpty();
         }
 
         private static WorldGrid CreateGridInitializedToOpen(int height, int width)
