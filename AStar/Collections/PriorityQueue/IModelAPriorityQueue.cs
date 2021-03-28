@@ -1,4 +1,4 @@
-﻿namespace AStar.Collections
+﻿namespace AStar.Collections.PriorityQueue
 {
     internal interface IModelAPriorityQueue<T>
     {

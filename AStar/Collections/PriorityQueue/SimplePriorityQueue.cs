@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 
-namespace AStar.Collections
+namespace AStar.Collections.PriorityQueue
 {
-    internal class PriorityQueue<T> : IModelAPriorityQueue<T>
+    internal class SimplePriorityQueue<T> : IModelAPriorityQueue<T>
     {
         private readonly List<T> _innerList = new List<T>();
         private readonly IComparer<T> _comparer;
         
-        public PriorityQueue()
+        public SimplePriorityQueue()
         {
             _comparer = Comparer<T>.Default;
         }
 
-        public PriorityQueue(IComparer<T> comparer)
+        public SimplePriorityQueue(IComparer<T> comparer)
         {
             _comparer = comparer;
         }

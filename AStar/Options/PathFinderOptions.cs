@@ -1,6 +1,6 @@
 ﻿using AStar.Heuristics;
 
-namespace AStar
+namespace AStar.Options
 {
     public class PathFinderOptions
     {
@@ -20,12 +20,5 @@ namespace AStar
             DiagonalOptions = DiagonalOptions.Diagonals;
             SearchLimit = 2000;
         }
-    }
-
-    public enum DiagonalOptions
-    {
-        NoDiagonals = 0,
-        Diagonals = 1,
-        HeavyDiagonals = 2
     }
 }

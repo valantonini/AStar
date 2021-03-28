@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace AStar
+namespace AStar.Collections.PathFinderNodeGrid
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public readonly struct PathFinderNode
+    internal readonly struct PathFinderNode
     {
         
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using AStar.Collections;
+﻿using AStar.Options;
 using NUnit.Framework;
 using Shouldly;
 

@@ -1,6 +1,6 @@
-namespace AStar.Collections
+namespace AStar.Collections.PathFinderNodeGrid
 {
-    public class CalculationGrid
+    internal class CalculationGrid
     {
         private readonly PathFinderNode[,] _internalGrid;
 

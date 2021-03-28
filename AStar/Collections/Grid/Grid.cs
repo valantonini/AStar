@@ -1,11 +1,22 @@
-namespace AStar.Collections
+using System;
+
+namespace AStar.Collections.Grid
 {
     public class Grid<T> : IModelAGrid<T>
     {
         private readonly T[] _grid;
-
-        public Grid(int height, int width)
+        protected Grid(int height, int width)
         {
+            if (height <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(height));
+            }
+            
+            if (width <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(width));
+            }
+            
             Height = height;
             Width = width;
 
@@ -15,6 +26,13 @@ namespace AStar.Collections
         public int Height { get; }
 
         public int Width { get; }
+        public bool IsOutOfBounds(Position position)
+        {
+            return position.Row < 0 ||
+                position.Row >= Height ||
+                position.Column < 0 ||
+                position.Column >= Width;
+        }
 
         public T this[Position position]
         {
@@ -37,14 +55,6 @@ namespace AStar.Collections
             {
                 _grid[ConvertRowColumnToIndex(row, column)] = value;
             }
-        }
-
-        public bool IsOutOfBound(Position position)
-        {
-            return position.Row < 0 ||
-                position.Row >= Height ||
-                position.Column < 0 ||
-                position.Column >= Width;
         }
 
         private int ConvertRowColumnToIndex(int row, int column)

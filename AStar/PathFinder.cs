@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using AStar.Collections;
+using AStar.Collections.Grid;
+using AStar.Collections.PathFinderNodeGrid;
+using AStar.Collections.PriorityQueue;
 using AStar.Heuristics;
+using AStar.Options;
 
 namespace AStar
 {
@@ -19,22 +22,27 @@ namespace AStar
             _world = worldGrid ?? throw new ArgumentNullException(nameof(worldGrid));
             _options = pathFinderOptions ?? new PathFinderOptions();
         }
-
+        
+        ///<inheritdoc/>
+        public Point[] FindPath(Point start, Point end)
+        {
+            return FindPath(new Position(start.Y, start.X), new Position(end.Y, end.X))
+                .Select(position => new Point(position.Column, position.Row))
+                .ToArray();
+        }
+        
         ///<inheritdoc/>
         public Position[] FindPath(Position start, Position end)
         {
             var nodesVisited = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
             var calculationGrid = new CalculationGrid(_world.Height, _world.Width);
-            var open = new PriorityQueue<Position>(new ComparePfNodeMatrix(calculationGrid));
+            var open = new SimplePriorityQueue<Position>(new ComparePathFinderNodeByFValue(calculationGrid));
 
-            var startNode = new PathFinderNode(g: 0,
-                h: 2,
-                parentNode: start,
-                open: true);
+            var startNode = new PathFinderNode(g: 0, h: 2, parentNode: start, open: true);
 
             calculationGrid[start] = startNode;
-            
+
             open.Push(start);
 
             while (open.Count > 0)
@@ -52,12 +60,13 @@ namespace AStar
                     return new Position[0];
                 }
 
-                //Lets calculate each successors
-                foreach (var offsets in GridOffsets.GetOffsets(_options.UseDiagonals))
+                foreach (var successorOffset in GridOffsets.GetOffsets(_options.UseDiagonals))
                 {
-                    var successorPosition = new Position(qPosition.Row + offsets.row, qPosition.Column + offsets.column);
+                    var successorRow = qPosition.Row + successorOffset.row;
+                    var successorColumn = qPosition.Column + successorOffset.column;
+                    var successorPosition = new Position(successorRow, successorColumn);
 
-                    if (_world.IsOutOfBound(successorPosition))
+                    if (_world.IsOutOfBounds(successorPosition))
                     {
                         continue;
                     }
@@ -68,8 +77,8 @@ namespace AStar
                     }
 
                     var newG = calculationGrid[qPosition].G + DistanceBetweenNodes;
-                    
-                    if (_options.DiagonalOptions == DiagonalOptions.HeavyDiagonals && GridOffsets.IsDiagonal(offsets))
+
+                    if (_options.DiagonalOptions == DiagonalOptions.HeavyDiagonals && GridOffsets.IsDiagonal(successorOffset))
                     {
                         newG *= 2;
                     }
@@ -108,20 +117,13 @@ namespace AStar
                         open.Push(new Position(successorPosition.Row, successorPosition.Column));
                     }
                 }
-                
+
                 calculationGrid.CloseNode(qPosition);
-                
+
                 nodesVisited++;
             }
 
             return new Position[0];
-        }
-
-        public Point[] FindPath(Point start, Point end)
-        {
-            return FindPath(new Position(start.Y, start.X), new Position(end.Y, end.X))
-                .Select(position => new Point(position.Column, position.Row))
-                .ToArray();
         }
 
         private bool IsUnvisitedOrHasHigherGValue(PathFinderNode pathFinderNode, int newG)
