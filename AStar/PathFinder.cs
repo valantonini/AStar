@@ -8,11 +8,11 @@ namespace AStar
     public class PathFinder : IFindAPath
     {
         private readonly PathFinderOptions _options;
-        private readonly PathfinderGrid _pathfinderGrid;
+        private readonly WorldGrid _world;
 
-        public PathFinder(PathfinderGrid pathfinderGrid, PathFinderOptions pathFinderOptions = null)
+        public PathFinder(WorldGrid worldGrid, PathFinderOptions pathFinderOptions = null)
         {
-            _pathfinderGrid = pathfinderGrid ?? throw new ArgumentNullException(nameof(pathfinderGrid));
+            _world = worldGrid ?? throw new ArgumentNullException(nameof(worldGrid));
             _options = pathFinderOptions ?? new PathFinderOptions();
         }
 
@@ -22,7 +22,7 @@ namespace AStar
             var found = false;
             var nodesVisited = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
-            var calculationGrid = new CalculationGrid(_pathfinderGrid.Height, _pathfinderGrid.Width);
+            var calculationGrid = new CalculationGrid(_world.Height, _world.Width);
             var open = new PriorityQueue<Position>(new ComparePfNodeMatrix(calculationGrid));
 
             var startNode = new PathFinderNode(g: 0,
@@ -31,7 +31,6 @@ namespace AStar
                 open: true);
 
             calculationGrid[start] = startNode;
-
             open.Push(start);
 
             while (open.Count > 0)
@@ -60,20 +59,20 @@ namespace AStar
                 foreach (var offsets in GridOffsets.GetOffsets(_options.UseDiagonals))
                 {
                     //unsign incase we went out of bounds
-                    var neighbour = new Position((ushort) (currentPosition.Row + offsets.row), (ushort) (currentPosition.Column + offsets.column));
+                    var neighbourPosition = new Position((ushort) (currentPosition.Row + offsets.row), (ushort) (currentPosition.Column + offsets.column));
 
-                    if (neighbour.Row >= _pathfinderGrid.Height || neighbour.Column >= +_pathfinderGrid.Width)
+                    if (neighbourPosition.Row >= _world.Height || neighbourPosition.Column >= +_world.Width)
                     {
                         continue;
                     }
 
                     // Blocked
-                    if (_pathfinderGrid[neighbour] == 0)
+                    if (_world[neighbourPosition] == 0)
                     {
                         continue;
                     }
 
-                    var newG = calculationGrid[currentPosition].G + Math.Min(_pathfinderGrid[neighbour], 1);
+                    var newG = calculationGrid[currentPosition].G + Math.Min(_world[neighbourPosition], 1);
                     if (_options.DiagonalOptions == DiagonalOptions.HeavyDiagonals && GridOffsets.IsDiagonal(offsets))
                     {
                         newG *= 2;
@@ -85,33 +84,33 @@ namespace AStar
 
                         // var isVerticallyAdjacent = location.Column - _mCalcGrid[location.Row, location.Column].ParentNode.Column == 0;
 
-                        if (neighbour.Row - currentPosition.Row != 0)
+                        if (neighbourPosition.Row - currentPosition.Row != 0)
                         {
                             if (isLaterallyAdjacent)
                             {
-                                newG += Math.Abs(neighbour.Row - end.Row) + Math.Abs(neighbour.Column - end.Column);
+                                newG += Math.Abs(neighbourPosition.Row - end.Row) + Math.Abs(neighbourPosition.Column - end.Column);
                             }
                         }
 
-                        if (neighbour.Column - currentPosition.Column != 0)
+                        if (neighbourPosition.Column - currentPosition.Column != 0)
                         {
                             if (!isLaterallyAdjacent)
                             {
-                                newG += Math.Abs(neighbour.Row - end.Row) + Math.Abs(neighbour.Column - end.Column);
+                                newG += Math.Abs(neighbourPosition.Row - end.Row) + Math.Abs(neighbourPosition.Column - end.Column);
                             }
                         }
                     }
 
-                    if (IsUnvisitedOrHasHigherGValue(calculationGrid[neighbour], newG))
+                    if (IsUnvisitedOrHasHigherGValue(calculationGrid[neighbourPosition], newG))
                     {
                         var newNeighbour = new PathFinderNode(newG,
-                            heuristicCalculator.CalculateHeuristic(neighbour, end),
+                            heuristicCalculator.CalculateHeuristic(neighbourPosition, end),
                             parentNode: currentPosition,
                             open: true);
 
-                        calculationGrid[neighbour] = newNeighbour;
+                        calculationGrid[neighbourPosition] = newNeighbour;
 
-                        open.Push(new Position(neighbour.Row, neighbour.Column));
+                        open.Push(new Position(neighbourPosition.Row, neighbourPosition.Column));
                     }
                 }
 

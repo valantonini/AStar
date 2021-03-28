@@ -7,7 +7,7 @@ namespace AStar.Tests
     [TestFixture]
     public class LongerPathingTests
     {
-        private PathfinderGrid _pathfinderGrid;
+        private WorldGrid _world;
 
         [SetUp]
         public void SetUp()
@@ -45,7 +45,7 @@ namespace AStar.Tests
                           X111111111111111111111111111111X
                           XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 
-            _pathfinderGrid = Helper.ConvertStringToPathfinderGrid(level);
+            _world = Helper.ConvertStringToPathfinderGrid(level);
         }
 
         [Test]
@@ -53,17 +53,17 @@ namespace AStar.Tests
         {
             var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
 
-            var pathfinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
+            var pathfinder = new PathFinder(_world, pathfinderOptions);
             var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
         }
 
         [Test]
         public void ShouldPathEnvironment()
         {
-            var pathfinder = new PathFinder(_pathfinderGrid);
+            var pathfinder = new PathFinder(_world);
             var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
 
             path[0].Row.ShouldBe(30);
             path[0].Column.ShouldBe(30);

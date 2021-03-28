@@ -10,7 +10,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldInstantiateWithCorrectDimensions()
         {
-            var grid = new PathfinderGrid(12, 10);
+            var grid = new WorldGrid(12, 10);
 
             grid.Height.ShouldBe(12);
             grid.Width.ShouldBe(10);
@@ -19,7 +19,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldReadAndWriteByIndex()
         {
-            var grid = new PathfinderGrid(2, 3)
+            var grid = new WorldGrid(2, 3)
             {
                 [0, 0] = 1,
                 [0, 1] = 2,

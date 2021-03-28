@@ -8,14 +8,14 @@ namespace AStar.Tests
     [TestFixture]
     public class PathfinderTests
     {
-        private PathfinderGrid _pathfinderGrid;
+        private WorldGrid _world;
         private PathFinder _pathFinder;
 
         [SetUp]
         public void SetUp()
         {
-            _pathfinderGrid = CreateGridInitializedToOpen(8, 8);
-            _pathFinder = new PathFinder(_pathfinderGrid);
+            _world = CreateGridInitializedToOpen(8, 8);
+            _pathFinder = new PathFinder(_world);
         }
 
         [Test]
@@ -69,15 +69,15 @@ namespace AStar.Tests
             node.Column.ShouldBe(1);
 
 
-            Console.WriteLine(Helper.PrintGrid(_pathfinderGrid));
-            Console.WriteLine(Helper.PrintPath(_pathfinderGrid, path));
+            Console.WriteLine(Helper.PrintGrid(_world));
+            Console.WriteLine(Helper.PrintPath(_world, path));
         }
 
         [Test]
         public void ShouldDoSimplePath()
         {
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
             path.Length.ShouldBe(4);
 
             var item = path[3];
@@ -101,10 +101,10 @@ namespace AStar.Tests
         public void ShouldDoSimplePathWithNoDiagonal()
         {
             var pathfinderOptions = new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals };
-            _pathFinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
+            _pathFinder = new PathFinder(_world, pathfinderOptions);
 
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
             PrintCoordinates(path);
 
             path.Length.ShouldBe(5);
@@ -134,14 +134,14 @@ namespace AStar.Tests
         public void ShouldDoSimplePathWithNoDiagonalAroundObstacle()
         {
             var pathfinderOptions = new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals };
-            _pathFinder = new PathFinder(_pathfinderGrid, pathfinderOptions);
+            _pathFinder = new PathFinder(_world, pathfinderOptions);
 
-            _pathfinderGrid[2, 0] = 0;
-            _pathfinderGrid[2, 1] = 0;
-            _pathfinderGrid[2, 2] = 0;
+            _world[2, 0] = 0;
+            _world[2, 1] = 0;
+            _world[2, 2] = 0;
 
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
             PrintCoordinates(path);
 
             path.Length.ShouldBe(7);
@@ -178,12 +178,12 @@ namespace AStar.Tests
         [Test]
         public void ShouldPathAroundObstacle()
         {
-            _pathfinderGrid[2, 0] = 0;
-            _pathfinderGrid[2, 1] = 0;
-            _pathfinderGrid[2, 2] = 0;
-            _pathfinderGrid[2, 3] = 0;
+            _world[2, 0] = 0;
+            _world[2, 1] = 0;
+            _world[2, 2] = 0;
+            _world[2, 3] = 0;
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
             path.Length.ShouldBe(6);
 
             var item = path[5];
@@ -214,21 +214,21 @@ namespace AStar.Tests
         [Test]
         public void ShouldFindNoPath()
         {
-            _pathfinderGrid[2, 0] = 0;
-            _pathfinderGrid[2, 1] = 0;
-            _pathfinderGrid[2, 2] = 0;
-            _pathfinderGrid[2, 3] = 0;
-            _pathfinderGrid[2, 4] = 0;
-            _pathfinderGrid[2, 5] = 0;
-            _pathfinderGrid[2, 6] = 0;
-            _pathfinderGrid[2, 7] = 0;
+            _world[2, 0] = 0;
+            _world[2, 1] = 0;
+            _world[2, 2] = 0;
+            _world[2, 3] = 0;
+            _world[2, 4] = 0;
+            _world[2, 5] = 0;
+            _world[2, 6] = 0;
+            _world[2, 7] = 0;
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             path.ShouldBe(null);
         }
 
-        private static PathfinderGrid CreateGridInitializedToOpen(int height, int width)
+        private static WorldGrid CreateGridInitializedToOpen(int height, int width)
         {
-            var grid = new PathfinderGrid(height, width);
+            var grid = new WorldGrid(height, width);
 
             for (var row = 0; row < grid.Height; row++)
             {

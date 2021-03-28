@@ -7,7 +7,7 @@ namespace AStar.Tests
     [TestFixture]
     public class PathingTests
     {
-        private PathfinderGrid _pathfinderGrid;
+        private WorldGrid _world;
 
         [SetUp]
         public void SetUp()
@@ -17,17 +17,17 @@ namespace AStar.Tests
                           X11111X
                           XXXXXXX";
 
-            _pathfinderGrid = Helper.ConvertStringToPathfinderGrid(level);
+            _world = Helper.ConvertStringToPathfinderGrid(level);
         }
 
         [Test]
         public void ShouldPathPredictably()
         {
-            var pathfinder = new PathFinder(_pathfinderGrid);
+            var pathfinder = new PathFinder(_world);
 
             var path = pathfinder.FindPath(new Position(1, 1), new Position(2, 3));
 
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
             Helper.PrintAssertions(path);
 
             path[0].Row.ShouldBe(2);
@@ -41,11 +41,11 @@ namespace AStar.Tests
         [Test]
         public void ShouldPathPredictably2()
         {
-            var pathfinder = new PathFinder(_pathfinderGrid);
+            var pathfinder = new PathFinder(_world);
 
             var path = pathfinder.FindPath(new Position(1, 1), new Position(1, 5));
 
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
 
             path[0].Row.ShouldBe(1);
             path[0].Column.ShouldBe(5);
@@ -62,11 +62,11 @@ namespace AStar.Tests
         [Test]
         public void ShouldPathPredictably3()
         {
-            var pathfinder = new PathFinder(_pathfinderGrid, new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals });
+            var pathfinder = new PathFinder(_world, new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals });
 
             var path = pathfinder.FindPath(new Position(1, 1), new Position(1, 5));
 
-            Helper.Print(_pathfinderGrid, path);
+            Helper.Print(_world, path);
             Helper.PrintAssertions(path);
 
             path[0].Row.ShouldBe(1);

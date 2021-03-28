@@ -8,15 +8,15 @@ namespace AStar.Tests
 {
     public static class Helper
     {
-        public static string PrintGrid(PathfinderGrid pathfinderGrid, bool appendSpace = true)
+        public static string PrintGrid(WorldGrid worldGrid, bool appendSpace = true)
         {
             var s = new StringBuilder();
 
-            for (var row = 0; row < pathfinderGrid.Height; row++)
+            for (var row = 0; row < worldGrid.Height; row++)
             {
-                for (var column = 0; column < pathfinderGrid.Width; column++)
+                for (var column = 0; column < worldGrid.Width; column++)
                 {
-                    s.Append(pathfinderGrid[row, column]);
+                    s.Append(worldGrid[row, column]);
                     if (appendSpace)
                     {
                         s.Append(' ');
@@ -28,13 +28,13 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static string PrintPath(PathfinderGrid pathfinderGrid, Position[] path, bool appendSpace = true)
+        public static string PrintPath(WorldGrid world, Position[] path, bool appendSpace = true)
         {
             var s = new StringBuilder();
             
-            for (var row = 0; row < pathfinderGrid.Height; row++)
+            for (var row = 0; row < world.Height; row++)
             {
-                for (var column = 0; column < pathfinderGrid.Width; column++)
+                for (var column = 0; column < world.Width; column++)
                 {
                     if (path.Any(n => n.Row == row && n.Column == column))
                     {
@@ -42,7 +42,7 @@ namespace AStar.Tests
                     }
                     else
                     {
-                        s.Append(pathfinderGrid[row, column]);
+                        s.Append(world[row, column]);
                     }
                     s.Append(' ');
                 }
@@ -51,12 +51,12 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static void Print(PathfinderGrid pathfinderGrid, Position[] path)
+        public static void Print(WorldGrid world, Position[] path)
         {
-            Console.WriteLine(PrintGrid(pathfinderGrid));
+            Console.WriteLine(PrintGrid(world));
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(Environment.NewLine);
-            Console.WriteLine(PrintPath(pathfinderGrid, path));
+            Console.WriteLine(PrintPath(world, path));
         }
 
         public static void PrintAssertions(Position[] path)
@@ -68,7 +68,7 @@ namespace AStar.Tests
             }
         }
 
-        public static PathfinderGrid ConvertStringToPathfinderGrid(string level)
+        public static WorldGrid ConvertStringToPathfinderGrid(string level)
         {
             var closedCharacter = 'X';
             
@@ -76,7 +76,7 @@ namespace AStar.Tests
                 .Select(row => row.Trim())
                 .ToList();
             
-            var pathfinderGrid = new PathfinderGrid(splitLevel.Count, splitLevel[0].Length);
+            var world = new WorldGrid(splitLevel.Count, splitLevel[0].Length);
 
             for (var row = 0; row < splitLevel.Count; row++)
             {
@@ -84,12 +84,12 @@ namespace AStar.Tests
                 {
                     if (splitLevel[row][column] != closedCharacter)
                     {
-                        pathfinderGrid[row, column] = int.Parse(splitLevel[row][column].ToString());
+                        world[row, column] = int.Parse(splitLevel[row][column].ToString());
                     }
                 }
             }
 
-            return pathfinderGrid;
+            return world;
         }
     }
 }
