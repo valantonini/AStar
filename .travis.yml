@@ -5,8 +5,10 @@ stages:
   build
   test
   - name: package
+
     if: branch = master
   - name: packageAlpha
+
     if: branch = development
 
 jobs:
