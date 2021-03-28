@@ -27,7 +27,7 @@ namespace AStar
         }
 
         ///<inheritdoc/>
-        public PathFinderNode[] FindPath(Position start, Position end)
+        public Position[] FindPath(Position start, Position end)
         {
             lock (this)
             {
@@ -160,39 +160,37 @@ namespace AStar
             return offset.row != 0 && offset.column != 0;
         }
 
-        private PathFinderNode[] OrderClosedListAsArray(Position end)
+        private Position[] OrderClosedListAsArray(Position end)
         {
-            _closed.Clear();
+            var path = new List<Position>();
 
-            var fNodeTmp = _mCalcGrid[end.Row, end.Column];
+            var current = _mCalcGrid[end.Row, end.Column];
 
-            var fNode = new PathFinderNode
+            var fNode = new
             {
-                F = fNodeTmp.F,
-                G = fNodeTmp.G,
-                H = 0,
-                ParentPosition = fNodeTmp.ParentPosition,
-                Position = new Position(end.Row, end.Column),
+                current.ParentPosition,
+                Position = end,
             };
+            
 
-            while (fNode.Position.Row != fNode.ParentPosition.Row || fNode.Position.Column != fNode.ParentPosition.Column)
+            while (fNode.Position != fNode.ParentPosition)
             {
-                _closed.Add(fNode);
+                path.Add(new Position(fNode.Position.Row, fNode.Position.Column));
 
-                var posX = fNode.ParentPosition.Row;
-                var posY = fNode.ParentPosition.Column;
+                var parentPosition = fNode.ParentPosition;
 
-                fNodeTmp = _mCalcGrid[posX, posY];
-                fNode.F = fNodeTmp.F;
-                fNode.G = fNodeTmp.G;
-                fNode.H = 0;
-                fNode.ParentPosition = fNodeTmp.ParentPosition;
-                fNode.Position = new Position(posX, posY);
+                current = _mCalcGrid[parentPosition.Row, parentPosition.Column];
+
+                fNode = new
+                {
+                    current.ParentPosition,
+                    Position = parentPosition,
+                };
             }
 
-            _closed.Add(fNode);
+            path.Add(new Position(fNode.Position.Row, fNode.Position.Column));
 
-            return _closed.ToArray();
+            return path.ToArray();
         }
     }
 }

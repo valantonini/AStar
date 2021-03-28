@@ -27,7 +27,7 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static string PrintPath(PathfinderGrid pathfinderGrid, PathFinderNode[] path, bool appendSpace = true)
+        public static string PrintPath(PathfinderGrid pathfinderGrid, Position[] path, bool appendSpace = true)
         {
             var s = new StringBuilder();
             
@@ -35,7 +35,7 @@ namespace AStar.Tests
             {
                 for (var column = 0; column < pathfinderGrid.Width; column++)
                 {
-                    if (path.Any(n => n.Position.Row == row && n.Position.Column == column))
+                    if (path.Any(n => n.Row == row && n.Column == column))
                     {
                         s.Append("_");
                     }
@@ -50,7 +50,7 @@ namespace AStar.Tests
             return s.ToString();
         }
 
-        public static void Print(PathfinderGrid pathfinderGrid, PathFinderNode[] path)
+        public static void Print(PathfinderGrid pathfinderGrid, Position[] path)
         {
             Console.WriteLine(PrintGrid(pathfinderGrid));
             Console.WriteLine(Environment.NewLine);
@@ -58,12 +58,12 @@ namespace AStar.Tests
             Console.WriteLine(PrintPath(pathfinderGrid, path));
         }
 
-        public static void PrintAssertions(PathFinderNode[] path)
+        public static void PrintAssertions(Position[] path)
         {
             for (var i = 0; i < path.Length; i++)
             {
-                Console.WriteLine("path[{0}].Position.Row.ShouldBe({1});", i, path[i].Position.Row);
-                Console.WriteLine("path[{0}].Position.Column.ShouldBe({1});", i, path[i].Position.Column);
+                Console.WriteLine("path[{0}].Position.Row.ShouldBe({1});", i, path[i].Row);
+                Console.WriteLine("path[{0}].Position.Column.ShouldBe({1});", i, path[i].Column);
             }
         }
 

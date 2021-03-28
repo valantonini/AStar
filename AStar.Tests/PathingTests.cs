@@ -29,12 +29,12 @@ namespace AStar.Tests
             Helper.Print(_pathfinderGrid, path);
             Helper.PrintAssertions(path);
 
-            path[0].Position.Row.ShouldBe(2);
-            path[0].Position.Column.ShouldBe(3);
-            path[1].Position.Row.ShouldBe(2);
-            path[1].Position.Column.ShouldBe(2);
-            path[2].Position.Row.ShouldBe(1);
-            path[2].Position.Column.ShouldBe(1);
+            path[0].Row.ShouldBe(2);
+            path[0].Column.ShouldBe(3);
+            path[1].Row.ShouldBe(2);
+            path[1].Column.ShouldBe(2);
+            path[2].Row.ShouldBe(1);
+            path[2].Column.ShouldBe(1);
         }
 
         [Test]
@@ -46,16 +46,16 @@ namespace AStar.Tests
 
             Helper.Print(_pathfinderGrid, path);
 
-            path[0].Position.Row.ShouldBe(1);
-            path[0].Position.Column.ShouldBe(5);
-            path[1].Position.Row.ShouldBe(1);
-            path[1].Position.Column.ShouldBe(4);
-            path[2].Position.Row.ShouldBe(2);
-            path[2].Position.Column.ShouldBe(3);
-            path[3].Position.Row.ShouldBe(1);
-            path[3].Position.Column.ShouldBe(2);
-            path[4].Position.Row.ShouldBe(1);
-            path[4].Position.Column.ShouldBe(1);
+            path[0].Row.ShouldBe(1);
+            path[0].Column.ShouldBe(5);
+            path[1].Row.ShouldBe(1);
+            path[1].Column.ShouldBe(4);
+            path[2].Row.ShouldBe(2);
+            path[2].Column.ShouldBe(3);
+            path[3].Row.ShouldBe(1);
+            path[3].Column.ShouldBe(2);
+            path[4].Row.ShouldBe(1);
+            path[4].Column.ShouldBe(1);
         }
 
         [Test]
@@ -68,20 +68,20 @@ namespace AStar.Tests
             Helper.Print(_pathfinderGrid, path);
             Helper.PrintAssertions(path);
 
-            path[0].Position.Row.ShouldBe(1);
-            path[0].Position.Column.ShouldBe(5);
-            path[1].Position.Row.ShouldBe(2);
-            path[1].Position.Column.ShouldBe(5);
-            path[2].Position.Row.ShouldBe(2);
-            path[2].Position.Column.ShouldBe(4);
-            path[3].Position.Row.ShouldBe(2);
-            path[3].Position.Column.ShouldBe(3);
-            path[4].Position.Row.ShouldBe(2);
-            path[4].Position.Column.ShouldBe(2);
-            path[5].Position.Row.ShouldBe(1);
-            path[5].Position.Column.ShouldBe(2);
-            path[6].Position.Row.ShouldBe(1);
-            path[6].Position.Column.ShouldBe(1);
+            path[0].Row.ShouldBe(1);
+            path[0].Column.ShouldBe(5);
+            path[1].Row.ShouldBe(2);
+            path[1].Column.ShouldBe(5);
+            path[2].Row.ShouldBe(2);
+            path[2].Column.ShouldBe(4);
+            path[3].Row.ShouldBe(2);
+            path[3].Column.ShouldBe(3);
+            path[4].Row.ShouldBe(2);
+            path[4].Column.ShouldBe(2);
+            path[5].Row.ShouldBe(1);
+            path[5].Column.ShouldBe(2);
+            path[6].Row.ShouldBe(1);
+            path[6].Column.ShouldBe(1);
         }
     }
 }

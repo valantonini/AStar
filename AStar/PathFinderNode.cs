@@ -39,5 +39,6 @@ namespace AStar
         /// If the node has been considered yet
         /// </summary>
         public bool HasBeenVisited => Open.HasValue;
+        
     }
 }
