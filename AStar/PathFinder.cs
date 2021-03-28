@@ -26,12 +26,12 @@ namespace AStar
             var open = new PriorityQueue<Position>(new ComparePfNodeMatrix(calcGrid));
 
             var startNode = new PathFinderNode
-            {
-                G = 0,
-                H = 2,
-                ParentNode = start,
-                Open = true,
-            };
+            (
+                g: 0,
+                h: 2,
+                parentNode: start,
+                open: true
+            );
             
             calcGrid[start] = startNode;
 
@@ -49,7 +49,7 @@ namespace AStar
 
                 if (currentPosition == end)
                 {
-                    calcGrid.SetNodeOpenStatus(currentPosition, false);
+                    calcGrid.CloseNode(currentPosition);
                     found = true;
                     break;
                 }
@@ -114,13 +114,12 @@ namespace AStar
                         continue;
                     }
 
-                    var newNeighbour = new PathFinderNode
-                    {
-                        G = newG,
-                        H = heuristicCalculator.CalculateHeuristic(neighbour, end),
-                        ParentNode = currentPosition,
-                        Open = true,
-                    };
+                    var newNeighbour = new PathFinderNode(
+                        newG,
+                        heuristicCalculator.CalculateHeuristic(neighbour, end),
+                        parentNode: currentPosition,
+                        open: true
+                    );
 
                     calcGrid[neighbour] = newNeighbour;
 
@@ -128,7 +127,7 @@ namespace AStar
                 }
 
                 closedNodeCounter++;
-                calcGrid.SetNodeOpenStatus(currentPosition, false);
+                calcGrid.CloseNode(currentPosition);
             }
 
             return !found ? null : OrderClosedListAsArray(calcGrid, end);
