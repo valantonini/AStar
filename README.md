@@ -32,7 +32,7 @@ Options include:
  - choice of heuristic (Manhattan, MaxDxDy, Euclidean, Diagonal shortcut)
  - option to punish direction changes.
 
-##Example usage
+## Example usage
 ```csharp
     var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
 
@@ -41,7 +41,7 @@ Options include:
     var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
 ```
 
-##Changes from 0.1.x to 0.2.x
+## Changes from 0.1.x to 0.2.x
 - The world is now represented by a WorldGrid and that uses shorts internally instead of bytes
 - If no path is found, the algorithm now reports an empty array instead of null
 - Moved out of the AStar.Core namespace into simply AStar
