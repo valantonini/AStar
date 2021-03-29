@@ -6,6 +6,5 @@ namespace AStar.Collections.Grid
         int Width { get; }
         T this[int row, int column] { get; set; }
         T this[Position position] { get; set; }
-        bool IsOutOfBounds(Position position);
     }
 }

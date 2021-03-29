@@ -28,17 +28,7 @@ namespace AStar.Collections.Grid
         public int Height { get; }
 
         public int Width { get; }
-        public bool IsOutOfBounds(Position position)
-        {
-            return position.Row < 0 ||
-                position.Row >= Height ||
-                position.Column < 0 ||
-                position.Column >= Width;
-        }
-
-        public bool IsOutOfBounds(Point point) => IsOutOfBounds(point.ToPosition());
         
-
         public IEnumerable<Position> GetSuccessorPositions(Position qPosition, bool optionsUseDiagonals)
         {
             var offsets = GridOffsets.GetOffsets(optionsUseDiagonals);
