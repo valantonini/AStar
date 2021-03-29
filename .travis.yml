@@ -3,8 +3,10 @@ mono: none
 dist: xenial
 dotnet: 3.1
 env:
-  global:
-  - MAJOR_VERSION_NUMBER: $MAJOR_VERSION_NUMBER
+  jobs:
+  - M: $MAJOR_VERSION_NUMBER
+  - MI: 2
+  
 stages:
   - build
   - test
@@ -23,9 +25,11 @@ jobs:
         - dotnet test
     - stage: package
       if: branch = "development"
+      env:
+        - Q: $MAJOR_VERSION_NUMBER
       script: 
         - cd ../AStar
-        - dotnet pack -c Release /p:PackageVersion=$MAJOR_VERSION_NUMBER.2.$TRAVIS_BUILD_NUMBER-alpha
+        - dotnet pack -c Release /p:PackageVersion=$Q.$MI.$TRAVIS_BUILD_NUMBER-alpha$M
         - dotnet nuget push ./bin/Release/AStarLite.$MAJOR_VERSION_NUMBER.2.$TRAVIS_BUILD_NUMBER-alpha.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
     - stage: testStage
       if: branch = "master"
