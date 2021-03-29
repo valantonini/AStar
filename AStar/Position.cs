@@ -22,6 +22,15 @@ namespace AStar
             Row = row;
             Column = column;
         }
+
+        public bool IsDiagonalTo(Position other)
+        {
+            // return Row - other.Row != 0 ||
+            //     Column - other.Column != 0;
+            
+            return Row != other.Row &&
+                Column != other.Column;
+        }
         
         public static bool operator ==(Position a, Position b)
         {

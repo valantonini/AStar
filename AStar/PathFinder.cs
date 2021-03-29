@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using AStar.Collections.Grid;
 using AStar.Collections.PathFinderNodeGrid;
 using AStar.Collections.PriorityQueue;
 using AStar.Heuristics;
@@ -60,28 +59,14 @@ namespace AStar
                     return new Position[0];
                 }
 
-                foreach (var successorOffset in GridOffsets.GetOffsets(_options.UseDiagonals))
+                foreach (var successorPosition in _world.GetSuccessorPositions(qPosition, _options.UseDiagonals))
                 {
-                    var successorRow = qPosition.Row + successorOffset.row;
-                    var successorColumn = qPosition.Column + successorOffset.column;
-                    var successorPosition = new Position(successorRow, successorColumn);
-
-                    if (_world.IsOutOfBounds(successorPosition))
-                    {
-                        continue;
-                    }
-
                     if (_world[successorPosition] == ClosedValue)
                     {
                         continue;
                     }
 
                     var newG = calculationGrid[qPosition].G + DistanceBetweenNodes;
-
-                    if (_options.DiagonalOptions == DiagonalOptions.HeavyDiagonals && GridOffsets.IsDiagonal(successorOffset))
-                    {
-                        newG *= 2;
-                    }
 
                     if (_options.PunishChangeDirection)
                     {

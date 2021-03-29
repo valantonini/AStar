@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace AStar.Collections.Grid
@@ -36,6 +37,31 @@ namespace AStar.Collections.Grid
         }
 
         public bool IsOutOfBounds(Point point) => IsOutOfBounds(point.ToPosition());
+        
+
+        public IEnumerable<Position> GetSuccessorPositions(Position qPosition, bool optionsUseDiagonals)
+        {
+            var offsets = GridOffsets.GetOffsets(optionsUseDiagonals);
+            foreach (var neighbourOffset in offsets)
+            {
+                var successorRow = qPosition.Row + neighbourOffset.row;
+                
+                if (successorRow < 0 || successorRow >= Height)
+                {
+                    continue;
+                    
+                }
+                
+                var successorColumn = qPosition.Column + neighbourOffset.column;
+
+                if (successorColumn < 0 || successorColumn >= Width)
+                {
+                    continue;
+                }
+                
+                yield return new Position(successorRow, successorColumn);
+            }
+        }
 
         public T this[Point point]
         {

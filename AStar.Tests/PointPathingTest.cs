@@ -24,7 +24,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldPathPredictably3()
         {
-            var pathfinder = new PathFinder(_world, new PathFinderOptions { DiagonalOptions = DiagonalOptions.NoDiagonals });
+            var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = false });
 
             var path = pathfinder.FindPath(new Point(1, 1), new Point(5, 1));
 

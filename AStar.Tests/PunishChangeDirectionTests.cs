@@ -39,7 +39,7 @@ namespace AStar.Tests
         [Test]
         public void ShouldPunishChangingDirections()
         {
-            var pathfinder = new PathFinder(_world, new PathFinderOptions { DiagonalOptions = DiagonalOptions.Diagonals, PunishChangeDirection = true});
+            var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true});
 
             var path = pathfinder.FindPath(new Position(2, 9), new Position(15, 3));
 
@@ -85,10 +85,10 @@ namespace AStar.Tests
             path[18].Column.ShouldBe(9);
         }
         
-        [Test]
+        [Ignore("removed feature")]
         public void ShouldRespectHeavyDiagonalsOption()
         {
-            var pathfinder = new PathFinder(_world, new PathFinderOptions { DiagonalOptions = DiagonalOptions.HeavyDiagonals, PunishChangeDirection = true});
+            var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true});
 
             var path = pathfinder.FindPath(new Position(2, 9), new Position(15, 3));
 
