@@ -2,23 +2,16 @@ using System.Collections.Generic;
 
 namespace AStar.Collections.PathFinderNodeGrid
 {
-    internal class ComparePathFinderNodeByFValue : IComparer<Position>
+    internal class ComparePathFinderNodeByFValue : IComparer<PathFinderNode>
     {
-        readonly CalculationGrid _world;
-
-        public ComparePathFinderNodeByFValue(CalculationGrid world)
+        public int Compare(PathFinderNode a, PathFinderNode b)
         {
-            _world = world;
-        }
-
-        public int Compare(Position a, Position b)
-        {
-            if (_world[a].F > _world[b].F)
+            if (a.F > b.F)
             {
                 return 1;
             }
 
-            if (_world[a].F < _world[b].F)
+            if (a.F < b.F)
             {
                 return -1;
             }

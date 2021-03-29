@@ -15,26 +15,30 @@ namespace AStar.Collections.PathFinderNodeGrid
             {
                 return _internalGrid[position.Row, position.Column];
             }
-            set
-            {
-                _internalGrid[position.Row, position.Column] = value;
-            }
+        }
+        
+        public void Set(PathFinderNode pathFinderNode)
+        { 
+            _internalGrid[pathFinderNode.Position.Row, pathFinderNode.Position.Column] = pathFinderNode;
         }
 
-        public void CloseNode(Position position)
+        public void CloseNodeAt(Position position)
         {
             SetNodeOpenStatus(position, false);
         }
 
         private void SetNodeOpenStatus(Position position, bool? openStatus)
         {
-            this[position] = new PathFinderNode
+            var node = new PathFinderNode
             (
-                this[position].G,
-                this[position].H,
-                this[position].ParentNode,
-                openStatus
+                position: position,
+                g: this[position].G,
+                h: this[position].H,
+                parentNode: this[position].ParentNode,
+                open: openStatus
             );
+            
+            Set(node);
         }
     }
 }

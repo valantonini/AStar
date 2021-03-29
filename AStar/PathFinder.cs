@@ -36,22 +36,22 @@ namespace AStar
             var nodesVisited = 0;
             var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
             var calculationGrid = new CalculationGrid(_world.Height, _world.Width);
-            var open = new SimplePriorityQueue<Position>(new ComparePathFinderNodeByFValue(calculationGrid));
+            var open = new SimplePriorityQueue<PathFinderNode>(new ComparePathFinderNodeByFValue());
 
-            var startNode = new PathFinderNode(g: 0, h: 2, parentNode: start, open: true);
+            var startNode = new PathFinderNode(position: start, g: 0, h: 2, parentNode: start, open: true);
 
-            calculationGrid[start] = startNode;
+            calculationGrid.Set(startNode);
 
-            open.Push(start);
+            open.Push(startNode);
 
             while (open.Count > 0)
             {
-                var qPosition = open.Pop();
-
-                if (qPosition == end)
+                var q = open.Pop();
+                
+                if (q.Position == end)
                 {
-                    calculationGrid.CloseNode(qPosition);
-                    return OrderClosedListAsArray(calculationGrid, qPosition);
+                    calculationGrid.CloseNodeAt(q.Position);
+                    return OrderClosedListAsArray(calculationGrid, q.Position);
                 }
 
                 if (nodesVisited > _options.SearchLimit)
@@ -59,32 +59,32 @@ namespace AStar
                     return new Position[0];
                 }
 
-                foreach (var successorPosition in _world.GetSuccessorPositions(qPosition, _options.UseDiagonals))
+                foreach (var successorPosition in _world.GetSuccessorPositions(q.Position, _options.UseDiagonals))
                 {
                     if (_world[successorPosition] == ClosedValue)
                     {
                         continue;
                     }
 
-                    var newG = calculationGrid[qPosition].G + DistanceBetweenNodes;
+                    var newG = q.G + DistanceBetweenNodes;
 
                     if (_options.PunishChangeDirection)
                     {
-                        var nodeIsVerticallyAdjacentToParent = qPosition.Row - calculationGrid[qPosition].ParentNode.Row == 0;
-                        var successorIsHorizontallyAdjacentToQ = successorPosition.Row - qPosition.Row != 0;
-                        var successorIsVerticallyAdjacentToQ = successorPosition.Column - qPosition.Column != 0;
+                        var qIsHorizontallyAdjacent = q.Position.Row - q.ParentNode.Row == 0;
+                        var successorIsHorizontallyAdjacentToQ = successorPosition.Row - q.Position.Row != 0;
                         
                         if (successorIsHorizontallyAdjacentToQ)
                         {
-                            if (nodeIsVerticallyAdjacentToParent)
+                            if (qIsHorizontallyAdjacent)
                             {
                                 newG += Math.Abs(successorPosition.Row - end.Row) + Math.Abs(successorPosition.Column - end.Column);
                             }
                         }
 
-                        if (successorIsHorizontallyAdjacentToQ)
+                        var successorIsVerticallyAdjacentToQ = successorPosition.Column - q.Position.Column != 0;
+                        if (successorIsVerticallyAdjacentToQ)
                         {
-                            if (!nodeIsVerticallyAdjacentToParent)
+                            if (!qIsHorizontallyAdjacent)
                             {
                                 newG += Math.Abs(successorPosition.Row - end.Row) + Math.Abs(successorPosition.Column - end.Column);
                             }
@@ -93,18 +93,20 @@ namespace AStar
 
                     if (IsUnvisitedOrHasHigherGValue(calculationGrid[successorPosition], newG))
                     {
-                        var newNeighbour = new PathFinderNode(newG,
-                            heuristicCalculator.CalculateHeuristic(successorPosition, end),
-                            parentNode: qPosition,
+                        var updatedSuccessor = new PathFinderNode(
+                            position: successorPosition,
+                            g: newG,
+                            h:heuristicCalculator.CalculateHeuristic(successorPosition, end),
+                            parentNode: q.Position,
                             open: true);
+                        
+                        calculationGrid.Set(updatedSuccessor);
 
-                        calculationGrid[successorPosition] = newNeighbour;
-
-                        open.Push(new Position(successorPosition.Row, successorPosition.Column));
+                        open.Push(updatedSuccessor);
                     }
                 }
 
-                calculationGrid.CloseNode(qPosition);
+                calculationGrid.CloseNodeAt(q.Position);
 
                 nodesVisited++;
             }

@@ -5,6 +5,10 @@ namespace AStar.Collections.PathFinderNodeGrid
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal readonly struct PathFinderNode
     {
+        /// <summary>
+        /// The position of the node
+        /// </summary>
+        public Position Position { get; }
         
         /// <summary>
         /// Distance from home
@@ -36,8 +40,9 @@ namespace AStar.Collections.PathFinderNodeGrid
         /// </summary>
         public bool HasBeenVisited => Open.HasValue;
 
-        public PathFinderNode(int g, int h, Position parentNode, bool? open = null)
+        public PathFinderNode(Position position, int g, int h, Position parentNode, bool? open = null)
         {
+            Position = position;
             G = g;
             H = h;
             ParentNode = parentNode;
