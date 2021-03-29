@@ -7,7 +7,7 @@ namespace AStar.Collections.Grid
     public class Grid<T> : IModelAGrid<T>
     {
         private readonly T[] _grid;
-        protected Grid(int height, int width)
+        public Grid(int height, int width)
         {
             if (height <= 0)
             {

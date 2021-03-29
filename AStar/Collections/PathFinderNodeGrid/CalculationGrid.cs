@@ -2,11 +2,11 @@ namespace AStar.Collections.PathFinderNodeGrid
 {
     internal class CalculationGrid
     {
-        private readonly PathFinderNode[,] _internalGrid;
+        private readonly Grid.Grid<PathFinderNode> _internalGrid;
 
         public CalculationGrid(int height, int width)
         {
-            _internalGrid = new PathFinderNode[height, width];
+            _internalGrid = new Grid.Grid<PathFinderNode>(height, width);
         }
 
         public PathFinderNode this[Position position]
