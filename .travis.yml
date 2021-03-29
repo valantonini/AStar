@@ -2,28 +2,11 @@ language: csharp
 mono: none
 dist: xenial
 dotnet: 3.1
-stages:
-  - build
-  - test
-  - package
-  - testStage
-
-jobs:
-  include:
-    - stage: build
-      script: 
-        - dotnet restore
-        - dotnet build
-    - stage: test
-      script: 
-        - cd ./AStar.Tests
-        - dotnet test
-    - stage: package
-      script: 
-        - cd ../AStar
-        - dotnet pack -c Release /p:PackageVersion=$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER-alpha$M
-        - dotnet nuget push ./bin/Release/AStarLite.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER-alpha.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
-    - stage: testStage
-      if: branch = "master"
-      script:
-        - dotnet test
+script: 
+  - dotnet restore
+  - dotnet build
+  - cd ./AStar.Tests
+  - dotnet test
+  - cd ../AStar
+  - dotnet pack -c Release /p:PackageVersion=$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER$VERSION_SUFFIX
+  - dotnet nuget push ./bin/Release/AStarLite.$MAJOR_VERSION_NUMBER.$MINOR_VERSION_NUMBER.$TRAVIS_BUILD_NUMBER$VERSION_SUFFIX.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
