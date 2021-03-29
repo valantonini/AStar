@@ -70,20 +70,21 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        var isLaterallyAdjacent = qPosition.Row - calculationGrid[qPosition].ParentNode.Row == 0;
-                        // var isVerticallyAdjacent = currentPosition.Column - calculationGrid[currentPosition].ParentNode.Column == 0;
-
-                        if (successorPosition.Row - qPosition.Row != 0)
+                        var nodeIsVerticallyAdjacentToParent = qPosition.Row - calculationGrid[qPosition].ParentNode.Row == 0;
+                        var successorIsHorizontallyAdjacentToQ = successorPosition.Row - qPosition.Row != 0;
+                        var successorIsVerticallyAdjacentToQ = successorPosition.Column - qPosition.Column != 0;
+                        
+                        if (successorIsHorizontallyAdjacentToQ)
                         {
-                            if (isLaterallyAdjacent)
+                            if (nodeIsVerticallyAdjacentToParent)
                             {
                                 newG += Math.Abs(successorPosition.Row - end.Row) + Math.Abs(successorPosition.Column - end.Column);
                             }
                         }
 
-                        if (successorPosition.Column - qPosition.Column != 0)
+                        if (successorIsHorizontallyAdjacentToQ)
                         {
-                            if (!isLaterallyAdjacent)
+                            if (!nodeIsVerticallyAdjacentToParent)
                             {
                                 newG += Math.Abs(successorPosition.Row - end.Row) + Math.Abs(successorPosition.Column - end.Column);
                             }
