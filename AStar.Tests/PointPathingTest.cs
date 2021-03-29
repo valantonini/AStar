@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using AStar.Options;
 using NUnit.Framework;
 using Shouldly;
@@ -22,28 +23,21 @@ namespace AStar.Tests
         }
 
         [Test]
-        public void ShouldPathPredictably3()
+        public void ShouldPathPredictablyByPoint()
         {
             var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = false });
 
             var path = pathfinder.FindPath(new Point(1, 1), new Point(5, 1));
 
-            Helper.Print(_world, path);
-
-            path[0].X.ShouldBe(5);
-            path[0].Y.ShouldBe(1);
-            path[1].X.ShouldBe(5);
-            path[1].Y.ShouldBe(2);
-            path[2].X.ShouldBe(4);
-            path[2].Y.ShouldBe(2);
-            path[3].X.ShouldBe(3);
-            path[3].Y.ShouldBe(2);
-            path[4].X.ShouldBe(2);
-            path[4].Y.ShouldBe(2);
-            path[5].X.ShouldBe(2);
-            path[5].Y.ShouldBe(1);
-            path[6].X.ShouldBe(1);
-            path[6].Y.ShouldBe(1);
+            path.ShouldBe(new[] {
+                new Point(1, 1),
+                new Point(2, 1),
+                new Point(2, 2),
+                new Point(3, 2),
+                new Point(4, 2),
+                new Point(5, 2),
+                new Point(5, 1),
+            });
         }
     }
 }

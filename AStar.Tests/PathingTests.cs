@@ -28,14 +28,12 @@ namespace AStar.Tests
             var path = pathfinder.FindPath(new Position(1, 1), new Position(2, 3));
 
             Helper.Print(_world, path);
-            Helper.PrintAssertions(path);
 
-            path[0].Row.ShouldBe(2);
-            path[0].Column.ShouldBe(3);
-            path[1].Row.ShouldBe(2);
-            path[1].Column.ShouldBe(2);
-            path[2].Row.ShouldBe(1);
-            path[2].Column.ShouldBe(1);
+            var expected = new[] {
+                new Position(1, 1),
+                new Position(2, 2),
+                new Position(2, 3),
+            };
         }
 
         [Test]
@@ -47,16 +45,14 @@ namespace AStar.Tests
 
             Helper.Print(_world, path);
 
-            path[0].Row.ShouldBe(1);
-            path[0].Column.ShouldBe(5);
-            path[1].Row.ShouldBe(1);
-            path[1].Column.ShouldBe(4);
-            path[2].Row.ShouldBe(2);
-            path[2].Column.ShouldBe(3);
-            path[3].Row.ShouldBe(1);
-            path[3].Column.ShouldBe(2);
-            path[4].Row.ShouldBe(1);
-            path[4].Column.ShouldBe(1);
+            path.ShouldBe(new[] {
+                new Position(1, 1),
+                new Position(1, 2),
+                new Position(2, 3),
+                new Position(1, 4),
+                new Position(1, 5),
+            });
+
         }
 
         [Test]
@@ -67,22 +63,16 @@ namespace AStar.Tests
             var path = pathfinder.FindPath(new Position(1, 1), new Position(1, 5));
 
             Helper.Print(_world, path);
-            Helper.PrintAssertions(path);
 
-            path[0].Row.ShouldBe(1);
-            path[0].Column.ShouldBe(5);
-            path[1].Row.ShouldBe(2);
-            path[1].Column.ShouldBe(5);
-            path[2].Row.ShouldBe(2);
-            path[2].Column.ShouldBe(4);
-            path[3].Row.ShouldBe(2);
-            path[3].Column.ShouldBe(3);
-            path[4].Row.ShouldBe(2);
-            path[4].Column.ShouldBe(2);
-            path[5].Row.ShouldBe(1);
-            path[5].Column.ShouldBe(2);
-            path[6].Row.ShouldBe(1);
-            path[6].Column.ShouldBe(1);
+            path.ShouldBe(new[] {
+                new Position(1, 1),
+                new Position(1, 2),
+                new Position(2, 2),
+                new Position(2, 3),
+                new Position(2, 4),
+                new Position(2, 5),
+                new Position(1, 5),
+            });
         }
     }
 }

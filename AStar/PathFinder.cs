@@ -119,7 +119,7 @@ namespace AStar
 
         private static Position[] OrderClosedListAsArray(CalculationGrid calcGrid, Position end)
         {
-            var path = new List<Position>();
+            var path = new Stack<Position>();
 
             var endNode = calcGrid[end];
 
@@ -131,7 +131,7 @@ namespace AStar
 
             while (currentNode.Position != currentNode.ParentPosition)
             {
-                path.Add(new Position(currentNode.Position.Row, currentNode.Position.Column));
+                path.Push(new Position(currentNode.Position.Row, currentNode.Position.Column));
 
                 var parentNode = calcGrid[currentNode.ParentPosition];
 
@@ -142,7 +142,7 @@ namespace AStar
                 };
             }
 
-            path.Add(new Position(currentNode.Position.Row, currentNode.Position.Column));
+            path.Push(new Position(currentNode.Position.Row, currentNode.Position.Column));
 
             return path.ToArray();
         }

@@ -62,171 +62,94 @@ namespace AStar.Tests
         public void ShouldPathEnvironment()
         {
             var pathfinder = new PathFinder(_world);
+            
             var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
+            
             Helper.Print(_world, path);
 
-            path[0].Row.ShouldBe(30);
-            path[0].Column.ShouldBe(30);
-            path[1].Row.ShouldBe(30);
-            path[1].Column.ShouldBe(29);
-            path[2].Row.ShouldBe(30);
-            path[2].Column.ShouldBe(28);
-            path[3].Row.ShouldBe(30);
-            path[3].Column.ShouldBe(27);
-            path[4].Row.ShouldBe(30);
-            path[4].Column.ShouldBe(26);
-            path[5].Row.ShouldBe(30);
-            path[5].Column.ShouldBe(25);
-            path[6].Row.ShouldBe(30);
-            path[6].Column.ShouldBe(24);
-            path[7].Row.ShouldBe(30);
-            path[7].Column.ShouldBe(23);
-            path[8].Row.ShouldBe(30);
-            path[8].Column.ShouldBe(22);
-            path[9].Row.ShouldBe(30);
-            path[9].Column.ShouldBe(21);
-            path[10].Row.ShouldBe(30);
-            path[10].Column.ShouldBe(20);
-            path[11].Row.ShouldBe(30);
-            path[11].Column.ShouldBe(19);
-            path[12].Row.ShouldBe(30);
-            path[12].Column.ShouldBe(18);
-            path[13].Row.ShouldBe(30);
-            path[13].Column.ShouldBe(17);
-            path[14].Row.ShouldBe(30);
-            path[14].Column.ShouldBe(16);
-            path[15].Row.ShouldBe(30);
-            path[15].Column.ShouldBe(15);
-            path[16].Row.ShouldBe(30);
-            path[16].Column.ShouldBe(14);
-            path[17].Row.ShouldBe(30);
-            path[17].Column.ShouldBe(13);
-            path[18].Row.ShouldBe(30);
-            path[18].Column.ShouldBe(12);
-            path[19].Row.ShouldBe(30);
-            path[19].Column.ShouldBe(11);
-            path[20].Row.ShouldBe(30);
-            path[20].Column.ShouldBe(10);
-            path[21].Row.ShouldBe(30);
-            path[21].Column.ShouldBe(9);
-            path[22].Row.ShouldBe(30);
-            path[22].Column.ShouldBe(8);
-            path[23].Row.ShouldBe(30);
-            path[23].Column.ShouldBe(7);
-            path[24].Row.ShouldBe(29);
-            path[24].Column.ShouldBe(6);
-            path[25].Row.ShouldBe(28);
-            path[25].Column.ShouldBe(6);
-            path[26].Row.ShouldBe(27);
-            path[26].Column.ShouldBe(7);
-            path[27].Row.ShouldBe(27);
-            path[27].Column.ShouldBe(8);
-            path[28].Row.ShouldBe(27);
-            path[28].Column.ShouldBe(9);
-            path[29].Row.ShouldBe(27);
-            path[29].Column.ShouldBe(10);
-            path[30].Row.ShouldBe(27);
-            path[30].Column.ShouldBe(11);
-            path[31].Row.ShouldBe(27);
-            path[31].Column.ShouldBe(12);
-            path[32].Row.ShouldBe(27);
-            path[32].Column.ShouldBe(13);
-            path[33].Row.ShouldBe(27);
-            path[33].Column.ShouldBe(14);
-            path[34].Row.ShouldBe(27);
-            path[34].Column.ShouldBe(15);
-            path[35].Row.ShouldBe(27);
-            path[35].Column.ShouldBe(16);
-            path[36].Row.ShouldBe(27);
-            path[36].Column.ShouldBe(17);
-            path[37].Row.ShouldBe(27);
-            path[37].Column.ShouldBe(18);
-            path[38].Row.ShouldBe(27);
-            path[38].Column.ShouldBe(19);
-            path[39].Row.ShouldBe(27);
-            path[39].Column.ShouldBe(20);
-            path[40].Row.ShouldBe(26);
-            path[40].Column.ShouldBe(21);
-            path[41].Row.ShouldBe(25);
-            path[41].Column.ShouldBe(22);
-            path[42].Row.ShouldBe(24);
-            path[42].Column.ShouldBe(23);
-            path[43].Row.ShouldBe(23);
-            path[43].Column.ShouldBe(24);
-            path[44].Row.ShouldBe(22);
-            path[44].Column.ShouldBe(25);
-            path[45].Row.ShouldBe(21);
-            path[45].Column.ShouldBe(26);
-            path[46].Row.ShouldBe(20);
-            path[46].Column.ShouldBe(27);
-            path[47].Row.ShouldBe(19);
-            path[47].Column.ShouldBe(28);
-            path[48].Row.ShouldBe(18);
-            path[48].Column.ShouldBe(29);
-            path[49].Row.ShouldBe(17);
-            path[49].Column.ShouldBe(28);
-            path[50].Row.ShouldBe(16);
-            path[50].Column.ShouldBe(27);
-            path[51].Row.ShouldBe(15);
-            path[51].Column.ShouldBe(26);
-            path[52].Row.ShouldBe(14);
-            path[52].Column.ShouldBe(25);
-            path[53].Row.ShouldBe(13);
-            path[53].Column.ShouldBe(24);
-            path[54].Row.ShouldBe(12);
-            path[54].Column.ShouldBe(23);
-            path[55].Row.ShouldBe(11);
-            path[55].Column.ShouldBe(22);
-            path[56].Row.ShouldBe(10);
-            path[56].Column.ShouldBe(21);
-            path[57].Row.ShouldBe(10);
-            path[57].Column.ShouldBe(20);
-            path[58].Row.ShouldBe(10);
-            path[58].Column.ShouldBe(19);
-            path[59].Row.ShouldBe(10);
-            path[59].Column.ShouldBe(18);
-            path[60].Row.ShouldBe(10);
-            path[60].Column.ShouldBe(17);
-            path[61].Row.ShouldBe(10);
-            path[61].Column.ShouldBe(16);
-            path[62].Row.ShouldBe(10);
-            path[62].Column.ShouldBe(15);
-            path[63].Row.ShouldBe(10);
-            path[63].Column.ShouldBe(14);
-            path[64].Row.ShouldBe(10);
-            path[64].Column.ShouldBe(13);
-            path[65].Row.ShouldBe(10);
-            path[65].Column.ShouldBe(12);
-            path[66].Row.ShouldBe(10);
-            path[66].Column.ShouldBe(11);
-            path[67].Row.ShouldBe(10);
-            path[67].Column.ShouldBe(10);
-            path[68].Row.ShouldBe(10);
-            path[68].Column.ShouldBe(9);
-            path[69].Row.ShouldBe(10);
-            path[69].Column.ShouldBe(8);
-            path[70].Row.ShouldBe(10);
-            path[70].Column.ShouldBe(7);
-            path[71].Row.ShouldBe(10);
-            path[71].Column.ShouldBe(6);
-            path[72].Row.ShouldBe(9);
-            path[72].Column.ShouldBe(5);
-            path[73].Row.ShouldBe(8);
-            path[73].Column.ShouldBe(4);
-            path[74].Row.ShouldBe(7);
-            path[74].Column.ShouldBe(3);
-            path[75].Row.ShouldBe(6);
-            path[75].Column.ShouldBe(3);
-            path[76].Row.ShouldBe(5);
-            path[76].Column.ShouldBe(3);
-            path[77].Row.ShouldBe(4);
-            path[77].Column.ShouldBe(3);
-            path[78].Row.ShouldBe(3);
-            path[78].Column.ShouldBe(3);
-            path[79].Row.ShouldBe(2);
-            path[79].Column.ShouldBe(2);
-            path[80].Row.ShouldBe(1);
-            path[80].Column.ShouldBe(1);
+            path.ShouldBe(new[] {
+                new Position(1, 1),
+                new Position(2, 2),
+                new Position(3, 3),
+                new Position(4, 3),
+                new Position(5, 3),
+                new Position(6, 3),
+                new Position(7, 3),
+                new Position(8, 4),
+                new Position(9, 5),
+                new Position(10, 6),
+                new Position(10, 7),
+                new Position(10, 8),
+                new Position(10, 9),
+                new Position(10, 10),
+                new Position(10, 11),
+                new Position(10, 12),
+                new Position(10, 13),
+                new Position(10, 14),
+                new Position(10, 15),
+                new Position(10, 16),
+                new Position(10, 17),
+                new Position(10, 18),
+                new Position(10, 19),
+                new Position(10, 20),
+                new Position(10, 21),
+                new Position(11, 22),
+                new Position(12, 23),
+                new Position(13, 24),
+                new Position(14, 25),
+                new Position(15, 26),
+                new Position(16, 27),
+                new Position(17, 28),
+                new Position(18, 29),
+                new Position(19, 28),
+                new Position(20, 27),
+                new Position(21, 26),
+                new Position(22, 25),
+                new Position(23, 24),
+                new Position(24, 23),
+                new Position(25, 22),
+                new Position(26, 21),
+                new Position(27, 20),
+                new Position(27, 19),
+                new Position(27, 18),
+                new Position(27, 17),
+                new Position(27, 16),
+                new Position(27, 15),
+                new Position(27, 14),
+                new Position(27, 13),
+                new Position(27, 12),
+                new Position(27, 11),
+                new Position(27, 10),
+                new Position(27, 9),
+                new Position(27, 8),
+                new Position(27, 7),
+                new Position(28, 6),
+                new Position(29, 6),
+                new Position(30, 7),
+                new Position(30, 8),
+                new Position(30, 9),
+                new Position(30, 10),
+                new Position(30, 11),
+                new Position(30, 12),
+                new Position(30, 13),
+                new Position(30, 14),
+                new Position(30, 15),
+                new Position(30, 16),
+                new Position(30, 17),
+                new Position(30, 18),
+                new Position(30, 19),
+                new Position(30, 20),
+                new Position(30, 21),
+                new Position(30, 22),
+                new Position(30, 23),
+                new Position(30, 24),
+                new Position(30, 25),
+                new Position(30, 26),
+                new Position(30, 27),
+                new Position(30, 28),
+                new Position(30, 29),
+                new Position(30, 30),
+            });
         }
     }
 }

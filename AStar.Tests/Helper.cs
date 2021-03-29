@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Shouldly;
 
 namespace AStar.Tests
 {
@@ -79,23 +80,25 @@ namespace AStar.Tests
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(PrintPath(world, path));
+            
+            PrintAssertions(path);
         }
         
         public static void Print(WorldGrid world, Point[] path)
         {
-            Console.WriteLine(PrintGrid(world));
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine(Environment.NewLine);
-            Console.WriteLine(PrintPath(world, path));
+            Print(world, path.Select(p => p.ToPosition()).ToArray());
         }
 
         public static void PrintAssertions(Position[] path)
         {
-            for (var i = 0; i < path.Length; i++)
+            StringBuilder s = new StringBuilder();
+            s.AppendLine("path.ShouldBe(new[] {");
+            foreach (var position in path)
             {
-                Console.WriteLine("path[{0}].Row.ShouldBe({1});", i, path[i].Row);
-                Console.WriteLine("path[{0}].Column.ShouldBe({1});", i, path[i].Column);
+                s.AppendLine($"new Position({position.Row}, {position.Column}),");
             }
+            s.AppendLine("});");
+            Console.WriteLine(s.ToString());
         }
         
         public static void PrintAssertions(Point[] path)

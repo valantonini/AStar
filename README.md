@@ -47,4 +47,5 @@ Options include:
 - Moved out of the AStar.Core namespace into simply AStar
 - Replaced former Point class with Position class that uses Row / Column instead of X / Y to avoid confusion with cartesian co-ordinates
 - Implemented support for Point class indexing and pathing which represent a traditional cartesian co-ordinate system
-- changed path from List to Array and changed type from PathFinderNode to Position or Point
+- Changed path from List to Array and changed type from PathFinderNode to Position or Point
+- Reversed the order of the returned path to start at the start node
