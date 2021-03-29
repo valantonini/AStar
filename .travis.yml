@@ -2,6 +2,9 @@ language: csharp
 mono: none
 dist: xenial
 dotnet: 3.1
+env:
+  global:
+  - MAJOR_VERSION_NUMBER: $MAJOR_VERSION_NUMBER
 stages:
   - build
   - test
