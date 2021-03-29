@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Linq;
 using NUnit.Framework;
 using Shouldly;
 
@@ -56,6 +57,61 @@ namespace AStar.Tests
             grid[new Point(0, 1)].ShouldBe((short)4);
             grid[new Point(1, 1)].ShouldBe((short)5);
             grid[new Point(2, 1)].ShouldBe((short)6);
+        }
+        
+        [Test]
+        public void ShouldGetCardinalSuccessorPositions()
+        {
+            var grid = new WorldGrid(3, 3);
+
+            var successors = grid
+                .GetSuccessorPositions(new Position(1,1))
+                .ToArray();
+
+            successors.Length.ShouldBe(4);
+            
+            successors[0].ShouldBe(new Position(1, 0));
+            successors[1].ShouldBe(new Position(2, 1));
+            successors[2].ShouldBe(new Position(1, 2));
+            successors[3].ShouldBe(new Position(0, 1));
+        }
+        
+        [Test]
+        public void ShouldGetCardinalAndDiagonalSuccessorPositions()
+        {
+            var grid = new WorldGrid(3, 3);
+
+            var successors = grid
+                .GetSuccessorPositions(new Position(1,1), true)
+                .ToArray();
+
+            successors.Length.ShouldBe(8);
+            
+            successors[0].ShouldBe(new Position(1, 0));
+            successors[1].ShouldBe(new Position(2, 1));
+            successors[2].ShouldBe(new Position(1, 2));
+            successors[3].ShouldBe(new Position(0, 1));
+            
+            successors[4].ShouldBe(new Position(2, 0));
+            successors[5].ShouldBe(new Position(2, 2));
+            successors[6].ShouldBe(new Position(0, 2));
+            successors[7].ShouldBe(new Position(0, 0));
+        }
+        
+        [Test]
+        public void ShouldGetSuccessorsWithoutGoingOutOfBounds()
+        {
+            var grid = new WorldGrid(3, 3);
+
+            var successors = grid
+                .GetSuccessorPositions(new Position(2,2), true)
+                .ToArray();
+
+            successors.Length.ShouldBe(3);
+            
+            successors[0].ShouldBe(new Position(2, 1));
+            successors[1].ShouldBe(new Position(1, 2));
+            successors[2].ShouldBe(new Position(1, 1));
         }
     }
 }

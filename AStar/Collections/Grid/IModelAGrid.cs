@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace AStar.Collections.Grid
 {
     public interface IModelAGrid<T>
@@ -6,5 +8,6 @@ namespace AStar.Collections.Grid
         int Width { get; }
         T this[int row, int column] { get; set; }
         T this[Position position] { get; set; }
+        IEnumerable<Position> GetSuccessorPositions(Position node, bool optionsUseDiagonals = false);
     }
 }

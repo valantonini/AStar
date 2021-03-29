@@ -29,12 +29,12 @@ namespace AStar.Collections.Grid
 
         public int Width { get; }
         
-        public IEnumerable<Position> GetSuccessorPositions(Position qPosition, bool optionsUseDiagonals)
+        public IEnumerable<Position> GetSuccessorPositions(Position node, bool optionsUseDiagonals = false)
         {
             var offsets = GridOffsets.GetOffsets(optionsUseDiagonals);
             foreach (var neighbourOffset in offsets)
             {
-                var successorRow = qPosition.Row + neighbourOffset.row;
+                var successorRow = node.Row + neighbourOffset.row;
                 
                 if (successorRow < 0 || successorRow >= Height)
                 {
@@ -42,7 +42,7 @@ namespace AStar.Collections.Grid
                     
                 }
                 
-                var successorColumn = qPosition.Column + neighbourOffset.column;
+                var successorColumn = node.Column + neighbourOffset.column;
 
                 if (successorColumn < 0 || successorColumn >= Width)
                 {
