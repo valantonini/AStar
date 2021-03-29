@@ -3,10 +3,10 @@ mono: none
 dist: xenial
 dotnet: 3.1
 stages:
-  - name: build
-  - name: test
-  - name: package
-  - name: testStage
+  - build
+  - test
+  - package
+  - testStage
 
 jobs:
   include:
