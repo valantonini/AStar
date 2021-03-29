@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using AStar.Heuristics;
 using AStar.Options;
 using NUnit.Framework;
 using Shouldly;
@@ -41,7 +42,8 @@ namespace AStar.Tests
         [Test]
         public void ShouldPunishChangingDirections()
         {
-            var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true});
+            var pathFinderOptions = new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true };
+            var pathfinder = new PathFinder(_world, pathFinderOptions);
 
             var path = pathfinder.FindPath(new Position(2, 9), new Position(15, 3));
 
