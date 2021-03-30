@@ -49,3 +49,4 @@ Options include:
 - Implemented support for Point class indexing and pathing which represent a traditional cartesian co-ordinate system
 - Changed path from List to Array and changed type from PathFinderNode to Position or Point
 - Reversed the order of the returned path to start at the start node
+- Rationalised and dropped buggy options (heavy diagonals)
