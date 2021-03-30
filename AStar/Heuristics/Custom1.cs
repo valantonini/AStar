@@ -4,7 +4,7 @@ namespace AStar.Heuristics
 {
     public class Custom1 : ICalculateHeuristic
     {
-        public int CalculateHeuristic(Position source, Position destination)
+        public int Calculate(Position source, Position destination)
         {
             var heuristicEstimate = 2;
             var dxy = new Position(Math.Abs(destination.Row - source.Row), Math.Abs(destination.Column - source.Column));

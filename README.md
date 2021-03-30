@@ -5,7 +5,7 @@ A Star (A*) algorithm for C#.
 [![NuGet](https://img.shields.io/nuget/v/AStarLite.svg)](https://www.nuget.org/packages/AStarLite/)
 
 
-The world is represented by a WorldGrid that is essentially a 2d array of short.
+The world is represented by a WorldMatrix that is essentially a matrix of the C# short data type.
 A value of 0 indicates the cell is closed / blocked. Any other number indicates the cell is open and traversable.
 
 The world grid can be indexed via either:

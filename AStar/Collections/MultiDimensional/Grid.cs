@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace AStar.Collections.Grid
+namespace AStar.Collections.MultiDimensional
 {
     public class Grid<T> : IModelAGrid<T>
     {

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using AStar.Collections.PathFinderNodeGrid;
-using AStar.Collections.PriorityQueue;
+using AStar.Collections.PathFinder;
 using AStar.Heuristics;
 using AStar.Options;
 
@@ -15,11 +14,13 @@ namespace AStar
         private const int DistanceBetweenNodes = 1;
         private readonly PathFinderOptions _options;
         private readonly WorldGrid _world;
+        private readonly ICalculateHeuristic _heuristic;
 
         public PathFinder(WorldGrid worldGrid, PathFinderOptions pathFinderOptions = null)
         {
             _world = worldGrid ?? throw new ArgumentNullException(nameof(worldGrid));
             _options = pathFinderOptions ?? new PathFinderOptions();
+            _heuristic = HeuristicFactory.Create(_options.HeuristicFormula);
         }
         
         ///<inheritdoc/>
@@ -34,24 +35,18 @@ namespace AStar
         public Position[] FindPath(Position start, Position end)
         {
             var nodesVisited = 0;
-            var heuristicCalculator = HeuristicFactory.Create(_options.HeuristicFormula);
-            var calculationGrid = new CalculationGrid(_world.Height, _world.Width);
-            var open = new SimplePriorityQueue<PathFinderNode>(new ComparePathFinderNodeByFValue());
+            IModelAGraph<PathFinderNode> graph = new PathFinderGraph(_world.Height, _world.Width, _options.UseDiagonals);
 
-            var startNode = new PathFinderNode(position: start, g: 0, h: 2, parentNode: start, open: true);
+            var startNode = new PathFinderNode(position: start, g: 0, h: 2, parentNodePosition: start);
+            graph.OpenNode(startNode);
 
-            calculationGrid.Set(startNode);
-
-            open.Push(startNode);
-
-            while (open.Count > 0)
+            while (graph.HasOpenNodes)
             {
-                var q = open.Pop();
+                var q = graph.GetOpenNodeWithSmallestF();
                 
                 if (q.Position == end)
                 {
-                    calculationGrid.CloseNodeAt(q.Position);
-                    return OrderClosedListAsArray(calculationGrid, q.Position);
+                    return OrderClosedNodesAsArray(graph, q);
                 }
 
                 if (nodesVisited > _options.SearchLimit)
@@ -59,9 +54,9 @@ namespace AStar
                     return new Position[0];
                 }
 
-                foreach (var successorPosition in _world.GetSuccessorPositions(q.Position, _options.UseDiagonals))
+                foreach (var successor in graph.GetSuccessors(q))
                 {
-                    if (_world[successorPosition] == ClosedValue)
+                    if (_world[successor.Position] == ClosedValue)
                     {
                         continue;
                     }
@@ -70,43 +65,38 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        var qIsHorizontallyAdjacent = q.Position.Row - q.ParentNode.Row == 0;
-                        var successorIsHorizontallyAdjacentToQ = successorPosition.Row - q.Position.Row != 0;
+                        var qIsHorizontallyAdjacent = q.Position.Row - q.ParentNodePosition.Row == 0;
+                        var successorIsHorizontallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
                         
                         if (successorIsHorizontallyAdjacentToQ)
                         {
                             if (qIsHorizontallyAdjacent)
                             {
-                                newG += Math.Abs(successorPosition.Row - end.Row) + Math.Abs(successorPosition.Column - end.Column);
+                                newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
                             }
                         }
 
-                        var successorIsVerticallyAdjacentToQ = successorPosition.Column - q.Position.Column != 0;
+                        var successorIsVerticallyAdjacentToQ = successor.Position.Column - q.Position.Column != 0;
                         if (successorIsVerticallyAdjacentToQ)
                         {
                             if (!qIsHorizontallyAdjacent)
                             {
-                                newG += Math.Abs(successorPosition.Row - end.Row) + Math.Abs(successorPosition.Column - end.Column);
+                                newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
                             }
                         }
                     }
 
-                    if (IsUnvisitedOrHasHigherGValue(calculationGrid[successorPosition], newG))
+                    var updatedSuccessor = new PathFinderNode(
+                        position: successor.Position,
+                        g: newG,
+                        h:_heuristic.Calculate(successor.Position, end),
+                        parentNodePosition: q.Position);
+                    
+                    if (BetterPathToSuccessorFound(updatedSuccessor, successor))
                     {
-                        var updatedSuccessor = new PathFinderNode(
-                            position: successorPosition,
-                            g: newG,
-                            h:heuristicCalculator.CalculateHeuristic(successorPosition, end),
-                            parentNode: q.Position,
-                            open: true);
-                        
-                        calculationGrid.Set(updatedSuccessor);
-
-                        open.Push(updatedSuccessor);
+                        graph.OpenNode(updatedSuccessor);
                     }
                 }
-
-                calculationGrid.CloseNodeAt(q.Position);
 
                 nodesVisited++;
             }
@@ -114,38 +104,25 @@ namespace AStar
             return new Position[0];
         }
 
-        private bool IsUnvisitedOrHasHigherGValue(PathFinderNode pathFinderNode, int newG)
+        private bool BetterPathToSuccessorFound(PathFinderNode updateSuccessor, PathFinderNode currentSuccessor)
         {
-            return !pathFinderNode.HasBeenVisited ||
-                (pathFinderNode.HasBeenVisited && newG < pathFinderNode.G);
+            return !currentSuccessor.HasBeenVisited ||
+                (currentSuccessor.HasBeenVisited && updateSuccessor.F < currentSuccessor.F);
         }
 
-        private static Position[] OrderClosedListAsArray(CalculationGrid calcGrid, Position end)
+        private static Position[] OrderClosedNodesAsArray(IModelAGraph<PathFinderNode> graph, PathFinderNode endNode)
         {
             var path = new Stack<Position>();
 
-            var endNode = calcGrid[end];
+            var currentNode = endNode;
 
-            var currentNode = new
+            while (currentNode.Position != currentNode.ParentNodePosition)
             {
-                Position = end,
-                ParentPosition = endNode.ParentNode,
-            };
-
-            while (currentNode.Position != currentNode.ParentPosition)
-            {
-                path.Push(new Position(currentNode.Position.Row, currentNode.Position.Column));
-
-                var parentNode = calcGrid[currentNode.ParentPosition];
-
-                currentNode = new
-                {
-                    Position = currentNode.ParentPosition,
-                    ParentPosition = parentNode.ParentNode,
-                };
+                path.Push(currentNode.Position);
+                currentNode = graph.GetParent(currentNode);
             }
 
-            path.Push(new Position(currentNode.Position.Row, currentNode.Position.Column));
+            path.Push(currentNode.Position);
 
             return path.ToArray();
         }

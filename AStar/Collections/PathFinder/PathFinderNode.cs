@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace AStar.Collections.PathFinderNodeGrid
+namespace AStar.Collections.PathFinder
 {
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal readonly struct PathFinderNode
@@ -23,12 +23,7 @@ namespace AStar.Collections.PathFinderNodeGrid
         /// <summary>
         /// This nodes parent
         /// </summary>
-        public Position ParentNode { get; }
-
-        /// <summary>
-        /// If the node is open or closed
-        /// </summary>
-        public bool? Open { get; }
+        public Position ParentNodePosition { get; }
 
         /// <summary>
         /// Gone + Heuristic (H)
@@ -38,15 +33,14 @@ namespace AStar.Collections.PathFinderNodeGrid
         /// <summary>
         /// If the node has been considered yet
         /// </summary>
-        public bool HasBeenVisited => Open.HasValue;
+        public bool HasBeenVisited => F > 0;
 
-        public PathFinderNode(Position position, int g, int h, Position parentNode, bool? open = null)
+        public PathFinderNode(Position position, int g, int h, Position parentNodePosition)
         {
             Position = position;
             G = g;
             H = h;
-            ParentNode = parentNode;
-            Open = open;
+            ParentNodePosition = parentNodePosition;
             
             F = g + h;
         }

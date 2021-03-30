@@ -1,4 +1,4 @@
-using AStar.Collections.Grid;
+using AStar.Collections.MultiDimensional;
 
 namespace AStar
 {

@@ -4,7 +4,7 @@ namespace AStar.Heuristics
 {
     public class DiagonalShortcut : ICalculateHeuristic
     {
-        public int CalculateHeuristic(Position source, Position destination)
+        public int Calculate(Position source, Position destination)
         {
             var hDiagonal = Math.Min(Math.Abs(source.Row - destination.Row),
                 Math.Abs(source.Column - destination.Column));

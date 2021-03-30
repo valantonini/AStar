@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AStar.Collections.PathFinderNodeGrid
+namespace AStar.Collections.PathFinder
 {
     internal class ComparePathFinderNodeByFValue : IComparer<PathFinderNode>
     {

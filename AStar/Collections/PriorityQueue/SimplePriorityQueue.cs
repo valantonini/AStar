@@ -6,15 +6,10 @@ namespace AStar.Collections.PriorityQueue
     {
         private readonly List<T> _innerList = new List<T>();
         private readonly IComparer<T> _comparer;
-        
-        public SimplePriorityQueue()
-        {
-            _comparer = Comparer<T>.Default;
-        }
 
-        public SimplePriorityQueue(IComparer<T> comparer)
+        public SimplePriorityQueue(IComparer<T> comparer = null)
         {
-            _comparer = comparer;
+            _comparer = comparer ?? Comparer<T>.Default;;
         }
 
         public T Peek()

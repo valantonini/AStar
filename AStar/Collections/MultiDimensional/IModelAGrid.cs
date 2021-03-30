@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AStar.Collections.Grid
+namespace AStar.Collections.MultiDimensional
 {
     public interface IModelAGrid<T>
     {
