@@ -40,6 +40,25 @@ namespace AStar.Tests
         }
         
         [Test]
+        public void ShouldInstantiateWith2DArray()
+        {
+            var grid = new WorldGrid(new short[,]
+            {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 },
+            });
+
+            grid[0, 0].ShouldBe((short)1);
+            grid[0, 1].ShouldBe((short)2);
+            grid[0, 2].ShouldBe((short)3);
+
+            grid[1, 0].ShouldBe((short)4);
+            grid[1, 1].ShouldBe((short)5);
+            grid[1, 2].ShouldBe((short)6);
+        }
+        
+        [Test]
         public void ShouldReadAndWriteByPoint()
         {
             var grid = new WorldGrid(2, 3);

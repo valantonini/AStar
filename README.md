@@ -7,6 +7,8 @@ A Star (A*) algorithm for C#.
 
 The world is represented by a WorldMatrix that is essentially a matrix of the C# short data type.
 A value of 0 indicates the cell is closed / blocked. Any other number indicates the cell is open and traversable.
+It is recommended to use 1 for open cells as numbers greater and less than 0 may be used to apply penalties or
+expediency to movement through those nodes.
 
 The world grid can be indexed via either:
 
