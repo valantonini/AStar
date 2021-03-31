@@ -2,6 +2,7 @@ language: csharp
 mono: none
 dist: xenial
 dotnet: 3.1
+os: linux
 env:
   global:
     - PACKAGE_VERSION_RELEASE="1.0.0-beta.$TRAVIS_BUILD_NUMBER"
@@ -13,7 +14,6 @@ script:
   - dotnet build
   - cd ./AStar.Tests
   - dotnet test
-  - cd ../AStar
 
 stages:
   - build and test
@@ -29,14 +29,14 @@ jobs:
         - cd ./AStar.Tests
         - dotnet test
     - stage: packageDevelopment
-      if: branch = "development" AND $PUBLISH_NUGET = true
+      if: branch = "development" AND env(PUBLISH_NUGET) = true
       script:
         - cd ../AStar
         - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_DEVELOPMENT
         # - dotnet nuget push ./bin/Release/AStarLite.PACKAGE_VERSION_DEVELOPMENT.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
-    - stage packageRelease
-      if: branch = "master" AND $PUBLISH_NUGET = true
-        script:
-          - cd ../AStar
-          - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_RELEASE
-          # - dotnet nuget push ./bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+    - stage: packageRelease
+      if: branch = "master" AND env(PUBLISH_NUGET) = true
+      script:
+        - cd ../AStar
+        - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_RELEASE
+        # - dotnet nuget push ./bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
