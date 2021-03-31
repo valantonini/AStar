@@ -4,7 +4,6 @@ A Star (A*) algorithm for C#.
 [![Build Status](https://travis-ci.org/valantonini/AStar.svg?branch=development)](https://travis-ci.org/valantonini/AStar)
 [![NuGet](https://img.shields.io/nuget/v/AStarLite.svg)](https://www.nuget.org/packages/AStarLite/)
 
-
 The world is represented by a WorldMatrix that is essentially a matrix of the C# short data type.
 A value of 0 indicates the cell is closed / blocked. Any other number indicates the cell is open and traversable.
 It is recommended to use 1 for open cells as numbers greater and less than 0 may be used to apply penalties or
@@ -43,7 +42,7 @@ Options include:
     var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
 ```
 
-## Changes from 0.1.x to 0.2.x
+## Changes from 0.1.x to 1.0.0
 - The world is now represented by a WorldGrid and that uses shorts internally instead of bytes
 - If no path is found, the algorithm now reports an empty array instead of null
 - Moved out of the AStar.Core namespace into simply AStar
