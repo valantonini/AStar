@@ -1,6 +1,6 @@
-﻿namespace AStar
+﻿namespace AStar.Collections.PriorityQueue
 {
-    public interface IPriorityQueue<T>
+    internal interface IModelAPriorityQueue<T>
     {
         int Push(T item);
         T Pop();
