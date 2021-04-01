@@ -6,7 +6,7 @@ os: linux
 env:
   global:
     - PACKAGE_VERSION_RELEASE="1.0.0-beta.$TRAVIS_BUILD_NUMBER"
-    - PACKAGE_VERSION_DEVELOPMENT="0.3.0-alpha.$TRAVIS_BUILD_NUMBER"
+    - PACKAGE_VERSION_PRERELEASE="1.0.1-alpha.$TRAVIS_BUILD_NUMBER"
 
 script:
   - dotnet restore
@@ -16,8 +16,8 @@ script:
 
 stages:
   - build and test
-  - packageDevelopment
-  - packageRelease
+  - package prerelease
+  - package release
 
 jobs:
   include:
@@ -27,15 +27,15 @@ jobs:
         - dotnet build
         - cd ./AStar.Tests
         - dotnet test
-    - stage: packageDevelopment
-      if: branch = "development" AND tag = publish
+    - stage: package prerelease
+      if: branch = "development" AND env(TRAVIS_PULL_REQUEST) = false
       script:
         - cd ../AStar
-        - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_DEVELOPMENT
-        # - dotnet nuget push ./bin/Release/AStarLite.PACKAGE_VERSION_DEVELOPMENT.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
-    - stage: packageRelease
-      if: branch = "master" AND tag = publish
+        - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_PRERELEASE
+        - dotnet nuget push ./bin/Release/AStarLite.PACKAGE_VERSION_PRERELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+    - stage: package release
+      if: branch = "master" AND env(TRAVIS_PULL_REQUEST) = false
       script:
         - cd ../AStar
         - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_RELEASE
-        # - dotnet nuget push ./bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+        - dotnet nuget push ./bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
