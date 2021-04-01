@@ -1,8 +1,9 @@
 A Star (A*) algorithm for C#.
 =====
 
-[![Build Status](https://travis-ci.org/valantonini/AStar.svg?branch=master)](https://travis-ci.org/valantonini/AStar)
-[![NuGet](https://img.shields.io/nuget/v/AStarLite.svg)](https://www.nuget.org/packages/AStarLite/)
+![Travis (.com) branch](https://img.shields.io/travis/com/valantonini/AStar/master?style=for-the-badge)
+[![NuGet](https://img.shields.io/nuget/v/AStarLite.svg?style=for-the-badge)](https://www.nuget.org/packages/AStarLite/)
+[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/AStarLite?style=for-the-badge)](https://www.nuget.org/packages/AStarLite/)
 
 The world is represented by a WorldMatrix that is essentially a matrix of the C# short data type.
 A value of 0 indicates the cell is closed / blocked. Any other number indicates the cell is open and traversable.
