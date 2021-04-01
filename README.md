@@ -34,6 +34,7 @@ Options include:
  - Allowing / restricting diagonal movement
  - A choice of heuristic (Manhattan, MaxDxDy, Euclidean, Diagonal shortcut)
  - The option to punish direction changes.
+ - A search limit to short circuit the search
 
 ## Example usage
 ```csharp
