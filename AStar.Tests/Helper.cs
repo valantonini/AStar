@@ -38,7 +38,7 @@ namespace AStar.Tests
                 {
                     if (path.Any(n => n.Row == row && n.Column == column))
                     {
-                        s.Append("_");
+                        s.Append("*");
                     }
                     else
                     {
