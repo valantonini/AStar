@@ -8,12 +8,6 @@ env:
     - PACKAGE_VERSION_RELEASE=1.0.0-beta.$TRAVIS_BUILD_NUMBER
     - PACKAGE_VERSION_PRERELEASE=1.0.0-alpha.$TRAVIS_BUILD_NUMBER
 
-script:
-  - dotnet restore
-  - dotnet build
-  - cd ./AStar.Tests
-  - dotnet test
-
 stages:
   - build and test
   - package prerelease
@@ -25,17 +19,14 @@ jobs:
       script:
         - dotnet restore
         - dotnet build
-        - cd ./AStar.Tests
-        - dotnet test
+        - dotnet test AStar.Tests/AStar.Tests.csproj
     - stage: package prerelease
       if: branch = "prerelease"
       script:
-        - cd ../AStar
         - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_PRERELEASE
-        - dotnet nuget push ./bin/Release/AStarLite.$PACKAGE_VERSION_PRERELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+        - dotnet nuget push AStar/bin/Release/AStarLite.$PACKAGE_VERSION_PRERELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
     - stage: package release
       if: branch = "release"
       script:
-        - cd ../AStar
         - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_RELEASE
-        - dotnet nuget push ./bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+        - dotnet nuget push AStar/bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
