@@ -1,7 +1,7 @@
 A Star (A*) algorithm for C#.
 =====
 
-[![Build Status](https://travis-ci.org/valantonini/AStar.svg?branch=development)](https://travis-ci.org/valantonini/AStar)
+[![Build Status](https://travis-ci.org/valantonini/AStar.svg?branch=master)](https://travis-ci.org/valantonini/AStar)
 [![NuGet](https://img.shields.io/nuget/v/AStarLite.svg)](https://www.nuget.org/packages/AStarLite/)
 
 The world is represented by a WorldMatrix that is essentially a matrix of the C# short data type.
