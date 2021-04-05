@@ -9,8 +9,8 @@
     <PackageProjectUrl>https://github.com/valantonini/AStar</PackageProjectUrl>
     <RepositoryUrl>https://github.com/valantonini/AStar</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>An A* pathfinding implementation compatible with the Unity3D Engine.</Description>
-    <PackageTags>Pathfinding;A*;AStar</PackageTags>
+    <Description>A lightweight, 2D A* (A Star) algorithm.</Description>
+    <PackageTags>Pathfinding;A*;AStar;Algorithms</PackageTags>
     <RootNamespace>AStar</RootNamespace>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
