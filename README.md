@@ -37,8 +37,12 @@ Paths can be found using either Positions (matrix indexing) or Points (cartesian
     var worldGrid = new WorldGrid(tiles)
     var pathfinder = new PathFinder(worldGrids, pathfinderOptions);
     
-    // The following are equivalent
+    // The following are equivalent:
+    
+    // matrix indexing
     Position[] path = pathfinder.FindPath(new Position(0, 0), new Position(0, 2));
+    
+    // point indexing
     Point[] path = pathfinder.FindPath(new Point(0, 0), new Point(2, 0));
 ```
 
