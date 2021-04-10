@@ -39,7 +39,7 @@ Paths can be found using either Positions (matrix indexing) or Points (cartesian
     
     // The following are equivalent
     Position[] path = pathfinder.FindPath(new Position(0, 0), new Position(0, 2));
-    Point[] path = pathfinder.FindPath(new Point(0, 0), new Point(2, 1));
+    Point[] path = pathfinder.FindPath(new Point(0, 0), new Point(2, 0));
 ```
 
 ## Options
