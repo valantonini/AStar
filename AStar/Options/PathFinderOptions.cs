@@ -12,6 +12,8 @@ namespace AStar.Options
 
         public int SearchLimit { get; set; }
 
+        public bool ClosestNodeWhenCantReach { get; set; }
+
         public PathFinderOptions()
         {
             HeuristicFormula = HeuristicFormula.Manhattan;
