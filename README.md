@@ -28,7 +28,7 @@ Paths can be found using either Positions (matrix indexing) or Points (cartesian
       UseDiagonals = false, 
    };
 
-   var tiles = new short[] {
+   var tiles = new short[,] {
       { 1, 0, 1 },
       { 1, 0, 1 },
       { 1, 1, 1 },
