@@ -36,6 +36,8 @@ namespace AStar
         {
             var nodesVisited = 0;
             IModelAGraph<PathFinderNode> graph = new PathFinderGraph(_world.Height, _world.Width, _options.UseDiagonals);
+            var lowestNode = start;
+            var lowestNodeDist = int.MaxValue;
 
             var startNode = new PathFinderNode(position: start, g: 0, h: 2, parentNodePosition: start);
             graph.OpenNode(startNode);
@@ -62,6 +64,13 @@ namespace AStar
                     }
 
                     var newG = q.G + DistanceBetweenNodes;
+                    var distanceBetweenSuccessorAndEnd = this.CalculateDistance(q.Position, end);
+
+                    if (distanceBetweenSuccessorAndEnd < lowestNodeDist)
+                    {
+                        lowestNode = q.Position;
+                        lowestNodeDist = distanceBetweenSuccessorAndEnd;
+                    }
 
                     if (_options.PunishChangeDirection)
                     {
@@ -72,7 +81,7 @@ namespace AStar
                         {
                             if (qIsHorizontallyAdjacent)
                             {
-                                newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
+                                newG += this.CalculateDistance(successor.Position, end);
                             }
                         }
 
@@ -81,7 +90,7 @@ namespace AStar
                         {
                             if (!qIsHorizontallyAdjacent)
                             {
-                                newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
+                                newG += this.CalculateDistance(successor.Position, end);
                             }
                         }
                     }
@@ -101,7 +110,17 @@ namespace AStar
                 nodesVisited++;
             }
 
+            if (_options.ClosestNodeWhenCantReach && lowestNode != start)
+            {
+                return this.FindPath(start, lowestNode);
+            }
+
             return new Position[0];
+        }
+
+        private int CalculateDistance(Position currentNode, Position endNode)
+        {             
+            return Math.Abs(currentNode.Row - endNode.Row) + Math.Abs(currentNode.Column - endNode.Column);
         }
 
         private bool BetterPathToSuccessorFound(PathFinderNode updateSuccessor, PathFinderNode currentSuccessor)
