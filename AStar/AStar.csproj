@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>AStarLite</PackageId>
     <Title>AStar Lite</Title>
     <Authors>Val Antonini</Authors>
@@ -13,6 +12,7 @@
     <PackageTags>Pathfinding;A*;AStar;Algorithms</PackageTags>
     <RootNamespace>AStar</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworks>net5.0;net6.0;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
 </Project>
