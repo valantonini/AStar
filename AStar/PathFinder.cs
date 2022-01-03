@@ -120,9 +120,10 @@ namespace AStar
             if (_options.UseDiagonals)
             {
                 var successorIsDiagonallyAdjacentToQ = (successor.Position.Column - successor.Position.Row) == (q.Position.Column - q.Position.Row);
-                if (successorIsDiagonallyAdjacentToQ && IsStraightLine(q.ParentNodePosition, q.Position, successor.Position))
+                if (successorIsDiagonallyAdjacentToQ)
                 {
-                    var qIsDiagonallyAdjacentToParent = (q.Position.Column - q.Position.Row) == (q.ParentNodePosition.Column - q.ParentNodePosition.Row);
+                    var qIsDiagonallyAdjacentToParent = (q.Position.Column - q.Position.Row) == (q.ParentNodePosition.Column - q.ParentNodePosition.Row)
+                                                        && IsStraightLine(q.ParentNodePosition, q.Position, successor.Position);
                     if (qIsDiagonallyAdjacentToParent)
                     {
                         return gPunishment;
