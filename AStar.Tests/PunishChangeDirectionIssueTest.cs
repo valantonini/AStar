@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using AStar.Heuristics;
 using AStar.Options;
 using NUnit.Framework;

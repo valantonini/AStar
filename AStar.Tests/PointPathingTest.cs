@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Linq;
 using AStar.Options;
 using NUnit.Framework;
 using Shouldly;

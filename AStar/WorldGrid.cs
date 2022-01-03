@@ -1,4 +1,3 @@
-using System;
 using AStar.Collections.MultiDimensional;
 
 namespace AStar
