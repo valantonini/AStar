@@ -65,7 +65,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        var qIsHorizontallyAdjacent = q.Position.Row - q.ParentNodePosition.Row == 0;
+                        var qIsHorizontallyAdjacent = q.Position != q.ParentNodePosition && q.Position.Row - q.ParentNodePosition.Row == 0;
                         var successorIsHorizontallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
                         
                         if (successorIsHorizontallyAdjacentToQ)
@@ -76,10 +76,12 @@ namespace AStar
                             }
                         }
 
-                        var successorIsVerticallyAdjacentToQ = successor.Position.Column - q.Position.Column != 0;
+                        var qIsVerticallyAdjacent = q.Position != q.ParentNodePosition && q.Position.Column - q.ParentNodePosition.Column == 0;
+
+                        var successorIsVerticallyAdjacentToQ = successor.Position.Column - q.Position.Column == 0;
                         if (successorIsVerticallyAdjacentToQ)
                         {
-                            if (!qIsHorizontallyAdjacent)
+                            if (!qIsVerticallyAdjacent)
                             {
                                 newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
                             }
