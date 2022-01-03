@@ -1,11 +1,11 @@
 language: csharp
 mono: none
-dist: xenial
-dotnet: 3.1
+dist: focal
+dotnet: 6.0.101
 os: linux
 env:
   global:
-    - PACKAGE_VERSION_RELEASE=1.0.0
+    - PACKAGE_VERSION_RELEASE=1.1.0
     - PACKAGE_VERSION_PRERELEASE=1.0.0-beta.$TRAVIS_BUILD_NUMBER
 
 stages:
