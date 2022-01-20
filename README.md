@@ -34,7 +34,7 @@ Paths can be found using either Positions (matrix indexing) or Points (cartesian
       { 1, 1, 1 },
    };
 
-    var worldGrid = new WorldGrid(tiles)
+    var worldGrid = new WorldGrid(tiles);
     var pathfinder = new PathFinder(worldGrids, pathfinderOptions);
     
     // The following are equivalent:
