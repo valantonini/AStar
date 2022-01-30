@@ -6,7 +6,7 @@ using Shouldly;
 namespace AStar.Tests
 {
     [TestFixture]
-    public class PunishChangeDirectionIssueTestTests
+    public class PunishChangeDirectionIssueTests
     {
         private WorldGrid _world;
 
