@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using Shouldly;
 
 namespace AStar.Tests
 {
@@ -38,7 +37,7 @@ namespace AStar.Tests
                 {
                     if (path.Any(n => n.Row == row && n.Column == column))
                     {
-                        s.Append("_");
+                        s.Append("*");
                     }
                     else
                     {

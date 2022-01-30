@@ -1,14 +1,13 @@
-A Star (A*) algorithm for C#.
+A 2D A* (A Star) algorithm for C#
 =====
 
 ![Travis (.com) branch](https://img.shields.io/travis/com/valantonini/AStar/master?style=for-the-badge)
 [![NuGet](https://img.shields.io/nuget/v/AStarLite.svg?style=for-the-badge)](https://www.nuget.org/packages/AStarLite/)
-[![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/AStarLite?style=for-the-badge)](https://www.nuget.org/packages/AStarLite/)
 
-The world is represented by a WorldMatrix that is essentially a matrix of the C# short data type.
+The world is represented by a WorldGrid that is essentially a matrix of the C# short data type.
 A value of 0 indicates the cell is closed / blocked. Any other number indicates the cell is open and traversable.
-It is recommended to use 1 for open cells as numbers greater and less than 0 may be used to apply penalties or
-expediency to movement through those nodes in the future.
+It is recommended to use 1 for open cells as numbers greater and less than 0 may be used to apply penalty or
+priority to movement through those nodes in the future.
 
 The WorldGrid can be indexed via either:
 
@@ -20,29 +19,49 @@ The WorldGrid can be indexed via either:
 
 Paths can be found using either Positions (matrix indexing) or Points (cartesian indexing).
 
-```csharp
-    var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
+## Example usage
+![PathingExample](Docs/PathingExample.png "Pathing Example")
 
-    var pathfinder = new PathFinder(new WorldGrid(40,40), pathfinderOptions);
+```csharp
+   var pathfinderOptions = new PathFinderOptions { 
+      PunishChangeDirection = true,
+      UseDiagonals = false, 
+   };
+
+   var tiles = new short[,] {
+      { 1, 0, 1 },
+      { 1, 0, 1 },
+      { 1, 1, 1 },
+   };
+
+    var worldGrid = new WorldGrid(tiles);
+    var pathfinder = new PathFinder(worldGrid, pathfinderOptions);
     
-    // The following are equivalent
-    Position[] path = pathfinder.FindPath(new Position(4, 1), new Position(28, 30));
-    Point[] path = pathfinder.FindPath(new Point(1, 4), new Point(30, 28));
+    // The following are equivalent:
+    
+    // matrix indexing
+    Position[] path = pathfinder.FindPath(new Position(0, 0), new Position(0, 2));
+    
+    // point indexing
+    Point[] path = pathfinder.FindPath(new Point(0, 0), new Point(2, 0));
 ```
 
-Options include:
+## Options
  - Allowing / restricting diagonal movement
  - A choice of heuristic (Manhattan, MaxDxDy, Euclidean, Diagonal shortcut)
  - The option to punish direction changes.
+ - A search limit to short circuit the search
 
-## Example usage
-```csharp
-    var pathfinderOptions = new PathFinderOptions { PunishChangeDirection = true };
+## FAQ
 
-    var pathfinder = new PathFinder(new WorldGrid(40,40), pathfinderOptions);
-    
-    var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
-```
+q. why doesn't this algorithm always find the shortest path?
+
+a. A* optimises speed over accuracy. Because the algorithm relies on a 
+heuristic to determine the distances from start and finish, it won't necessarily
+produce the shortest path to the target.
+
+## Changes from 1.0.0 to 1.1.0
+- Reimplemented the punish change direction to perform more consistently
 
 ## Changes from 0.1.x to 1.0.0
 - The world is now represented by a WorldGrid that uses shorts internally instead of bytes

@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using AStar.Heuristics;
 using AStar.Options;
 using NUnit.Framework;
@@ -8,7 +6,7 @@ using Shouldly;
 namespace AStar.Tests
 {
     [TestFixture]
-    public class PunishChangeDirectionIssueTestTests
+    public class PunishChangeDirectionIssueTests
     {
         private WorldGrid _world;
 
