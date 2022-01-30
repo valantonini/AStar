@@ -6,7 +6,7 @@ os: linux
 env:
   global:
     - PACKAGE_VERSION_RELEASE=1.1.0
-    - PACKAGE_VERSION_PRERELEASE=1.0.0-beta.$TRAVIS_BUILD_NUMBER
+    - PACKAGE_VERSION_PRERELEASE=1.1.0-beta.$TRAVIS_BUILD_NUMBER
 
 stages:
   - build and test

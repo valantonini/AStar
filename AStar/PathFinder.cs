@@ -65,27 +65,7 @@ namespace AStar
 
                     if (_options.PunishChangeDirection)
                     {
-                        var qIsHorizontallyAdjacent = q.Position != q.ParentNodePosition && q.Position.Row - q.ParentNodePosition.Row == 0;
-                        var successorIsHorizontallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
-                        
-                        if (successorIsHorizontallyAdjacentToQ)
-                        {
-                            if (qIsHorizontallyAdjacent)
-                            {
-                                newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
-                            }
-                        }
-
-                        var qIsVerticallyAdjacent = q.Position != q.ParentNodePosition && q.Position.Column - q.ParentNodePosition.Column == 0;
-
-                        var successorIsVerticallyAdjacentToQ = successor.Position.Column - q.Position.Column == 0;
-                        if (successorIsVerticallyAdjacentToQ)
-                        {
-                            if (!qIsVerticallyAdjacent)
-                            {
-                                newG += Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
-                            }
-                        }
+                        newG += CalculateModifierToG(q, successor, end);
                     }
 
                     var updatedSuccessor = new PathFinderNode(
@@ -104,6 +84,60 @@ namespace AStar
             }
 
             return new Position[0];
+        }
+
+        private int CalculateModifierToG(PathFinderNode q, PathFinderNode successor, Position end)
+        {
+            if (q.Position == q.ParentNodePosition)
+            {
+                return 0;
+            }
+            
+            var gPunishment = Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
+            
+            var successorIsVerticallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
+
+            if (successorIsVerticallyAdjacentToQ)
+            {
+                var qIsVerticallyAdjacentToParent = q.Position.Row - q.ParentNodePosition.Row == 0;
+                if (qIsVerticallyAdjacentToParent)
+                {
+                    return gPunishment;
+                }
+            }
+
+            var successorIsHorizontallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
+
+            if (successorIsHorizontallyAdjacentToQ)
+            {
+                var qIsHorizontallyAdjacentToParent = q.Position.Row - q.ParentNodePosition.Row == 0;
+                if (qIsHorizontallyAdjacentToParent)
+                {
+                    return gPunishment;
+                }
+            }
+
+            if (_options.UseDiagonals)
+            {
+                var successorIsDiagonallyAdjacentToQ = (successor.Position.Column - successor.Position.Row) == (q.Position.Column - q.Position.Row);
+                if (successorIsDiagonallyAdjacentToQ)
+                {
+                    var qIsDiagonallyAdjacentToParent = (q.Position.Column - q.Position.Row) == (q.ParentNodePosition.Column - q.ParentNodePosition.Row)
+                                                        && IsStraightLine(q.ParentNodePosition, q.Position, successor.Position);
+                    if (qIsDiagonallyAdjacentToParent)
+                    {
+                        return gPunishment;
+                    }
+                }
+            }
+
+            return 0;
+        }
+
+        private bool IsStraightLine(Position a, Position b, Position c)
+        {
+            // area of triangle == 0
+            return (a.Column * (b.Row - c.Row) + b.Column * (c.Row - a.Row) + c.Column * (a.Row - b.Row)) / 2 == 0;
         }
 
         private bool BetterPathToSuccessorFound(PathFinderNode updateSuccessor, PathFinderNode currentSuccessor)

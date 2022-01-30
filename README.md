@@ -52,6 +52,16 @@ Paths can be found using either Positions (matrix indexing) or Points (cartesian
  - The option to punish direction changes.
  - A search limit to short circuit the search
 
+## FAQ
+
+q. why doesn't this algorithm always find the shortest path?
+
+a. A* optimises speed over accuracy. Because the algorithm relies on a 
+heuristic to determine the distances from start and finish, it won't necessarily
+produce the shortest path to the target.
+
+## Changes from 1.0.0 to 1.1.0
+- Reimplemented the punish change direction to perform more consistently
 
 ## Changes from 0.1.x to 1.0.0
 - The world is now represented by a WorldGrid that uses shorts internally instead of bytes
