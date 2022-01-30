@@ -28,12 +28,12 @@ namespace AStar.Tests
             var path = pathfinder.FindPath(new Position(1, 1), new Position(2, 3));
 
             Helper.Print(_world, path);
-
-            var expected = new[] {
+            
+            path.ShouldBe(new[] {
                 new Position(1, 1),
                 new Position(2, 2),
                 new Position(2, 3),
-            };
+            });
         }
 
         [Test]

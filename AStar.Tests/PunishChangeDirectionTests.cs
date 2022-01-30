@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using AStar.Heuristics;
 using AStar.Options;
 using NUnit.Framework;
@@ -10,10 +9,8 @@ namespace AStar.Tests
     [TestFixture]
     public class PunishChangeDirectionTests
     {
-        private WorldGrid _world;
-
-        [SetUp]
-        public void SetUp()
+        [Test]
+        public void ShouldPunishChangingDirections()
         {
             var level = @"  111111111X
                             111111111X
@@ -36,34 +33,28 @@ namespace AStar.Tests
                             111111111X
                             111111111X";
 
-            _world = Helper.ConvertStringToPathfinderGrid(level);
-        }
-        
-        [Test]
-        public void ShouldPunishChangingDirections()
-        {
-            var pathFinderOptions = new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true };
-            var pathfinder = new PathFinder(_world, pathFinderOptions);
+            var world = Helper.ConvertStringToPathfinderGrid(level);
+
+            var pathFinderOptions = new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true};
+            var pathfinder = new PathFinder(world, pathFinderOptions);
 
             var path = pathfinder.FindPath(new Position(2, 9), new Position(15, 3));
 
-            Helper.Print(_world, path);
-            
-            path.ShouldBe(new[] {
+
+            Helper.Print(world, path);
+
+            path.ShouldBe(new[]
+            {
                 new Position(2, 9),
-                new Position(2, 8),
-                new Position(2, 7),
-                new Position(3, 6),
-                new Position(4, 6),
+                new Position(3, 8),
+                new Position(4, 7),
                 new Position(5, 6),
-                new Position(6, 6),
-                new Position(7, 6),
+                new Position(6, 5),
+                new Position(7, 5),
                 new Position(8, 6),
-                new Position(9, 6),
-                new Position(10, 6),
-                new Position(11, 6),
-                new Position(12, 5),
-                new Position(12, 4),
+                new Position(9, 5),
+                new Position(10, 4),
+                new Position(11, 3),
                 new Position(12, 3),
                 new Position(13, 2),
                 new Position(14, 1),
@@ -71,47 +62,41 @@ namespace AStar.Tests
                 new Position(15, 3),
             });
         }
-        
-        [Ignore("removed feature")]
-        public void ShouldRespectHeavyDiagonalsOption()
+
+        [Test]
+        public void ShouldCalculateAdjacentCorrectly()
         {
-            var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = true, PunishChangeDirection = true});
+            var level = @"  110111
+                            110111
+                            100111
+                            111111
+                            101111
+                            111111";
 
-            var path = pathfinder.FindPath(new Position(2, 9), new Position(15, 3));
+            var world = Helper.ConvertStringToPathfinderGrid(level);
+            var pathfinder = new PathFinder(world, new PathFinderOptions { UseDiagonals = false, PunishChangeDirection = true, HeuristicFormula = HeuristicFormula.MaxDXDY });
 
-            Helper.Print(_world, path);
-            
-            path[0].Row.ShouldBe(15);
-            path[0].Column.ShouldBe(3);
-            path[1].Row.ShouldBe(15);
-            path[1].Column.ShouldBe(2);
-            path[2].Row.ShouldBe(14);
-            path[2].Column.ShouldBe(1);
-            path[3].Row.ShouldBe(13);
-            path[3].Column.ShouldBe(2);
-            path[4].Row.ShouldBe(12);
-            path[4].Column.ShouldBe(3);
-            path[5].Row.ShouldBe(11);
-            path[5].Column.ShouldBe(4);
-            path[6].Row.ShouldBe(10);
-            path[6].Column.ShouldBe(4);
-            path[7].Row.ShouldBe(9);
-            path[7].Column.ShouldBe(5);
-            path[8].Row.ShouldBe(8);
-            path[8].Column.ShouldBe(6);
-            path[9].Row.ShouldBe(7);
-            path[9].Column.ShouldBe(7);
-            path[10].Row.ShouldBe(6);
-            path[10].Column.ShouldBe(8);
-            path[11].Row.ShouldBe(5);
-            path[11].Column.ShouldBe(8);
-            path[12].Row.ShouldBe(4);
-            path[12].Column.ShouldBe(8);
-            path[13].Row.ShouldBe(3);
-            path[13].Column.ShouldBe(8);
-            path[14].Row.ShouldBe(2);
-            path[14].Column.ShouldBe(9);
+            var path = pathfinder.FindPath(new Position(4, 4), new Position(1, 1));
+
+            var expected = new[]
+            {
+                new Position(4, 4),
+                new Position(3, 4),
+                new Position(3, 3),
+                new Position(3, 2),
+                new Position(3, 1),
+                new Position(3, 0),
+                new Position(2, 0),
+                new Position(1, 0),
+                new Position(1, 1),
+            };
+
+            Console.WriteLine("actual");
+            Helper.Print(world, path);
+            Console.WriteLine("expected");
+            Helper.Print(world, expected);
+
+            path.ShouldBe(expected);
         }
-        
     }
 }

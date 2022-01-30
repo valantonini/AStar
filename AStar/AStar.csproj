@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>AStarLite</PackageId>
     <Title>AStar Lite</Title>
     <Authors>Val Antonini</Authors>
@@ -9,10 +8,11 @@
     <PackageProjectUrl>https://github.com/valantonini/AStar</PackageProjectUrl>
     <RepositoryUrl>https://github.com/valantonini/AStar</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>An A* pathfinding implementation compatible with the Unity3D Engine.</Description>
-    <PackageTags>Pathfinding;A*;AStar</PackageTags>
+    <Description>A lightweight, 2D A* (A Star) algorithm.</Description>
+    <PackageTags>Pathfinding;A*;AStar;Algorithms</PackageTags>
     <RootNamespace>AStar</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <TargetFrameworks>net5.0;net6.0;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
 </Project>
