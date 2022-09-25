@@ -1,3 +1,4 @@
+using System;
 using AStar.Collections.MultiDimensional;
 
 namespace AStar
@@ -5,6 +6,7 @@ namespace AStar
     /// <summary>
     /// A world grid consisting of integers where a closed cell is represented by 0
     /// </summary>
+    [Serializable]
     public class WorldGrid : Grid<short>
     {
         /// <summary>
