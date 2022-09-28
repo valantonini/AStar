@@ -1,7 +1,9 @@
-﻿using AStar.Heuristics;
+﻿using System;
+using AStar.Heuristics;
 
 namespace AStar.Options
 {
+    [Serializable]
     public class PathFinderOptions
     {
         public HeuristicFormula HeuristicFormula { get; set; }

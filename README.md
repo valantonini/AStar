@@ -54,7 +54,7 @@ Paths can be found using either Positions (matrix indexing) or Points (cartesian
 
 ## FAQ
 
-q. why doesn't this algorithm always find the shortest path?
+q. Why doesn't this algorithm always find the shortest path?
 
 a. A* optimises speed over accuracy. Because the algorithm relies on a 
 heuristic to determine the distances from start and finish, it won't necessarily

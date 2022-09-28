@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.Serialization;
 using AStar.Collections.PathFinder;
 using AStar.Heuristics;
 using AStar.Options;
 
 namespace AStar
 {
-    public class PathFinder : IFindAPath
+    [Serializable]
+    public class PathFinder : IFindAPath, ISerializable
     {
         private const int ClosedValue = 0;
         private const int DistanceBetweenNodes = 1;
         private readonly PathFinderOptions _options;
         private readonly WorldGrid _world;
+        [NonSerialized]
         private readonly ICalculateHeuristic _heuristic;
 
         public PathFinder(WorldGrid worldGrid, PathFinderOptions pathFinderOptions = null)
@@ -22,7 +25,19 @@ namespace AStar
             _options = pathFinderOptions ?? new PathFinderOptions();
             _heuristic = HeuristicFactory.Create(_options.HeuristicFormula);
         }
-        
+
+        /// <summary
+        ///  Constructor used when deserializing.
+        /// </summary>
+        /// <param name="info"> The System.Runtime.Serialization.SerializationInfo to retrieve the data from.</param>
+        /// <param name="context">The source (see System.Runtime.Serialization.StreamingContext) for this serialization.</param>
+        protected PathFinder(SerializationInfo info, StreamingContext context) : 
+            this(info.GetValue(nameof(_world), typeof(WorldGrid)) as WorldGrid, 
+            info.GetValue(nameof(_options), typeof(PathFinderOptions)) as PathFinderOptions
+        )
+        {
+        }
+
         ///<inheritdoc/>
         public Point[] FindPath(Point start, Point end)
         {
@@ -30,7 +45,7 @@ namespace AStar
                 .Select(position => new Point(position.Column, position.Row))
                 .ToArray();
         }
-        
+
         ///<inheritdoc/>
         public Position[] FindPath(Position start, Position end)
         {
@@ -43,7 +58,7 @@ namespace AStar
             while (graph.HasOpenNodes)
             {
                 var q = graph.GetOpenNodeWithSmallestF();
-                
+
                 if (q.Position == end)
                 {
                     return OrderClosedNodesAsArray(graph, q);
@@ -71,9 +86,9 @@ namespace AStar
                     var updatedSuccessor = new PathFinderNode(
                         position: successor.Position,
                         g: newG,
-                        h:_heuristic.Calculate(successor.Position, end),
+                        h: _heuristic.Calculate(successor.Position, end),
                         parentNodePosition: q.Position);
-                    
+
                     if (BetterPathToSuccessorFound(updatedSuccessor, successor))
                     {
                         graph.OpenNode(updatedSuccessor);
@@ -86,15 +101,27 @@ namespace AStar
             return new Position[0];
         }
 
+        /// <summary>
+        /// Implements the ISerializable interface to support binary serialization and deserialization.
+        /// </summary>
+        /// <seealso cref="url" href="https://github.com/valantonini/AStar/issues/9"/>
+        /// <param name="info"> The System.Runtime.Serialization.SerializationInfo to populate with data.</param>
+        /// <param name="context">The destination (see System.Runtime.Serialization.StreamingContext) for this serialization.</param>
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(_world), _world);
+            info.AddValue(nameof(_options), _options);
+        }
+
         private int CalculateModifierToG(PathFinderNode q, PathFinderNode successor, Position end)
         {
             if (q.Position == q.ParentNodePosition)
             {
                 return 0;
             }
-            
+
             var gPunishment = Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
-            
+
             var successorIsVerticallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
 
             if (successorIsVerticallyAdjacentToQ)

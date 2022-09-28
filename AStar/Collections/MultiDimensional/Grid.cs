@@ -4,6 +4,7 @@ using System.Drawing;
 
 namespace AStar.Collections.MultiDimensional
 {
+    [Serializable]
     public class Grid<T> : IModelAGrid<T>
     {
         private readonly T[] _grid;
