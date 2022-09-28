@@ -6,7 +6,7 @@ os: linux
 env:
   global:
     - PACKAGE_VERSION_RELEASE=1.1.0
-    - PACKAGE_VERSION_PRERELEASE=1.1.0-beta.$TRAVIS_BUILD_NUMBER
+    - PACKAGE_VERSION_PRERELEASE=1.2.0-beta.$TRAVIS_BUILD_NUMBER
 
 stages:
   - build and test
@@ -26,7 +26,7 @@ jobs:
         - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_PRERELEASE
         - dotnet nuget push AStar/bin/Release/AStarLite.$PACKAGE_VERSION_PRERELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
     - stage: package release
-      if: branch = "release"
+      if: branch = "main"
       script:
         - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_RELEASE
         - dotnet nuget push AStar/bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
