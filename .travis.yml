@@ -3,15 +3,10 @@ mono: none
 dist: focal
 dotnet: 6.0.101
 os: linux
-env:
-  global:
-    - PACKAGE_VERSION_RELEASE=1.1.0
-    - PACKAGE_VERSION_PRERELEASE=1.1.0-beta.$TRAVIS_BUILD_NUMBER
 
 stages:
   - build and test
-  - package prerelease
-  - package release
+  - package
 
 jobs:
   include:
@@ -20,13 +15,8 @@ jobs:
         - dotnet restore
         - dotnet build
         - dotnet test AStar.Tests/AStar.Tests.csproj
-    - stage: package prerelease
-      if: branch = "prerelease"
+    - stage: package
+      if: tag =~ ^v
       script:
-        - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_PRERELEASE
-        - dotnet nuget push AStar/bin/Release/AStarLite.$PACKAGE_VERSION_PRERELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
-    - stage: package release
-      if: branch = "release"
-      script:
-        - dotnet pack -c Release /p:PackageVersion=$PACKAGE_VERSION_RELEASE
-        - dotnet nuget push AStar/bin/Release/AStarLite.$PACKAGE_VERSION_RELEASE.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
+        - dotnet pack -c Release /p:PackageVersion=${TRAVIS_TAG:1}
+        - dotnet nuget push AStar/bin/Release/AStarLite.${TRAVIS_TAG:1}.nupkg -s https://www.nuget.org/api/v2/package -k $NUGET_API_KEY
