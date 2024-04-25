@@ -68,10 +68,24 @@ namespace AStar
                         newG += CalculateModifierToG(q, successor, end);
                     }
 
+                    var newH = _heuristic.Calculate(successor.Position, end);
+                    switch (_options.Weighting)
+                    {
+                        case Weighting.Positive:
+                            newH -= _world[successor.Position];
+                            break;
+                        case Weighting.Negative:
+                            newH += _world[successor.Position];
+                            break;
+                        case Weighting.None:
+                        default:
+                            break;
+                    }
+
                     var updatedSuccessor = new PathFinderNode(
                         position: successor.Position,
                         g: newG,
-                        h:_heuristic.Calculate(successor.Position, end),
+                        h: newH,
                         parentNodePosition: q.Position);
                     
                     if (BetterPathToSuccessorFound(updatedSuccessor, successor))

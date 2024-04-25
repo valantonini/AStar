@@ -26,8 +26,6 @@ namespace AStar.Tests
 
             var path = pathfinder.FindPath(new Position(0, 0), new Position(2, 4));
             
-            Helper.Print(_world, path);
-            
             path.ShouldBe(new[] {
                 new Position(0, 0),
                 new Position(1, 1),
@@ -52,8 +50,6 @@ namespace AStar.Tests
         {
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(2, 1));
             
-            Helper.Print(_world, path);
-
             path.ShouldBe(new[] {
                 new Position(1, 1),
                 new Position(2, 1),
@@ -64,8 +60,6 @@ namespace AStar.Tests
         public void ShouldDoSimplePath()
         {
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            
-            Helper.Print(_world, path);
             
             path.ShouldBe(new[] {
                 new Position(1, 1),
@@ -82,8 +76,6 @@ namespace AStar.Tests
             _pathFinder = new PathFinder(_world, pathfinderOptions);
 
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            
-            Helper.Print(_world, path);
             
             path.ShouldBe(new[] {
                 new Position(1, 1),
@@ -105,7 +97,6 @@ namespace AStar.Tests
             _world[2, 2] = 0;
 
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
-            Helper.Print(_world, path);
             
             path.ShouldBe(new[] {
                 new Position(1, 1),
@@ -127,8 +118,6 @@ namespace AStar.Tests
             
             var path = _pathFinder.FindPath(new Position(1, 1), new Position(4, 2));
             
-            Helper.Print(_world, path);
-           
             path.ShouldBe(new[] {
                 new Position(1, 1),
                 new Position(1, 2),

@@ -27,8 +27,6 @@ namespace AStar.Tests
 
             var path = pathfinder.FindPath(new Position(1, 1), new Position(1, 5));
 
-            Helper.Print(_world, path);
-            
             path.ShouldBeEmpty();
         }
     }

@@ -40,9 +40,6 @@ namespace AStar.Tests
 
             var path = pathfinder.FindPath(new Position(2, 9), new Position(15, 3));
 
-
-            Helper.Print(world, path);
-
             path.ShouldBe(new[]
             {
                 new Position(2, 9),
@@ -92,9 +89,7 @@ namespace AStar.Tests
             };
 
             Console.WriteLine("actual");
-            Helper.Print(world, path);
             Console.WriteLine("expected");
-            Helper.Print(world, expected);
 
             path.ShouldBe(expected);
         }

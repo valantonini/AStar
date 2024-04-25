@@ -55,7 +55,7 @@ namespace AStar.Tests
 
             var pathfinder = new PathFinder(_world, pathfinderOptions);
             var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
-            Helper.Print(_world, path);
+            
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace AStar.Tests
             
             var path = pathfinder.FindPath(new Position(1, 1), new Position(30, 30));
             
-            Helper.Print(_world, path);
+            
 
             path.ShouldBe(new[] {
                 new Position(1, 1),
