@@ -1,0 +1,43 @@
+name: .NET Core CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+
+  package:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.101
+
+    - name: Pack
+      run: dotnet pack -c Release /p:PackageVersion=${GITHUB_REF#refs/tags/v}
+
+    - name: Push
+      run: dotnet nuget push AStar/bin/Release/AStarLite.${GITHUB_REF#refs/tags/v}.nupkg -s https://www.nuget.org/api/v2/package -k ${{ secrets.NUGET_API_KEY }}
