@@ -19,6 +19,7 @@ The WorldGrid can be indexed via either:
 
 Paths can be found using either Positions (matrix indexing) or Points (cartesian indexing).
 
+[A Go version is also in to works](https://github.com/valantonini/go-astar)
 ## Example usage
 ![PathingExample](Docs/PathingExample.png "Pathing Example")
 
