@@ -22,7 +22,7 @@ namespace AStar
             _options = pathFinderOptions ?? new PathFinderOptions();
             _heuristic = HeuristicFactory.Create(_options.HeuristicFormula);
         }
-        
+
         ///<inheritdoc/>
         public Point[] FindPath(Point start, Point end)
         {
@@ -30,7 +30,7 @@ namespace AStar
                 .Select(position => new Point(position.Column, position.Row))
                 .ToArray();
         }
-        
+
         ///<inheritdoc/>
         public Position[] FindPath(Position start, Position end)
         {
@@ -43,7 +43,7 @@ namespace AStar
             while (graph.HasOpenNodes)
             {
                 var q = graph.GetOpenNodeWithSmallestF();
-                
+
                 if (q.Position == end)
                 {
                     return OrderClosedNodesAsArray(graph, q);
@@ -58,7 +58,17 @@ namespace AStar
                 {
                     if (_world[successor.Position] == ClosedValue)
                     {
-                        continue;
+
+                        // https://github.com/valantonini/AStar/issues/11
+                        if (successor.Position == end && _options.IgnoreClosedEndCell)
+                        {
+                            //fallthrough so we find it on next iteration
+                        }
+                        else
+                        {
+                            // node is closed, check next successor
+                            continue;
+                        }
                     }
 
                     var newG = q.G + DistanceBetweenNodes;
@@ -87,7 +97,7 @@ namespace AStar
                         g: newG,
                         h: newH,
                         parentNodePosition: q.Position);
-                    
+
                     if (BetterPathToSuccessorFound(updatedSuccessor, successor))
                     {
                         graph.OpenNode(updatedSuccessor);
@@ -106,9 +116,9 @@ namespace AStar
             {
                 return 0;
             }
-            
+
             var gPunishment = Math.Abs(successor.Position.Row - end.Row) + Math.Abs(successor.Position.Column - end.Column);
-            
+
             var successorIsVerticallyAdjacentToQ = successor.Position.Row - q.Position.Row != 0;
 
             if (successorIsVerticallyAdjacentToQ)

@@ -29,5 +29,36 @@ namespace AStar.Tests
 
             path.ShouldBeEmpty();
         }
+
+        [Test]
+        public void ShouldStartOnClosed()
+        {
+            var pathfinder = new PathFinder(_world, new PathFinderOptions { UseDiagonals = false });
+
+            var path = pathfinder.FindPath(new Position(0, 1), new Position(2, 3));
+
+            path.ShouldBe(new[] {
+                new Position(0, 1),
+                new Position(1, 1),
+                new Position(2, 1),
+                new Position(2, 2),
+                new Position(2, 3),
+            });
+        }
+        
+        [Test]
+        public void ShouldEndOnClosed()
+        {
+            var pathfinder = new PathFinder(_world, new PathFinderOptions { IgnoreClosedEndCell = true });
+
+            var path = pathfinder.FindPath(new Position(1, 0), new Position(1, 3));
+
+            path.ShouldBe(new[] {
+                new Position(1, 0),
+                new Position(1, 1),
+                new Position(1, 2),
+                new Position(1, 3),
+            });
+        }
     }
 }

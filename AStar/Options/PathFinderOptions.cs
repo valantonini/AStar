@@ -12,6 +12,8 @@ namespace AStar.Options
 
         public int SearchLimit { get; set; }
 
+        public bool IgnoreClosedEndCell { get; set; }
+
         public Weighting Weighting {get;set;}
 
         public PathFinderOptions()
