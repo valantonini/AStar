@@ -60,6 +60,7 @@ q. why doesn't this algorithm always find the shortest path?
 a. A* optimises speed over accuracy. Because the algorithm relies on a 
 heuristic to determine the distances from start and finish, it won't necessarily
 produce the shortest path to the target.
+
 ## Changes from 1.1.0 to 1.3.0
 - Introduced path weighting to favour or penalize cells. This is off by default and
 can be opted into using the new options. See [this blog post for more info](https://valantonini.com/posts/20210401/)
@@ -72,6 +73,8 @@ var world = Helper.ConvertStringToPathfinderGrid(level);
 var opts = new PathFinderOptions { Weighting = Weighting.Positive };
 var pathfinder = new PathFinder(world, opts);
 ```
+-  Introduced `IgnoreClosedEndCell` option to allow pathing to a closed cell 
+
 ## Changes from 1.0.0 to 1.1.0
 - Reimplemented the punish change direction to perform more consistently
 
